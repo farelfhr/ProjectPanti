@@ -48,3 +48,15 @@
         });
     </script>
 </nav>
+
+<div class="w-full flex flex-col items-center border-t border-b border-dashed border-[#D0D5CB] py-10 mt-24 mb-24 overflow-hidden bg-transparent">
+  <span class="text-2xl font-semibold text-[#41644A] mb-6 block w-full text-center">Partner Kami</span>
+  <div class="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+    <ul class="flex items-center justify-center md:justify-start [&_li]:mx-8 animate-infinite-scroll">
+      <!-- ...li partner... -->
+    </ul>
+    <ul class="flex items-center justify-center md:justify-start [&_li]:mx-8 animate-infinite-scroll" aria-hidden="true">
+      <!-- ...li partner... -->
+    </ul>
+  </div>
+</div>
