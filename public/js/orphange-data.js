@@ -1,0 +1,98 @@
+// Data contoh untuk panti asuhan
+export const orphanageData = [
+    {
+        id: 1,
+        name: "Panti Asuhan Harapan Bangsa",
+        lat: -6.2088,
+        lng: 106.8456,
+        city: "jakarta",
+        children: 85,
+        programs: ["pendidikan", "kesehatan"],
+        established: 2018,
+        stories:
+            "Membantu 85 anak mendapatkan pendidikan berkualitas dan akses kesehatan yang memadai.",
+        yearlyData: {
+            2020: 45,
+            2021: 58,
+            2022: 72,
+            2023: 80,
+            2024: 85,
+        },
+    },
+    {
+        id: 2,
+        name: "Panti Asuhan Cinta Kasih",
+        lat: -7.2575,
+        lng: 112.7521,
+        city: "surabaya",
+        children: 126,
+        programs: ["pendidikan", "keterampilan"],
+        established: 2016,
+        stories:
+            "Mendampingi 126 anak dengan program keterampilan dan pendidikan vokasi.",
+        yearlyData: {
+            2020: 89,
+            2021: 102,
+            2022: 115,
+            2023: 121,
+            2024: 126,
+        },
+    },
+    {
+        id: 3,
+        name: "Panti Asuhan Cahaya Hati",
+        lat: -6.9175,
+        lng: 107.6191,
+        city: "bandung",
+        children: 67,
+        programs: ["kesehatan", "pemberdayaan"],
+        established: 2019,
+        stories:
+            "Fokus pada kesehatan mental dan pemberdayaan ekonomi untuk 67 anak.",
+        yearlyData: {
+            2020: 32,
+            2021: 45,
+            2022: 54,
+            2023: 61,
+            2024: 67,
+        },
+    },
+    {
+        id: 4,
+        name: "Panti Asuhan Mutiara Hati",
+        lat: -7.7956,
+        lng: 110.3695,
+        city: "yogyakarta",
+        children: 94,
+        programs: ["pendidikan", "keterampilan", "pemberdayaan"],
+        established: 2017,
+        stories:
+            "Program holistik untuk 94 anak dengan fokus pendidikan dan keterampilan hidup.",
+        yearlyData: {
+            2020: 65,
+            2021: 75,
+            2022: 84,
+            2023: 89,
+            2024: 94,
+        },
+    },
+    {
+        id: 5,
+        name: "Panti Asuhan Bintang Timur",
+        lat: 3.5952,
+        lng: 98.6722,
+        city: "medan",
+        children: 73,
+        programs: ["kesehatan", "pendidikan"],
+        established: 2020,
+        stories:
+            "Panti asuhan terbaru yang telah melayani 73 anak dengan program kesehatan dan pendidikan.",
+        yearlyData: {
+            2020: 25,
+            2021: 42,
+            2022: 58,
+            2023: 66,
+            2024: 73,
+        },
+    },
+];
