@@ -2,8 +2,8 @@
 @section('content')
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 <div class="max-w-7xl mx-auto py-6 lg:py-16 px-4">
-    <h1 class="text-2xl lg:text-5xl text-left lg:text-center font-bold">Temukan <span class="text-[#41644A]">Berita Terkini</span> dan <span class="text-[#41644A]">Inspirasi</span> untuk <span class="text-[#E9762B]">Perubahan</span> dari Komunitas Panti Asuhan</h1>
-    <h1 class="text-lg lg:text-2xl text-left lg:text-center font-bold mt-5">Jelajahi kisah dampak sosial, data visual, dan panduan peduli dari dunia panti asuhan.</h1>
+    <h1 class="text-4xl lg:text-5xl text-left lg:text-center font-bold">Temukan <span class="text-[#41644A]">Berita Terkini</span> dan <span class="text-[#41644A]">Inspirasi</span> untuk <span class="text-[#E9762B]">Perubahan</span> dari Komunitas Panti Asuhan</h1>
+    <h1 class="text-xl lg:text-2xl text-left lg:text-center font-bold mt-5">Jelajahi kisah dampak sosial, data visual, dan panduan peduli dari dunia panti asuhan.</h1>
 </div>
 
 <div class="max-w-7xl mx-auto py-6 lg:py-16 px-4 flex flex-col gap-10">
@@ -40,8 +40,8 @@
     </div> 
 
     <div>
-        <h1 class="text-4xl font-bold py-12 flex justify-center">Semua Berita dan Artikel</h1>
-        <div class="flex justify-between items-center mb-6">
+        <h1 class="text-4xl lg:text-6xl font-bold py-12 flex justify-start lg:justify-center">Semua Berita dan Artikel</h1>
+        <div class="hidden sm:flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold">Browse by Categories</h1>
             <div class="relative">
                 <input type="text" placeholder="Cari Berita/Artikel" class="pl-10 pr-4 py-2 border-[#41644A] rounded-full focus:outline-none focus:ring-2 focus:ring-[#E9762B]">
@@ -158,11 +158,11 @@
 </div>
 
 <div class="pt-16 pb-40 px-4 mx-auto rounded-t-[150px] bg-gradient-to-b from-[#2c4332] to-[#0e1811]">
-    <div class="text-center py-8 mb-16">
-        <h1 class="text-6xl text-white mb-8 mx-auto font-bold w-3/4">
+    <div class="text-center py-8 px-12 mb-16">
+        <h1 class="text-5xl xl:text-6xl text-white mb-8 text-left lg:text-center lg:mx-auto font-bold lg:w-4/5">
            <span class="text-[#E9762B]">Membangun Kasih</span> melalui Pengetahuan dan Perawatan
         </h1>
-        <p class="text-lg text-white">
+        <p class="text-lg text-white text-left lg:text-center">
             Temukan kiat praktis dan wawasan untuk merawat anak, lansia, dan penyandang disabilitas dengan <span class="text-[#E9762B]">penuh kasih</span>
         </p>
     </div>
