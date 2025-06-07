@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('media', function (Blueprint $table) {
             $table->id('id_media');
-            $table->foreignId('id_panti')->constrained('panti')->onDelete('cascade');
-            $table->foreignId('id_artikel')->constrained('artikel')->onDelete('cascade');
+            $table->foreignId('id_panti')->constrained('panti', 'id_panti')->onDelete('cascade');
+            $table->foreignId('id_artikel')->constrained('artikel', 'id_artikel')->onDelete('cascade');
             $table->unsignedBigInteger('id_story')->nullable();
             $table->string('url');
             $table->enum('type', ['gambar', 'video']);

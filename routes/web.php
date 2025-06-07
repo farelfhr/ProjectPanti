@@ -6,6 +6,8 @@ use App\Http\Controllers\PantiController;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ArtikelController as AdminArtikelController;
 
 Route::get('/', function () {
     return view('beranda');
@@ -190,5 +192,12 @@ Route::get('/panti/{panti}', [PantiController::class, 'show'])->name('panti.show
 Route::post('/kontak', [KontakController::class, 'store'])->name('kontak.store');
 Route::view('/kerjasama', 'kerjasama')->name('kerjasama');
 Route::view('/tentang', 'tentang')->name('tentang');
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Rute untuk manajemen artikel oleh admin
+    Route::resource('artikel', AdminArtikelController::class);
+});
 
 require __DIR__ . '/auth.php';

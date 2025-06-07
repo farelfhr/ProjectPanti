@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('judul');
             $table->text('konten');
             $table->date('publish_date');
-            $table->foreignId('id_penulis')->constrained('users')->onDelete('cascade');
-            $table->foreignId('id_kategori')->constrained('kategori')->onDelete('cascade');
+            $table->foreignId('id_penulis')->constrained('users', 'id')->onDelete('cascade');
+            $table->foreignId('id_kategori')->constrained('kategori', 'id_kategori')->onDelete('cascade');
             $table->timestamps();
         });
     }
