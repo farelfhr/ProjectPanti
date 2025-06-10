@@ -7,7 +7,13 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\DashboardController;
+
 use App\Http\Controllers\Admin\ArtikelController as AdminArtikelController;
+use App\Http\Controllers\Admin\PantiController as AdminPantiController;
+use App\Http\Controllers\Admin\KategoriController as AdminKategoriController;
+use App\Http\Controllers\Admin\KebutuhanController as AdminKebutuhanController;
+use App\Http\Controllers\Admin\KontakController as AdminKontakController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 
 Route::get('/', function () {
     return view('beranda');
@@ -198,6 +204,21 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Rute untuk manajemen artikel oleh admin
     Route::resource('artikel', AdminArtikelController::class);
+
+    //Panti
+    Route::resource('panti', AdminPantiController::class);
+
+    //Kategori
+    Route::resource('kategori', AdminKategoriController::class);
+
+    //Kebutuhan
+    Route::resource('kebutuhan', AdminKebutuhanController::class);
+
+    //Kontak
+    Route::resource('kontak', AdminKontakController::class);
+
+    //User
+    Route::resource('users', AdminUserController::class);
 });
 
 require __DIR__ . '/auth.php';

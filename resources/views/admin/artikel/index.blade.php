@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="bg-white p-8 rounded-lg shadow-lg">
-        <a href="{{ route('admin.artikel.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">
+        <a href="{{ route('admin.artikel.create') }}" class="bg-brand-green hover:bg-brand-green-dark text-white font-bold py-2 px-4 rounded mb-4 inline-block">
             Tambah Artikel Baru
         </a>
         <table class="min-w-full bg-white">
