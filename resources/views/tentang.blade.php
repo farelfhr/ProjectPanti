@@ -39,7 +39,7 @@
 </div>
 
 <!-- Section Partner TitikKebaikan -->
-<div class="w-1/2 max-w-6xl mx-auto mt-20 flex flex-col items-center px-4 pt-36 md:px-0">
+<div class=" max-w-6xl mx-auto mt-20 flex flex-col items-center px-4 pt-36 md:px-0">
     <!-- Logo TitikKebaikan -->
     <div class="mb-4 flex justify-center">
         <span class="inline-block bg-[#41644A] rounded-full p-4">

@@ -44,7 +44,7 @@
         <div class="hidden sm:flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold">Browse by Categories</h1>
             <div class="relative">
-                <input type="text" placeholder="Cari Berita/Artikel" class="pl-10 pr-4 py-2 border-[#41644A] rounded-full focus:outline-none focus:ring-2 focus:ring-[#E9762B]">
+                <input type="text" placeholder="Cari Berita/Artikel" class="pl-10 pr-4 py-2 border-[#41644A] rounded-full focus:outline-none focus:border-none focus:ring-2 focus:ring-[#E9762B]">
                 <svg class="w-5 h-5 text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
@@ -110,7 +110,7 @@
             <label class="text-sm font-semibold text-[#41644A] uppercase tracking-wider">Lokasi</label>
             <select class="px-4 py-3 border-2 border-[#41644A]/20 rounded-xl bg-white text-[#0D4715] transition-all duration-300 focus:outline-none focus:border-[#41644A] focus:ring-4 focus:ring-[#41644A]/10" id="locationFilter">
                 <option value="all">Semua Lokasi</option>
-                <option value="jakarta">Jakarta</option>
+                <option value="malang">YUEM</option>
                 <option value="surabaya">Surabaya</option>
                 <option value="bandung">Bandung</option>
                 <option value="yogyakarta">Yogyakarta</option>
@@ -157,54 +157,54 @@
   </div>
 </div>
 
-<div class="pt-16 pb-40 px-4 mx-auto rounded-t-[150px] bg-gradient-to-b from-[#2c4332] to-[#0e1811]">
-    <div class="text-center py-8 px-12 mb-16">
-        <h1 class="text-5xl xl:text-6xl text-white mb-8 text-left lg:text-center lg:mx-auto font-bold lg:w-4/5">
+<div class="pt-16 pb-40 px-6 mx-auto rounded-t-[100px] lg:rounded-t-[150px] bg-gradient-to-b from-[#2c4332] to-[#0e1811]">
+    <div class="text-center py-8 mb-8 lg:mb-16">
+        <h1 class="text-4xl xl:text-6xl text-white mb-8 text-left lg:text-center lg:mx-auto font-bold lg:w-4/5">
            <span class="text-[#E9762B]">Membangun Kasih</span> melalui Pengetahuan dan Perawatan
         </h1>
-        <p class="text-lg text-white text-left lg:text-center">
+        <p class="text-base lg:text-lg text-white text-left lg:text-center">
             Temukan kiat praktis dan wawasan untuk merawat anak, lansia, dan penyandang disabilitas dengan <span class="text-[#E9762B]">penuh kasih</span>
         </p>
     </div>
     
-   <div class="relative swiper-container max-w-full overflow-x-hidden px-5">
+   <div class="relative swiper-container max-w-full overflow-x-hidden px-4">
         <div class="swiper-wrapper">
-            <div class="swiper-slide px-16">
+            <div class="swiper-slide px-10">
                 <div class="rounded-lg overflow-hidden shadow-lg">
                     <div class="relative pb-[56.25%]">
                         <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/VkBnNxneA_A?si=rmcYUBbT2CCbh9BV" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
-            <div class="swiper-slide px-16">
+            <div class="swiper-slide px-10">
                 <div class="rounded-lg overflow-hidden shadow-lg">
                     <div class="relative pb-[56.25%]">
                         <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/rVqR9num8Js?si=rRgSRidPcNzGmy3A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
-            <div class="swiper-slide px-16">
+            <div class="swiper-slide px-10">
                 <div class="rounded-lg overflow-hidden shadow-lg">
                     <div class="relative pb-[56.25%]">
                         <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/-nzRB7TrCUc?si=oVP6U0gnF90RoK6O" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
-            <div class="swiper-slide px-16">
+            <div class="swiper-slide px-10">
                 <div class="rounded-lg overflow-hidden shadow-lg">
                     <div class="relative pb-[56.25%]">
                         <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/yxR-R4aLmt4?si=WjHMBp9tanqyyqSk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
-            <div class="swiper-slide px-16">
+            <div class="swiper-slide px-10">
                 <div class="rounded-lg overflow-hidden shadow-lg">
                     <div class="relative pb-[56.25%]">
                         <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/CWeURo9iA3g?si=XvBdmWTtA4BXQJg8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
-            <div class="swiper-slide px-16">
+            <div class="swiper-slide px-10">
                 <div class="rounded-lg overflow-hidden shadow-lg">
                     <div class="relative pb-[56.25%]">
                         <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/RDeTdXMOXmI?si=8PPV1KgBpee_XfRf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

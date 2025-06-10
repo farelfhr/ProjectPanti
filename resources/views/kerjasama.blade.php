@@ -1,25 +1,25 @@
 @extends('layouts.app')
 @section('content')
-<div class="relative max-h-screen max-w-full mx-auto -my-32">
-    <img class="w-full max-h-screen object-cover" src="/images/PantiStock/panti-asuhan.jpg" alt="Kerja Sama Kami">
+<div class="relative min-h-screen lg:h-[50vh] max-w-full mx-auto -my-32">
+    <img class="w-full min-h-screen lg:h-[50vh] object-cover" src="/images/PantiStock/panti-asuhan.jpg" alt="Kerja Sama Kami">
     <div class="absolute inset-0 bg-gradient-to-tr from-[#151e17] to-transparent">
-        <div class="flex flex-col gap-16 max-w-7xl mx-auto pt-[240px] py-48">
-            <h1 class="text-2xl lg:text-6xl text-left lg:text-center text-white font-bold">Wujudkan <span class="text-[#E9762B]">Harapan</span> Bersama Anak-Anak Panti Asuhan Malang</h1>
+        <div class="flex flex-col gap-16 max-w-7xl mx-auto pt-[240px] px-6 py-48">
+            <h1 class="text-2xl sm:text-4xl lg:text-6xl text-left lg:text-center text-white font-bold">Wujudkan <span class="text-[#E9762B]">Harapan</span> Bersama Anak-Anak Panti Asuhan Malang</h1>
             
-            <div class="mx-auto w-fit text-2xl text-white font-bold p-4 bg-[#6da67b]/50 border-2 border-[#41644A] rounded-full">
+            <div class="lg:mx-auto w-fit text-sm sm:text-xl lg:text-2xl text-center text-white font-bold p-2 sm:p-4 bg-[#6da67b]/50 border-2 border-[#41644A] rounded-full">
                 <a href="/kerjasama#jenis-kerja-sama">Pelajari Lebih Lanjut</a>
             </div>
         </div>
     </div>
 </div>
 
-<div id="jenis-kerja-sama" class="max-w-7xl min-h-screen mx-auto py-16 mt-32">
-    <div class="py-16 mx-auto flex flex-col gap-4">
-        <h1 class="text-5xl text-center font-bold">Wujudkan Harapan Bersama Anak-Anak Panti Malang</h1>
-        <p class="text-2xl text-center">Pelajari Cara dan Jenis Kolaborasi Bersama Kami</p>
+<div id="jenis-kerja-sama" class="max-w-7xl min-h-screen mx-auto px-6 py-16 mt-32">
+    <div class="pb-16 mx-auto flex flex-col gap-6">
+        <h1 class="text-4xl lg:text-5xl text-left lg:text-center font-bold">Wujudkan Harapan Bersama Anak-Anak Panti Malang</h1>
+        <p class="text-xl lg:text-2xl text-left lg:text-center">Pelajari Cara dan Jenis Kolaborasi Bersama Kami</p>
     </div>
 
-    <div class="max-w-4xl mx-auto grid grid-cols-2 items-center gap-6">
+    <div class="max-w-4xl mx-auto grid lg:grid-cols-2 items-center gap-6">
         <div class="bg-white p-6 rounded-lg border shadow-lg">
             <div class="flex flex-col gap-4 text-center">
                 <h1 class="text-2xl font-bold">Komunitas</h1>
@@ -50,8 +50,8 @@
     </div>
 </div>
 
-<div class="max-w-6xl mx-auto min-h-screen py-8 px-4">
-    <h1 class="text-6xl text-center font-bold mb-16">Jadwal Kegiatan</h1>
+<div class="max-w-6xl mx-auto min-h-screen py-8 px-6">
+    <h1 class="text-4xl lg:text-6xl text-left lg:text-center font-bold mb-16">Jadwal Kegiatan</h1>
 
     <p class="text-xl font-bold mb-2 mt-8">Rabu, 11 Juni 2025</p>
     <div class="bg-[#f1f0e9] border rounded-lg shadow-md p-4 mb-4 cursor-pointer hover:bg-white hover:shadow-xl transition-all duration-300 event-card" data-modal="modal1">
@@ -408,24 +408,24 @@
     </div>
 </div>
 
-<div class="max-w-6xl mx-auto py-16">
-    <div class="flex justify-center gap-12 py-8">
-        <div class="flex w-[600px] flex-col gap-4 font-bold">
-            <h1 class="text-6xl text-[#41644A]">Hubungi Kami</h1>
-            <p class="text-xl">Mari Berkolaborasi dan Wujudkan Perubahan Bersama</p>
-            <p class="text-xl flex gap-2 items-center">
+<div class="max-w-6xl mx-auto px-6 py-16">
+    <div class="flex flex-col lg:flex-row justify-center gap-8 sm:gap-12 py-8">
+        <div class="flex w-full lg:w-[600px] flex-col gap-4 sm:gap-6 font-bold">
+            <h1 class="text-5xl lg:text-6xl text-[#41644A]">Hubungi Kami</h1>
+            <p class="text-lg lg:text-xl">Mari Berkolaborasi dan Wujudkan Perubahan Bersama</p>
+            <p class="text-lg lg:text-xl flex gap-2 items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
                 </svg>
                 titikkebaikan@gmail.com
             </p>
-            <p class="text-xl flex gap-2 items-center">
+            <p class="text-lg lg:text-xl flex gap-2 items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
                 </svg>
                 +62 852-2615-8143
             </p>
-            <p class="text-xl flex gap-2 align-top">
+            <p class="text-lg lg:text-xl flex gap-2 align-top">
                 <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
@@ -461,80 +461,80 @@
                     <label class="block text-lg font-bold text-gray-700">Pesan</label>
                     <textarea placeholder="Tulis Pesan Kepada Kami" class="mt-1 p-2 w-full bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-none focus:ring-1 focus:ring-[#E9762B] h-24"></textarea>
                 </div>
-                <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded-md">Kirim Pesan</button>
+                <button type="submit" class="w-full bg-[#E9762B] hover:bg-[#E9762B]/90 text-white font-bold py-2 rounded-md">Kirim Pesan</button>
             </form>
         </div>
     </div>
 </div>
 
-<div class="max-w-7xl mx-auto py-16 px-4">
-    <div class="max-w-4xl mx-auto text-center flex flex-col gap-4 justify-center">
-        <svg class="mx-auto w-16 h-16 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+<div class="max-w-7xl mx-auto py-16 px-6">
+    <div class="max-w-4xl mx-auto text-left lg:text-center flex flex-col gap-4">
+        <svg class="lg:mx-auto w-16 h-16 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
             <path d="M18 0H2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h3.546l3.2 3.659a1 1 0 0 0 1.506 0L13.454 14H18a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-8 10H5a1 1 0 0 1 0-2h5a1 1 0 1 1 0 2Zm5-4H5a1 1 0 0 1 0-2h10a1 1 0 1 1 0 2Z"/>
         </svg>
-        <h1 class="text-6xl font-bold">Punya Pertanyaan?</h1>
-        <h1 class="text-6xl font-bold">Kami Punya Jawabannya</h1>
-        <p class="text-xl mt-4 w-4/5 mx-auto">Temukan jawaban atas pertanyaan yang sering diajukan dan dapatkan informasi untuk membantu anda berkolaborasi bersama kami.</p>
+        <h1 class="text-4xl lg:text-6xl font-bold">Punya Pertanyaan?</h1>
+        <h1 class="text-4xl lg:text-6xl font-bold">Kami Punya Jawabannya</h1>
+        <p class="text-base lg:text-xl mt-4 w-4/5 lg:mx-auto">Temukan jawaban atas pertanyaan yang sering diajukan dan dapatkan informasi untuk membantu anda berkolaborasi bersama kami.</p>
     </div>
 
-    <div class="max-w-5xl mx-auto py-8 px-4">
+    <div class="max-w-5xl mx-auto py-8">
         <div class="space-y-4">
             <details class="bg-white border rounded-lg shadow-sm">
-                <summary class="flex justify-between items-center p-4 cursor-pointer font-medium text-xl">
+                <summary class="flex justify-between items-center p-4 cursor-pointer font-medium text-base lg:text-xl">
                     Apa itu TitikKebaikan dan bagaimana mereka membantu panti asuhan?
                     <svg class="w-5 h-5 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </summary>
-                <div class="p-4 text-lg text-gray-600 ">
+                <div class="p-4 lg:text-lg text-gray-600 ">
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus aperiam enim, illum suscipit labore tempora facere, blanditiis saepe quaerat temporibus pariatur rem. Molestias, aut! Ratione accusamus quaerat praesentium facilis optio!</p>
                 </div>
             </details>
 
             <details class="bg-white border rounded-lg shadow-sm">
-                <summary class="flex justify-between items-center p-4 cursor-pointer font-medium text-xl">
+                <summary class="flex justify-between items-center p-4 cursor-pointer font-medium text-base lg:text-xl">
                     Siapa member paling ganteng?
                     <svg class="w-5 h-5 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </summary>
-                <div class="p-4 text-lg text-gray-600 ">
+                <div class="p-4 lg:text-lg text-gray-600 ">
                     <p>Ferdi</p>
                 </div>
             </details>
 
             <details class="bg-white border rounded-lg shadow-sm">
-                <summary class="flex justify-between items-center p-4 cursor-pointer font-medium text-xl">
+                <summary class="flex justify-between items-center p-4 cursor-pointer font-medium text-base lg:text-xl">
                    Bagaimana cara saya bisa mendukung panti asuhan di Malang?
                     <svg class="w-5 h-5 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </summary>
-                <div class="p-4 text-lg text-gray-600 ">
+                <div class="p-4 lg:text-lg text-gray-600 ">
                     <p>Ada banyak cara untuk berkontribusi! Anda bisa menjadi donatur, relawan, atau mitra dalam program CSR. Komunitas dapat mengadakan acara amal, perusahaan dapat mendukung melalui beasiswa atau donasi, dan individu bisa menjadi mentor atau pengajar. Lihat peluang di [Partnership Hub] atau hubungi kami untuk mendiskusikan ide Anda!</p>
                 </div>
             </details>
 
             <details class="bg-white border rounded-lg shadow-sm">
-                <summary class="flex justify-between items-center p-4 cursor-pointer font-medium text-xl">
+                <summary class="flex justify-between items-center p-4 cursor-pointer font-medium text-base lg:text-xl">
                     Apakah saya bisa menjadi relawan di panti asuhan?
                     <svg class="w-5 h-5 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </summary>
-                <div class="p-4 text-lg text-gray-600 ">
+                <div class="p-4 lg:text-lg text-gray-600 ">
                     <p>Tentu saja! Kami menyambut relawan untuk mengajar, menjadi mentor, atau membantu kegiatan harian. Daftar melalui [Volunteer Matching] atau hubungi kami untuk mencocokkan keterampilan Anda dengan kebutuhan panti.</p>
                 </div>
             </details>
             
             <details class="bg-white border rounded-lg shadow-sm">
-                <summary class="flex justify-between items-center p-4 cursor-pointer font-medium text-xl">
+                <summary class="flex justify-between items-center p-4 cursor-pointer font-medium text-base lg:text-xl">
                     Apakah donasi saya akan digunakan secara transparan?
                     <svg class="w-5 h-5 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </summary>
-                <div class="p-4 text-lg text-gray-600 ">
+                <div class="p-4 lg:text-lg text-gray-600 ">
                     <p>Kami berkommetmen untuk transparansi. Setiap donasi digunakan untuk kebutuhan anak-anak, seperti pendidikan, kesehatan, dan fasilitas panti. Kami menyediakan laporan tahunan untuk mitra dan donatur. Hubungi kami untuk informasi lebih lanjut!</p>
                 </div>
             </details>

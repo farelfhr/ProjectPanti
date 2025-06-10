@@ -3,9 +3,9 @@ export const orphanageData = [
     {
         id: 1,
         name: "Panti Asuhan Harapan Bangsa",
-        lat: -6.2088,
-        lng: 106.8456,
-        city: "jakarta",
+        lat: -7.961445,
+        lng: 112.617762,
+        city: "malang",
         children: 85,
         programs: ["pendidikan", "kesehatan"],
         established: 2018,
