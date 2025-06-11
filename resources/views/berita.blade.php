@@ -9,26 +9,26 @@
 <div class="max-w-7xl mx-auto py-6 lg:py-16 px-4 flex flex-col gap-4">
     <h1 class="font-bold text-2xl">Berita dan Artikel Terkini</h1>
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <a class="col-span-8 flex flex-col gap-5" href="">
+        <a class="lg:col-span-8 flex flex-col gap-5" href="">
             <div class="flex flex-col p-6 h-full bg-[#f1f0e9] rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
                 <img class="rounded-lg shadow-md w-full h-full object-cover" src="images/PantiStock/berita-terkini.jpg" alt="Berita Terkini">
                 <h3 class="text-2xl font-bold my-5">Judul Berita/Artikel</h3>
                 <p class="mb-2 text-sm">11 Juni, 2025 | <span class="text-[#41644A] font-bold">Nama Penulis</span></p>
-                <p class="mb-4 text-sm">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veniam minus aperiam vero optio. Quasi hic voluptates dolor ratione eveniet, iure nisi earum. Adipisci, aliquid omnis. Minima esse id fuga aut?</p>
+                <p class="mb-4 text-sm hidden lg:inline">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veniam minus aperiam vero optio. Quasi hic voluptates dolor ratione eveniet, iure nisi earum. Adipisci, aliquid omnis. Minima esse id fuga aut?</p>
                 <p class="text-[#E9762B] font-bold">Baca Selengkapnya</p>
             </div>
         </a>
 
-        <div class="col-span-4 w-full flex flex-col md:flex-row lg:flex-col gap-5">
-            <a class="p-4 h-full bg-[#f1f0e9] rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden" href="">
-                <img class="rounded-lg shadow-md w-full h-64 object-cover" src="images/PantiStock/berita-populer-1.jpg" alt="Berita Populer">
+        <div class="lg:col-span-4 w-full flex flex-col md:flex-row lg:flex-col gap-5">
+            <a class="flex flex-col p-6 md:p-4 h-full bg-[#f1f0e9] rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden" href="">
+                <img class="rounded-lg shadow-md w-full h-full lg:h-64 object-cover" src="images/PantiStock/berita-populer-1.jpg" alt="Berita Populer">
                 <h3 class="text-xl font-bold mt-4 mb-4">Judul Berita/Artikel</h3>
                 <p class="text-xs mb-2">11 Juni, 2025 | <span class="text-[#41644A] font-bold">Nama Penulis</span></p>
                 <p class="flex gap-1 text-[#E9762B] font-bold text-xs">Baca Selengkapnya</p>
             </a>
 
-            <a class="p-4 h-full bg-[#f1f0e9] rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden" href="">
-                <img class="rounded-lg shadow-md w-full h-64 object-cover" src="images/PantiStock/berita-populer-2.jpg" alt="Berita Populer">
+            <a class="flex flex-col p-6 md:p-4 h-full bg-[#f1f0e9] rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden" href="">
+                <img class="rounded-lg shadow-md w-full h-full lg:h-64 object-cover" src="images/PantiStock/berita-populer-2.jpg" alt="Berita Populer">
                 <h3 class="text-xl font-bold mt-4 mb-4">Judul Berita/Artikel</h3>
                 <p class="text-xs mb-2">11 Juni, 2025 | <span class="text-[#41644A] font-bold">Nama Penulis</span></p>
                 <p class="flex gap-1 text-[#E9762B] font-bold text-xs">Baca Selengkapnya</p>
@@ -36,7 +36,7 @@
         </div>
     </div> 
 
-    <div>
+    <div class="hidden md:inline">
         <h1 class="text-4xl lg:text-6xl font-bold py-12 flex justify-start lg:justify-center">Semua Berita dan Artikel</h1>
         <div class="hidden sm:flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold">Browse by Categories</h1>
@@ -81,16 +81,16 @@
 </div>
 
 <div>
-  <div class="max-w-7xl mx-auto mb-32 py-16 px-4 rounded-3xl backdrop-blur-lg">
+  <div class="max-w-7xl mx-auto mb-12 py-16 px-4 rounded-3xl backdrop-blur-lg">
     <div class="text-center mb-12">
-        <p class="text-2xl lg:text-4xl text-left lg:text-center mx-auto font-bold leading-relaxed">
+        <p class="text-3xl lg:text-4xl text-left lg:text-center mx-auto font-bold leading-relaxed">
             Jelajahi sebaran lokasi panti asuhan kami dan <span class="text-[#E9762B]">dampak nyata</span> yang telah kami berikan kepada <span class="text-[#E9762B]">anak-anak</span> di berbagai wilayah Indonesia
         </p>
     </div>
       
     <div class="bg-[#41644A] rounded-2xl p-6">
         <div class="grid grid-cols-1 md:grid-cols-4 mb-4 gap-6 py-6">
-            <div class="col-span-2 flex items-center gap-2 pl-8">
+            <div class="md:col-span-2 flex justify-center items-center md:justify-start gap-2 md:pl-8">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-white size-9">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z" />
                 </svg>
@@ -121,12 +121,12 @@
             </div>
         </div>
             
-        <div class="grid grid-cols-4 gap-8 mb-12">
-            <div class="col-span-3 relative overflow-hidden rounded-2xl">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-12">
+            <div class="lg:col-span-3 relative overflow-hidden rounded-2xl">
                 <div id="map" class="h-96 lg:h-full w-full object-cover"></div>
             </div>
 
-            <div class="flex flex-col gap-6 justify-between">
+            <div class="grid grid-cols-2 lg:grid-cols-1 gap-6 justify-between">
                 <div class="stat-card-gradient p-6 bg-white rounded-2xl border border-[#41644A]/10 w-full">
                     <div class="flex gap-4 items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-9">
