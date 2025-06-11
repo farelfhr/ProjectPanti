@@ -1,14 +1,14 @@
 import { orphanageData } from './orphange-data.js';
 
 // Inisialisasi peta
-let map = L.map("map").setView([-2.5489, 118.0149], 5);
+let map = L.map("map").setView([-7.966724, 112.632532], 13);
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "© OpenStreetMap contributors",
 }).addTo(map);
 
 let markers = [];
-let currentYear = 2024;
+let currentYear = 2025;
 let timelineChart;
 let isPlaying = false;
 

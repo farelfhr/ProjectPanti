@@ -110,11 +110,11 @@
             <label class="text-sm font-semibold text-[#41644A] uppercase tracking-wider">Lokasi</label>
             <select class="px-4 py-3 border-2 border-[#41644A]/20 rounded-xl bg-white text-[#0D4715] transition-all duration-300 focus:outline-none focus:border-[#41644A] focus:ring-4 focus:ring-[#41644A]/10" id="locationFilter">
                 <option value="all">Semua Lokasi</option>
-                <option value="malang">YUEM</option>
-                <option value="surabaya">Surabaya</option>
-                <option value="bandung">Bandung</option>
-                <option value="yogyakarta">Yogyakarta</option>
-                <option value="medan">Medan</option>
+                <option value="klojen">Kecamatan Klojen</option>
+                <option value="lowokwaru">Kecamatan Lowokwaru</option>
+                <option value="sukun">Kecamatan Sukun</option>
+                <option value="blimbing">Kecamatan Blimbing</option>
+                <option value="kedungkandang">Kecamatan Kedungkandang</option>
             </select>
         </div>
         
