@@ -6,10 +6,10 @@
     <h1 class="text-xl lg:text-2xl text-left lg:text-center font-bold mt-5">Jelajahi kisah dampak sosial, data visual, dan panduan peduli dari dunia panti asuhan.</h1>
 </div>
 
-<div class="max-w-7xl mx-auto py-6 lg:py-16 px-4 flex flex-col gap-10">
-    <div class="flex flex-col sm:flex-col lg:flex-row gap-5">
-        <a class="sm:w-full lg:w-2/3 flex flex-col gap-5" href="">
-            <h1 class="font-bold text-2xl">Berita Terkini</h1>
+<div class="max-w-7xl mx-auto py-6 lg:py-16 px-4 flex flex-col gap-4">
+    <h1 class="font-bold text-2xl">Berita dan Artikel Terkini</h1>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <a class="col-span-8 flex flex-col gap-5" href="">
             <div class="flex flex-col p-6 h-full bg-[#f1f0e9] rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
                 <img class="rounded-lg shadow-md w-full h-full object-cover" src="images/PantiStock/berita-terkini.jpg" alt="Berita Terkini">
                 <h3 class="text-2xl font-bold my-5">Judul Berita/Artikel</h3>
@@ -19,23 +19,20 @@
             </div>
         </a>
 
-        <div class="w-full lg:w-1/3 flex flex-col gap-5">
-            <h1 class="font-bold text-2xl">Berita Populer</h1>
-            <div class=" flex flex-col md:flex-row lg:flex-col gap-5">
-                <a class="p-4 h-full bg-[#f1f0e9] rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden" href="">
-                    <img class="rounded-lg shadow-md w-full h-64 object-cover" src="images/PantiStock/berita-populer-1.jpg" alt="Berita Populer">
-                    <h3 class="text-xl font-bold mt-4 mb-4">Judul Berita/Artikel</h3>
-                    <p class="text-xs mb-2">11 Juni, 2025 | <span class="text-[#41644A] font-bold">Nama Penulis</span></p>
-                    <p class="flex gap-1 text-[#E9762B] font-bold text-xs">Baca Selengkapnya</p>
-                </a>
+        <div class="col-span-4 w-full flex flex-col md:flex-row lg:flex-col gap-5">
+            <a class="p-4 h-full bg-[#f1f0e9] rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden" href="">
+                <img class="rounded-lg shadow-md w-full h-64 object-cover" src="images/PantiStock/berita-populer-1.jpg" alt="Berita Populer">
+                <h3 class="text-xl font-bold mt-4 mb-4">Judul Berita/Artikel</h3>
+                <p class="text-xs mb-2">11 Juni, 2025 | <span class="text-[#41644A] font-bold">Nama Penulis</span></p>
+                <p class="flex gap-1 text-[#E9762B] font-bold text-xs">Baca Selengkapnya</p>
+            </a>
 
-                <a class="p-4 h-full bg-[#f1f0e9] rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden" href="">
-                    <img class="rounded-lg shadow-md w-full h-64 object-cover" src="images/PantiStock/berita-populer-2.jpg" alt="Berita Populer">
-                    <h3 class="text-xl font-bold mt-4 mb-4">Judul Berita/Artikel</h3>
-                    <p class="text-xs mb-2">11 Juni, 2025 | <span class="text-[#41644A] font-bold">Nama Penulis</span></p>
-                    <p class="flex gap-1 text-[#E9762B] font-bold text-xs">Baca Selengkapnya</p>
-                </a>
-            </div>
+            <a class="p-4 h-full bg-[#f1f0e9] rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden" href="">
+                <img class="rounded-lg shadow-md w-full h-64 object-cover" src="images/PantiStock/berita-populer-2.jpg" alt="Berita Populer">
+                <h3 class="text-xl font-bold mt-4 mb-4">Judul Berita/Artikel</h3>
+                <p class="text-xs mb-2">11 Juni, 2025 | <span class="text-[#41644A] font-bold">Nama Penulis</span></p>
+                <p class="flex gap-1 text-[#E9762B] font-bold text-xs">Baca Selengkapnya</p>
+            </a>
         </div>
     </div> 
 
