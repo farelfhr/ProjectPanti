@@ -1,19 +1,30 @@
 @extends('layouts.app')
 @section('content')
-<div class="relative min-h-screen lg:h-[50vh] max-w-full mx-auto -my-32">
-    <img class="w-full min-h-screen lg:h-[50vh] object-cover" src="/images/PantiStock/panti-asuhan.jpg" alt="Kerja Sama Kami">
-    <div class="absolute inset-0 bg-gradient-to-tr from-[#151e17] to-transparent">
-        <div class="flex flex-col gap-16 max-w-7xl mx-auto pt-[240px] px-6 py-48">
-            <h1 class="text-2xl sm:text-4xl lg:text-6xl text-left lg:text-center text-white font-bold">Wujudkan <span class="text-[#E9762B]">Harapan</span> Bersama Anak-Anak Panti Asuhan Malang</h1>
-            
-            <div class="lg:mx-auto w-fit text-sm sm:text-xl lg:text-2xl text-center text-white font-bold p-2 sm:p-4 bg-[#6da67b]/50 border-2 border-[#41644A] rounded-full">
-                <a href="/kerjasama#jenis-kerja-sama">Pelajari Lebih Lanjut</a>
-            </div>
-        </div>
+<div class="relative w-full min-h-[60vh] sm:min-h-[70vh] lg:h-[95vh] max-w-full mx-auto -my-32">
+  <img
+    class="w-full h-full min-h-[60vh] sm:min-h-[70vh] lg:h-[95vh] object-cover"
+    src="/images/PantiStock/panti-asuhan.jpg"
+    alt="Kerja Sama Kami"
+    loading="lazy"
+  />
+  <div class="absolute inset-0 bg-gradient-to-tr from-[#151e17]/80 to-transparent flex items-center justify-center">
+    <div class="flex flex-col gap-6 sm:gap-8 lg:gap-12 max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20 lg:py-24 text-left lg:text-center">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+        Wujudkan <span class="text-[#E9762B]">Harapan</span> Bersama Anak-Anak Panti Asuhan Malang
+      </h1>
+      <div class="lg:mx-auto w-fit">
+        <a
+          href="/kerjasama#jenis-kerja-sama"
+          class="inline-block text-base sm:text-lg lg:text-xl font-semibold text-white bg-[#6da67b]/70 hover:bg-[#6da67b]/90 border-2 border-[#41644A] rounded-full px-6 py-2 sm:px-8 sm:py-3 transition-colors duration-300"
+        >
+          Pelajari Lebih Lanjut
+        </a>
+      </div>
     </div>
+  </div>
 </div>
 
-<div id="jenis-kerja-sama" class="max-w-7xl min-h-screen mx-auto px-6 py-16 mt-32">
+<div id="jenis-kerja-sama" class="max-w-7xl min-h-screen mx-auto px-6 py-24 mt-32">
     <div class="pb-16 mx-auto flex flex-col gap-6">
         <h1 class="text-4xl lg:text-5xl text-left lg:text-center font-bold">Wujudkan Harapan Bersama Anak-Anak Panti Malang</h1>
         <p class="text-xl lg:text-2xl text-left lg:text-center">Pelajari Cara dan Jenis Kolaborasi Bersama Kami</p>
@@ -51,7 +62,7 @@
 </div>
 
 <div class="max-w-6xl mx-auto min-h-screen py-8 px-6">
-    <h1 class="text-4xl lg:text-6xl text-left lg:text-center font-bold mb-16">Jadwal Kegiatan</h1>
+    <h1 class="text-4xl lg:text-6xl text-left lg:text-center font-bold mb-4 lg:mb-16">Jadwal Kegiatan</h1>
 
     <p class="text-xl font-bold mb-2 mt-8">Rabu, 11 Juni 2025</p>
     <div class="bg-[#f1f0e9] border rounded-lg shadow-md p-4 mb-4 cursor-pointer hover:bg-white hover:shadow-xl transition-all duration-300 event-card" data-modal="modal1">

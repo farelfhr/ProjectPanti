@@ -7,11 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    const modals = document.querySelectorAll('[id^="modal"]');
-    modals.forEach((modal) => {
-        modal.classList.add("hidden");
-    });
-
     const closeButtons = document.querySelectorAll('[onclick^="closeModal"]');
     closeButtons.forEach((button) => {
         button.addEventListener("click", () => {
@@ -42,6 +37,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+const modals = document.querySelectorAll('[id^="modal"]');
+    modals.forEach((modal) => {
+        modal.classList.add("hidden");
+    });
 
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
