@@ -37,12 +37,14 @@
         <h1 class="text-4xl lg:text-6xl font-bold py-12 flex justify-start lg:justify-center">Semua Berita dan Artikel</h1>
         <div class="hidden sm:flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold">Browse by Categories</h1>
-            <div class="relative">
-                <input type="text" placeholder="Cari Berita/Artikel" class="pl-10 pr-4 py-2 border-[#41644A] rounded-full focus:outline-none focus:border-none focus:ring-2 focus:ring-[#E9762B]">
-                <svg class="w-5 h-5 text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-            </div>
+            <form action="#artikel" id="search-form">
+                <div class="relative">
+                    <input type="search" id="search" name="search" placeholder="Cari Berita/Artikel" class="pl-10 pr-4 py-2 border-[#41644A] rounded-full focus:outline-none focus:border-none focus:ring-2 focus:ring-[#E9762B]">
+                    <svg class="w-5 h-5 text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+            </form>
         </div>
 
         <div id="kategori" class="flex flex-wrap gap-2 mb-6">
@@ -273,6 +275,44 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+// Search functionality
+    const searchForm = document.getElementById('search-form');
+    const searchInput = document.getElementById('search');
+
+    searchInput.addEventListener('input', function(e) {
+        e.preventDefault();
+        const query = searchInput.value.trim();
+
+        // Show loading state
+        artikelContainer.innerHTML = '<div class="col-span-3 flex justify-center items-center py-8"><div class="text-[#41644A] font-bold">Memuat artikel...</div></div>';
+
+        // Fetch articles based on search query
+        const url = `/api/artikel/search?search=${encodeURIComponent(query)}`;
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Search response data:', data);
+                updateArtikelList(data.data);
+                updatePagination(data);
+            })
+            .catch(error => {
+                console.error('Search error:', error);
+                artikelContainer.innerHTML = `
+                    <div class="col-span-3 text-center py-8">
+                        <p class="text-red-500 font-bold">Terjadi kesalahan saat memuat artikel</p>
+                        <p class="text-sm text-gray-600">${error.message}</p>
+                    </div>
+                `;
+                paginationContainer.innerHTML = '';
+            });
+    });
 </script>
 
 @endsection

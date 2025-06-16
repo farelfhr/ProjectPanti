@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/berita', [ArtikelController::class, 'index'])->name('berita.index');
 Route::get('/berita/{artikel}', [ArtikelController::class, 'show'])->name('berita.show');
 Route::get('/kategori/{deskripsi}', [ArtikelController::class, 'kategori']);
+Route::get('/artikel/search', [ArtikelController::class, 'search']);
 
 // API Routes untuk kategori - perbaikan di sini
 Route::get('/api/kategori/semua', [ArtikelController::class, 'getAllArtikel']);

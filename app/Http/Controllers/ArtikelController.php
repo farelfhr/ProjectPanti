@@ -15,7 +15,13 @@ class ArtikelController extends Controller
     public function index()
     {
         $berita_terkini = Artikel::latest()->with('author')->take(3)->get();
-        $berita_lain = Artikel::latest()->with('author')->paginate(6);
+        $query = Artikel::latest()->with('author');
+
+        if (request('search')) {
+            $query->where('judul', 'like', '%' . request('search') . '%');
+        }
+
+        $berita_lain = $query->paginate(6);
         $kategori = Kategori::all();
 
         return view('berita', compact('berita_terkini', 'berita_lain', 'kategori'));
@@ -102,6 +108,31 @@ class ArtikelController extends Controller
             return response()->json([
                 'error' => 'Terjadi kesalahan server',
                 'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            $query = $request->query('search', '');
+            Log::info("Search query: " . $query);
+
+            $artikel = Artikel::where('judul', 'like', '%' . $query . '%')
+                ->with('author')
+                ->latest()
+                ->paginate(6);
+
+            Log::info("Search results found: " . $artikel->count());
+
+            return response()->json($artikel);
+        } catch (\Exception $e) {
+            Log::error("Error in search: " . $e->getMessage());
+            return response()->json([
+                'error' => 'Terjadi kesalahan server',
+                'message' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile()
             ], 500);
         }
     }
