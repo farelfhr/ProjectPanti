@@ -37,6 +37,11 @@ Route::middleware('auth')->group(function () {
 Route::get('/berita', [ArtikelController::class, 'index'])->name('berita.index');
 Route::get('/berita/{artikel}', [ArtikelController::class, 'show'])->name('berita.show');
 Route::get('/kategori/{deskripsi}', [ArtikelController::class, 'kategori']);
+Route::get('/api/kategori/{deskripsi}', [ArtikelController::class, 'getArtikelByKategori']);
+Route::get('/api/kategori/semua', function () {
+    $artikel = \App\Models\Artikel::latest()->with('author')->paginate(6);
+    return response()->json($artikel);
+});
 
 Route::get('/daftar-panti', [DaftarPantiController::class, 'index'])->name('daftar-panti');
 Route::get('/panti/{id}', [PantiController::class, 'show'])->name('panti.show');

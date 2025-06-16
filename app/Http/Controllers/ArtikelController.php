@@ -14,32 +14,40 @@ class ArtikelController extends Controller
     public function index()
     {
         //
-        $artikel = Artikel::latest()->with(['kategori', 'author'])->paginate(9);
+        $berita_terkini = Artikel::latest()->take(3)->get();
+
+        $berita_lain = Artikel::latest()->paginate(6);
+
         $kategori = Kategori::all();
 
-        $beritaTerkini = Artikel::with('author') // pastikan relasi 'author' udah ada
-        ->latest('publish_date')
-        ->take(3)
-        ->get();
-
-        return view('berita', [
-            'berita' => $artikel,
-            'kategori' => $kategori
-        ], compact('beritaTerkini'));
+        return view('berita', compact('berita_terkini', 'berita_lain', 'kategori'));
     }
 
     public function kategori($deskripsi)
     {
+        $berita_terkini = Artikel::latest()->with('author')->take(3)->get();
+        $berita_lain = Artikel::latest()->paginate(6);
         $kategori = Kategori::where('deskripsi', $deskripsi)->firstOrFail();
-        $artikel = $kategori->artikel()->latest()->with(['kategori', 'author'])->paginate(9);
         $semuaKategori = Kategori::all();
 
         return view('berita', [
-            'berita' => $artikel,
+            'berita_terkini' => $berita_terkini,
+            'berita_lain' => $berita_lain,
             'kategori' => $semuaKategori,
             'kategoriAktif' => $kategori // kalau ingin highlight kategori yang sedang dipilih
         ]);
     }
+
+    public function getArtikelByKategori($deskripsi)
+    {
+        $kategori = Kategori::where('deskripsi', $deskripsi)->firstOrFail();
+        $artikel = Artikel::where('id_kategori', $kategori->id)
+            ->with('author')
+            ->latest()
+            ->paginate(6);
+        return response()->json($artikel);
+    }
+
 
     /**
      * Show the form for creating a new resource.
