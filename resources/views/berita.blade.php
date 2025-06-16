@@ -46,7 +46,7 @@
         </div>
 
         <div id="kategori" class="flex flex-wrap gap-2 mb-6">
-            <button data-kategori="all" class="kategori-btn px-4 py-2 font-bold rounded-full border border-[#41644A] hover:bg-[#E9762B] hover:text-white bg-[#E9762B] text-white">
+            <button data-kategori="semua" class="kategori-btn px-4 py-2 font-bold rounded-full border border-[#41644A] hover:bg-[#E9762B] hover:text-white bg-[#E9762B] text-white">
                 Semua Artikel
             </button>
             @foreach ($kategori as $item)
@@ -70,94 +70,209 @@
             @endforeach
         </div>
 
-        <div class="mt-8">
+        <div id="pagination-container" class="mt-8">
             {{ $berita_lain->links('vendor.pagination.custom') }}
         </div>
     </div>
 </div>
 
 <script>
-document.querySelectorAll('.kategori-btn').forEach(button => {
-    button.addEventListener('click', function () {
-        const kategori = this.dataset.kategori;
-        const container = document.getElementById('artikel-container');
-        const pagination = document.querySelector('.mt-8');
+document.addEventListener('DOMContentLoaded', function() {
+    const kategoriButtons = document.querySelectorAll('.kategori-btn');
+    const artikelContainer = document.getElementById('artikel-container');
+    const paginationContainer = document.getElementById('pagination-container');
 
-        // Reset active button styles
-        document.querySelectorAll('.kategori-btn').forEach(btn => {
-            btn.classList.remove('bg-[#E9762B]', 'text-white');
+    kategoriButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const kategori = this.dataset.kategori;
+
+            // Update button styles
+            kategoriButtons.forEach(btn => {
+                btn.classList.remove('bg-[#E9762B]', 'text-white');
+                btn.classList.add('hover:bg-[#E9762B]', 'hover:text-white');
+            });
+            this.classList.add('bg-[#E9762B]', 'text-white');
+            this.classList.remove('hover:bg-[#E9762B]', 'hover:text-white');
+
+            // Show loading state
+/*             artikelContainer.innerHTML = '<div class="col-span-3 flex justify-center items-center py-8"><div class="text-[#41644A] font-bold">Memuat artikel...</div></div>';
+ */
+            // Fetch articles
+            const url = `/api/kategori/${encodeURIComponent(kategori)}`;
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Response data:', data);
+
+                    // Handle paginated response
+                    let articles = [];
+                    if (data.data && Array.isArray(data.data)) {
+                        articles = data.data;
+                    } else if (Array.isArray(data)) {
+                        articles = data;
+                    } else {
+                        throw new Error('Format response tidak valid');
+                    }
+
+                    updateArtikelList(articles);
+                    updatePagination(data); // Tambahkan untuk memperbarui pagination
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    artikelContainer.innerHTML = `
+                        <div class="col-span-3 text-center py-8">
+                            <p class="text-red-500 font-bold">Terjadi kesalahan saat memuat artikel</p>
+                            <p class="text-sm text-gray-600">${error.message}</p>
+                        </div>
+                    `;
+                    paginationContainer.innerHTML = ''; // Kosongkan pagination jika error
+                });
         });
-        this.classList.add('bg-[#E9762B]', 'text-white');
+    });
 
-        // Hide pagination
-        if (pagination) {
-            pagination.style.display = 'none';
+    function updateArtikelList(articles) {
+        artikelContainer.innerHTML = '';
+
+        if (!articles || articles.length === 0) {
+            artikelContainer.innerHTML = '<div class="col-span-3 text-center py-8"><p class="text-gray-600">Tidak ada artikel dalam kategori ini.</p></div>';
+            return;
         }
 
-        // Fetch articles
-        const url = kategori === 'all' ? '/api/kategori/semua' : `/api/kategori/${encodeURIComponent(kategori)}`;
-        console.log('Fetching URL:', url);
-        fetch(url)
-            .then(response => {
-                console.log('Response status:', response.status);
-                if (!response.ok) {
-                    return response.text().then(text => {
-                        throw new Error(`HTTP ${response.status}: ${text}`);
+        articles.forEach(artikel => {
+            const authorName = artikel.author?.name || 'Unknown Author';
+            const publishDate = formatDate(artikel.publish_date);
+            const konten = artikel.konten ? artikel.konten.substring(0, 100) + '...' : '';
+            const gambar = artikel.gambar || '';
+
+            const articleHTML = `
+                <a href="/berita/${artikel.id_artikel}" class="flex flex-col gap-5 p-4 bg-[#f1f0e9] rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
+                    <img class="w-full h-64 rounded-lg shadow-md object-cover" src="${gambar}" alt="Artikel" onerror="this.src='/images/default-artikel.jpg'">
+                    <div>
+                        <p class="text-sm mb-4">
+                            <span class="text-[#41644A] font-bold">${authorName}</span> | ${publishDate}
+                        </p>
+                        <h3 class="text-xl font-bold mb-4">${artikel.judul}</h3>
+                        <p class="text-sm mb-4">${konten}</p>
+                        <p class="text-[#E9762B] font-bold">Baca Selengkapnya</p>
+                    </div>
+                </a>
+            `;
+            artikelContainer.insertAdjacentHTML('beforeend', articleHTML);
+        });
+    }
+
+    function updatePagination(data) {
+    paginationContainer.innerHTML = ''; // Kosongkan pagination sebelumnya
+    paginationContainer.style.display = 'block'; // Pastikan pagination terlihat
+
+    if (!data.links || !data.last_page || data.last_page <= 1) {
+        return; // Tidak ada pagination jika hanya 1 halaman
+    }
+
+    const currentPage = data.current_page;
+    const lastPage = data.last_page;
+
+    // Hitung rentang halaman (mirip dengan custom.blade.php)
+    let start = Math.max(1, currentPage - 2);
+    let end = Math.min(lastPage, currentPage + 2);
+
+    // Edge case: jika mendekati akhir
+    if (lastPage - currentPage < 2) {
+        start = Math.max(1, lastPage - 2);
+        end = lastPage;
+    }
+
+    // Buat HTML pagination
+    let paginationHTML = `
+        <div class="flex flex-wrap justify-center mt-8 gap-2 sm:space-x-2">
+            ${currentPage === 1 ? `
+                <span class="px-4 py-2 rounded-full font-bold border border-[#ccc] text-gray-400 cursor-default">&laquo;</span>
+            ` : `
+                <a href="#" class="px-4 py-2 rounded-full font-bold border border-[#41644A] hover:bg-[#E9762B] hover:text-white transition duration-300 ease-in-out transform hover:scale-105" data-page="${data.prev_page_url}">&laquo;</a>
+            `}
+
+            ${Array.from({ length: end - start + 1 }, (_, i) => start + i).map(i => `
+                ${i === currentPage ? `
+                    <span class="px-4 py-2 rounded-full font-bold border border-[#41644A] bg-[#E9762B] text-white">${i}</span>
+                ` : `
+                    <a href="#" class="px-4 py-2 rounded-full font-bold border border-[#41644A] hover:bg-[#E9762B] hover:text-white transition duration-300 ease-in-out transform hover:scale-105" data-page="${data.path + '?page=' + i}">${i}</a>
+                `}
+            `).join('')}
+
+            ${end < lastPage - 1 ? `
+                <span class="px-4 py-2">...</span>
+            ` : ''}
+
+            ${end < lastPage ? `
+                <a href="#" class="px-4 py-2 rounded-full font-bold border border-[#41644A] hover:bg-[#E9762B] hover:text-white transition duration-300 ease-in-out transform hover:scale-105" data-page="${data.path + '?page=' + lastPage}">${lastPage}</a>
+            ` : ''}
+
+            ${currentPage === lastPage ? `
+                <span class="px-4 py-2 rounded-full font-bold border border-[#ccc] text-gray-400 cursor-default">&raquo;</span>
+            ` : `
+                <a href="#" class="px-4 py-2 rounded-full font-bold border border-[#41644A] hover:bg-[#E9762B] hover:text-white transition duration-300 ease-in-out transform hover:scale-105" data-page="${data.next_page_url}">&raquo;</a>
+            `}
+        </div>
+    `;
+
+    paginationContainer.innerHTML = paginationHTML;
+
+    // Tambahkan event listener untuk tautan pagination
+    document.querySelectorAll('[data-page]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const url = this.getAttribute('data-page');
+            if (url) {
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        updateArtikelList(data.data);
+                        updatePagination(data);
+                        // Scroll ke bagian artikel
+                        document.getElementById('artikel').scrollIntoView({ behavior: 'smooth' });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching page:', error);
+                        artikelContainer.innerHTML = `
+                            <div class="col-span-3 text-center py-8">
+                                <p class="text-red-500 font-bold">Terjadi kesalahan saat memuat artikel</p>
+                                <p class="text-sm text-gray-600">${error.message}</p>
+                            </div>
+                        `;
                     });
                 }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Received data:', data); // Log the response to inspect its structure
-                updateArtikelList(data.data); // Use data.data for paginated response
-            })
-            .catch(error => {
-                console.error('Error fetching articles:', error.message);
-                container.innerHTML = '<p class="text-center col-span-3">Terjadi kesalahan saat memuat artikel: ' + error.message + '</p>';
             });
-    });
-});
-
-function updateArtikelList(articles) {
-    const container = document.getElementById('artikel-container');
-    container.innerHTML = ''; // Clear existing articles
-
-    if (!Array.isArray(articles) || articles.length === 0) {
-        container.innerHTML = '<p class="text-center col-span-3">Tidak ada artikel dalam kategori ini.</p>';
-        return;
+        });
     }
 
-    articles.forEach(artikel => {
-        const html = `
-            <a href="/berita/${artikel.id_artikel}" class="flex flex-col gap-5 p-4 bg-[#f1f0e9] rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
-                <img class="w-full h-64 rounded-lg shadow-md object-cover" src="${artikel.gambar}" alt="Artikel">
-                <div>
-                    <p class="text-sm mb-4"><span class="text-[#41644A] font-bold">${artikel.author?.name || 'Unknown Author'}</span> | ${formatDate(artikel.publish_date)}</p>
-                    <h3 class="text-xl font-bold mb-4">${artikel.judul}</h3>
-                    <p class="text-sm mb-4">${artikel.konten.substring(0, 100)}...</p>
-                    <p class="text-[#E9762B] font-bold">Baca Selengkapnya</p>
-                </div>
-            </a>`;
-        container.insertAdjacentHTML('beforeend', html);
-    });
-}
-
-function formatDate(date) {
-    try {
-        const d = new Date(date);
-        if (isNaN(d.getTime())) {
+    function formatDate(dateString) {
+        try {
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) {
+                return 'Tanggal tidak valid';
+            }
+            return date.toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        } catch (error) {
+            console.error('Error formatting date:', error);
             return 'Tanggal tidak valid';
         }
-        return d.toLocaleDateString('id-ID', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-        });
-    } catch (error) {
-        console.error('Error formatting date:', error);
-        return 'Tanggal tidak valid';
     }
-}
+});
 </script>
 
-@endsection 
+@endsection

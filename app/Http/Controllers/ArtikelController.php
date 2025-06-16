@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Artikel;
 use Illuminate\Http\Request;
 use App\Models\Kategori;
+use Illuminate\Support\Facades\Log;
 
 class ArtikelController extends Controller
 {
@@ -13,11 +14,8 @@ class ArtikelController extends Controller
      */
     public function index()
     {
-        //
-        $berita_terkini = Artikel::latest()->take(3)->get();
-
-        $berita_lain = Artikel::latest()->paginate(6);
-
+        $berita_terkini = Artikel::latest()->with('author')->take(3)->get();
+        $berita_lain = Artikel::latest()->with('author')->paginate(6);
         $kategori = Kategori::all();
 
         return view('berita', compact('berita_terkini', 'berita_lain', 'kategori'));
@@ -26,28 +24,87 @@ class ArtikelController extends Controller
     public function kategori($deskripsi)
     {
         $berita_terkini = Artikel::latest()->with('author')->take(3)->get();
-        $berita_lain = Artikel::latest()->paginate(6);
         $kategori = Kategori::where('deskripsi', $deskripsi)->firstOrFail();
+        $berita_lain = Artikel::where('id_kategori', $kategori->id_kategori)
+            ->with('author')
+            ->latest()
+            ->paginate(6);
         $semuaKategori = Kategori::all();
 
         return view('berita', [
             'berita_terkini' => $berita_terkini,
             'berita_lain' => $berita_lain,
             'kategori' => $semuaKategori,
-            'kategoriAktif' => $kategori // kalau ingin highlight kategori yang sedang dipilih
+            'kategoriAktif' => $kategori
         ]);
     }
 
     public function getArtikelByKategori($deskripsi)
     {
-        $kategori = Kategori::where('deskripsi', $deskripsi)->firstOrFail();
-        $artikel = Artikel::where('id_kategori', $kategori->id)
-            ->with('author')
-            ->latest()
-            ->paginate(6);
-        return response()->json($artikel);
+        try {
+            Log::info("Mencari artikel dengan kategori: " . $deskripsi);
+            
+            if ($deskripsi === 'semua') {
+                $artikel = Artikel::with('author')
+                    ->latest()
+                    ->paginate(6);
+                
+                Log::info("Semua artikel ditemukan: " . $artikel->count());
+            } else {
+                // Cari kategori berdasarkan deskripsi
+                $kategori = Kategori::where('deskripsi', $deskripsi)->first();
+                
+                if (!$kategori) {
+                    Log::warning("Kategori tidak ditemukan: " . $deskripsi);
+                    return response()->json([
+                        'error' => 'Kategori tidak ditemukan',
+                        'deskripsi' => $deskripsi,
+                        'available_categories' => Kategori::pluck('deskripsi')->toArray()
+                    ], 404);
+                }
+                
+                Log::info("Kategori ditemukan: " . $kategori->nama . " (ID: " . $kategori->id_kategori . ")");
+                
+                $artikel = Artikel::where('id_kategori', $kategori->id_kategori)
+                    ->with('author')
+                    ->latest()
+                    ->paginate(6);
+                
+                Log::info("Artikel dalam kategori ditemukan: " . $artikel->count());
+            }
+            
+            // Debug response
+            $response = $artikel->toArray();
+            Log::info("Response data count: " . count($response['data']));
+            
+            return response()->json($artikel);
+            
+        } catch (\Exception $e) {
+            Log::error("Error in getArtikelByKategori: " . $e->getMessage());
+            return response()->json([
+                'error' => 'Terjadi kesalahan server',
+                'message' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile()
+            ], 500);
+        }
     }
 
+    // Method untuk mendapatkan semua artikel
+    public function getAllArtikel()
+    {
+        try {
+            $artikel = Artikel::latest()->with('author')->paginate(6);
+            Log::info("getAllArtikel called, found: " . $artikel->count());
+            return response()->json($artikel);
+        } catch (\Exception $e) {
+            Log::error("Error in getAllArtikel: " . $e->getMessage());
+            return response()->json([
+                'error' => 'Terjadi kesalahan server',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -55,7 +112,6 @@ class ArtikelController extends Controller
     public function create()
     {
         //
-        
     }
 
     /**
@@ -71,7 +127,6 @@ class ArtikelController extends Controller
      */
     public function show(Artikel $artikel)
     {
-        //
         return view('beritas', ['beritas' => $artikel]);
     }
 
