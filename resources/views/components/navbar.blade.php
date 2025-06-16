@@ -2,11 +2,7 @@
     <!-- Logo -->
     <div class="flex items-center gap-3">
         <a href="/" class="flex items-center gap-2">
-            <span class="inline-block bg-[#41644A] rounded-full p-2">
-                <!-- Icon/Logo Placeholder -->
-                <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="10" stroke-width="2" /></svg>
-            </span>
-            <span class="text-2xl font-bold text-black tracking-wide">TitikKebaikan</span>
+            <img src="/images/titik_kebaikan_logo.jpg" alt="Titik Kebaikan Logo" class="h-10 w-auto"/>
         </a>
     </div>
     <!-- Desktop Menu -->

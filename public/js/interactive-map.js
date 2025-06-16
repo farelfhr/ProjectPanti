@@ -33,13 +33,18 @@ function createCustomMarker(data) {
         className: "marker-pulse",
     }).addTo(map);
 
-    // Event listener untuk tooltip
+    // Event listener untuk tooltip hover
     marker.on("mouseover", function (e) {
         showTooltip(e, data);
     });
 
     marker.on("mouseout", function () {
         hideTooltip();
+    });
+
+    // Event listener untuk click
+    marker.on("click", function (e) {
+        showOrphanageDetails(data);
     });
 
     return marker;
@@ -55,7 +60,7 @@ function showTooltip(e, data) {
     tooltipContent.innerHTML = `
                 <strong>Jumlah Anak:</strong> ${data.children}<br>
                 <strong>Program:</strong> ${data.programs.join(", ")}<br>
-                <strong>Didirikan:</strong> ${data.established}<br>
+                <strong>Lokasi:</strong> ${data.city}<br>
                 <strong>Cerita:</strong> ${data.stories}
             `;
 
@@ -67,6 +72,46 @@ function showTooltip(e, data) {
 // Fungsi untuk menyembunyikan tooltip
 function hideTooltip() {
     document.getElementById("tooltip").classList.remove("show");
+}
+
+// Fungsi untuk menampilkan detail panti asuhan
+function showOrphanageDetails(data) {
+    const detailsContainer = document.getElementById("orphanageDetails");
+    if (!detailsContainer) {
+        // Buat container jika belum ada
+        const container = document.createElement("div");
+        container.id = "orphanageDetails";
+        container.className = "orphanage-details";
+        document.body.appendChild(container);
+    }
+
+    // Update konten
+    detailsContainer.innerHTML = `
+        <div class="details-content">
+            <button class="close-button" onclick="document.getElementById('orphanageDetails').style.display='none'">×</button>
+            <h2>${data.name}</h2>
+            <div class="details-info">
+                <p><strong>Jumlah Anak:</strong> ${data.children}</p>
+                <p><strong>Program:</strong> ${data.programs.join(", ")}</p>
+                <p><strong>Lokasi:</strong> ${data.city}</p>
+                <p><strong>Cerita:</strong> ${data.stories}</p>
+            </div>
+            <div class="yearly-stats">
+                <h3>Perkembangan Jumlah Anak</h3>
+                <div class="stats-grid">
+                    ${Object.entries(data.yearlyData).map(([year, count]) => `
+                        <div class="stat-item">
+                            <span class="year">${year}</span>
+                            <span class="count">${count}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Tampilkan container
+    detailsContainer.style.display = "block";
 }
 
 // Fungsi untuk memperbarui marker berdasarkan filter
@@ -228,3 +273,79 @@ document.addEventListener("DOMContentLoaded", function () {
     updateMarkers();
     initTimelineChart();
 });
+
+// Tambahkan CSS untuk styling
+const style = document.createElement('style');
+style.textContent = `
+    .orphanage-details {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        z-index: 1000;
+        max-width: 500px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .details-content {
+        position: relative;
+    }
+
+    .close-button {
+        position: absolute;
+        right: 0;
+        top: 0;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #666;
+    }
+
+    .details-info {
+        margin: 20px 0;
+    }
+
+    .yearly-stats {
+        margin-top: 20px;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .stat-item {
+        background: #f5f5f5;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .stat-item .year {
+        display: block;
+        font-weight: bold;
+        color: #41644A;
+    }
+
+    .stat-item .count {
+        display: block;
+        font-size: 1.2em;
+        margin-top: 5px;
+    }
+
+    .details-info p {
+        margin: 10px 0;
+        line-height: 1.5;
+    }
+`;
+document.head.appendChild(style);

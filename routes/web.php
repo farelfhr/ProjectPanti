@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\DaftarPantiController;
 
 use App\Http\Controllers\Admin\ArtikelController as AdminArtikelController;
 use App\Http\Controllers\Admin\PantiController as AdminPantiController;
@@ -14,10 +15,14 @@ use App\Http\Controllers\Admin\KategoriController as AdminKategoriController;
 use App\Http\Controllers\Admin\KebutuhanController as AdminKebutuhanController;
 use App\Http\Controllers\Admin\KontakController as AdminKontakController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Models\Panti;
+use App\Models\Artikel;
 
 Route::get('/', function () {
-    return view('beranda');
-});
+    $orphanages = Panti::latest()->take(3)->get();
+    $news = Artikel::latest()->take(3)->get();
+    return view('beranda', compact('orphanages', 'news'));
+})->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -192,8 +197,8 @@ Route::middleware('auth')->group(function () {
 Route::get('/berita', [ArtikelController::class, 'index'])->name('berita.index');
 Route::get('/berita/{artikel}', [ArtikelController::class, 'show'])->name('berita.show');
 
-Route::get('/daftar-panti', [PantiController::class, 'index'])->name('daftar-panti');
-Route::get('/panti/{panti}', [PantiController::class, 'show'])->name('panti.show');
+Route::get('/daftar-panti', [DaftarPantiController::class, 'index'])->name('daftar-panti');
+Route::get('/panti/{id}', [PantiController::class, 'show'])->name('panti.show');
 
 Route::post('/kontak', [KontakController::class, 'store'])->name('kontak.store');
 Route::view('/kerjasama', 'kerjasama')->name('kerjasama');

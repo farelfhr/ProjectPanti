@@ -13,14 +13,20 @@ class Panti extends Model
 
     protected $table = 'panti';
     protected $primaryKey = 'id_panti';
+    public $timestamps = true;
 
-    const UPDATED_AT = null;
     protected $fillable = [
         'nama',
         'alamat',
         'phone',
         'email',
         'social_media_url',
+        'gambar',
+        'kecamatan',
+        'jumlah_anak',
+        'kapasitas',
+        'tahun_berdiri',
+        'deskripsi'
     ];
 
     public function kebutuhan(): HasMany

@@ -17,8 +17,14 @@ return new class extends Migration
             $table->string('alamat');
             $table->string('phone');
             $table->string('email')->unique();
-            $table->string('social_media_url');
-            $table->timestamp('created_at')->useCurrent();
+            $table->string('social_media_url')->nullable();
+            $table->string('gambar')->nullable();
+            $table->string('kecamatan');
+            $table->integer('jumlah_anak')->default(0);
+            $table->integer('kapasitas')->default(0);
+            $table->year('tahun_berdiri')->nullable();
+            $table->text('deskripsi')->nullable();
+            $table->timestamps();
         });
     }
 

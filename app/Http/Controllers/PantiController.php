@@ -38,9 +38,10 @@ class PantiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Panti $panti)
+    public function show($id)
     {
-        return view('detail-panti', ['panti' => $panti]);
+        $panti = Panti::with('kebutuhan')->findOrFail($id);
+        return view('panti.show', compact('panti'));
     }
 
     /**

@@ -67,7 +67,7 @@
     <p class="text-xl font-bold mb-2 mt-8">Rabu, 11 Juni 2025</p>
     <div class="bg-[#f1f0e9] border rounded-lg shadow-md p-4 mb-4 cursor-pointer hover:bg-white hover:shadow-xl transition-all duration-300 event-card" data-modal="modal1">
         <div class="flex flex-col gap-2">
-            <h2 class="text-xl font-semibold">Judul Kegiatan</h2>
+            <h2 class="text-xl font-semibold">Pengabdian Masyarakat</h2>
             <div class="flex items-center gap-4 text-gray-900">
                 <span>Pembicara: <span class="text-[#E9762B]">Ferdi Dwana</span></span>
                 <span class="text-gray-900">•</span>
@@ -88,7 +88,7 @@
             </div>
 
             <p class="text-gray-600 leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore quod deleniti cumque. Consequuntur ullam quia enim placeat autem dignissimos voluptatem doloribus blanditiis necessitatibus! Repellendus veritatis reiciendis sunt molestias voluptatum neque!
+               Penyelenggaran Bantuan Sembako oleh Pihak Universitas Negeri Malang
             </p>
         </div>
     </div>
@@ -108,7 +108,7 @@
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
 
                     <div class="absolute bottom-6 left-6 right-16">
-                        <h2 class="text-2xl font-bold text-white mb-2">Judul Kegiatan</h2>
+                        <h2 class="text-2xl font-bold text-white mb-2">Pengadaan Sembako</h2>
                     </div>
                 </div>
             </div>
@@ -139,12 +139,12 @@
                 </div>
 
                 <p class="text-gray-900 leading-relaxed mb-6">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore quod deleniti cumque. Consequuntur ullam quia enim placeat autem dignissimos voluptatem doloribus blanditiis necessitatibus! Repellendus veritatis reiciendis sunt molestias voluptatum neque!
+                    Oleh SMA Negeri 8 Kota Malang, diadakan sebagai insiatif untuk membawa siswa lebih peduli
                 </p>
 
                 <div class="mb-6">
                     <h3 class="text-lg font-semibold text-gray-900 mb-3"> Detail Agenda</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia ipsa qui recusandae molestias voluptate nostrum autem? Quia architecto dicta ipsam eveniet sequi, culpa non tempore animi sit cumque vel quaerat!</p>
+                    <p>SMA Negeri 8 Kota Malang mengadakan Kegiatan Bantuan Sosial sebagai Bentuk Kepedulian</p>
                 </div>
 
                 <div class="border-t pt-6">
@@ -185,7 +185,7 @@
     <p class="text-xl font-bold mb-2 mt-8">Kamis, 12 Juni 2025</p>
     <div class="bg-[#f1f0e9] border rounded-lg shadow-md p-4 mb-4 cursor-pointer hover:bg-white hover:shadow-xl transition-all duration-300 event-card" data-modal="modal2">
         <div class="flex flex-col gap-2">
-            <h2 class="text-xl font-semibold">Judul Kegiatan</h2>
+            <h2 class="text-xl font-semibold">Pengadaan Bantuan Sosial</h2>
             <div class="flex items-center gap-4 text-gray-900">
                 <span class="font-semibold">Pembicara: <span class="text-[#E9762B]">Reyhan Akbar</span></span>
                 <span class="text-gray-900">•</span>
@@ -226,7 +226,7 @@
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
 
                     <div class="absolute bottom-6 left-6 right-16">
-                        <h2 class="text-2xl font-bold text-white mb-2">Judul Kegiatan</h2>
+                        <h2 class="text-2xl font-bold text-white mb-2">Bantuan Pemerintah</h2>
                     </div>
                 </div>
             </div>
@@ -251,7 +251,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>
-                        <span class="font-bold">Kapan</span>
+                        <span class="font-bold">Senin, 03 Juni 2025</span>
                     </div>
                     <span>Kamis, 12 Juni 09:00 - 10:30</span>
                 </div>
@@ -344,7 +344,7 @@
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
 
                     <div class="absolute bottom-6 left-6 right-16">
-                        <h2 class="text-2xl font-bold text-white mb-2">Judul Kegiatan</h2>
+                        <h2 class="text-2xl font-bold text-white mb-2">Agenda Kementerian Kesehatan</h2>
                     </div>
                 </div>
             </div>
