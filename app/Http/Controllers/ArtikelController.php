@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Artikel;
 use Illuminate\Http\Request;
+use App\Models\Kategori;
 
 class ArtikelController extends Controller
 {
@@ -13,9 +14,31 @@ class ArtikelController extends Controller
     public function index()
     {
         //
-        $artikel = Artikel::latest()->paginate(9);
+        $artikel = Artikel::latest()->with(['kategori', 'author'])->paginate(9);
+        $kategori = Kategori::all();
 
-        return view('berita', ['berita' => $artikel]);
+        $beritaTerkini = Artikel::with('author') // pastikan relasi 'author' udah ada
+        ->latest('publish_date')
+        ->take(3)
+        ->get();
+
+        return view('berita', [
+            'berita' => $artikel,
+            'kategori' => $kategori
+        ], compact('beritaTerkini'));
+    }
+
+    public function kategori($deskripsi)
+    {
+        $kategori = Kategori::where('deskripsi', $deskripsi)->firstOrFail();
+        $artikel = $kategori->artikel()->latest()->with(['kategori', 'author'])->paginate(9);
+        $semuaKategori = Kategori::all();
+
+        return view('berita', [
+            'berita' => $artikel,
+            'kategori' => $semuaKategori,
+            'kategoriAktif' => $kategori // kalau ingin highlight kategori yang sedang dipilih
+        ]);
     }
 
     /**
