@@ -17,6 +17,7 @@ class Artikel extends Model
     protected $fillable = [
         'judul',
         'konten',
+        'gambar',
         'publish_date',
         'id_penulis',
         'id_kategori',
