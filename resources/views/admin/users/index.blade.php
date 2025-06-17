@@ -30,7 +30,7 @@
                     </td>
                     <td class="py-3 px-4">{{ $user->created_at->format('d M Y') }}</td>
                     <td class="py-3 px-4 flex gap-2">
-                        <a href="{{ route('admin.users.edit', $user) }}" class="bg-brand-orange hover:bg-orange-600 text-white font-bold py-1 px-3 rounded text-xs">Edit Role</a>
+                        <a href="{{ route('admin.users.edit', $user) }}" class="bg-brand-orange bg-orange-600 text-white font-bold py-1 px-3 rounded text-xs">Edit Role</a>
                         <form action="{{ route('admin.users.destroy', $user) }}" method="POST" onsubmit="return confirm('Yakin hapus pengguna ini?');">
                             @csrf
                             @method('DELETE')

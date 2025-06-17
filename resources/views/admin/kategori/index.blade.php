@@ -7,7 +7,7 @@
                 <p>{{ session('error') }}</p>
             </div>
         @endif
-        <a href="{{ route('admin.kategori.create') }}" class="bg-brand-green hover:bg-brand-green-dark text-white font-bold py-2 px-4 rounded mb-4 inline-block">
+        <a href="{{ route('admin.kategori.create') }}" class="bg-brand-green hover:bg-brand-green-dark text-dark-green bg-lime-500 font-bold py-2 px-4 rounded mb-4 inline-block">
             Tambah Kategori Baru
         </a>
         <table class="min-w-full bg-white">
@@ -24,7 +24,7 @@
                         <td class="py-3 px-4">{{ $kategori->nama }}</td>
                         <td class="py-3 px-4">{{ $kategori->artikel_count ?? $kategori->artikel()->count() }}</td>
                         <td class="py-3 px-4 flex gap-2">
-                            <a href="{{ route('admin.kategori.edit', $kategori) }}" class="bg-brand-orange hover:bg-orange-600 text-white font-bold py-1 px-3 rounded text-xs">Edit</a>
+                            <a href="{{ route('admin.kategori.edit', $kategori) }}" class="bg-brand-orange bg-orange-600 text-white font-bold py-1 px-3 rounded text-xs">Edit</a>
                             <form action="{{ route('admin.kategori.destroy', $kategori) }}" method="POST" onsubmit="return confirm('Yakin hapus kategori ini?');">
                                 @csrf
                                 @method('DELETE')

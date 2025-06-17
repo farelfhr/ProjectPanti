@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="bg-white p-8 rounded-lg shadow-lg">
-        <a href="{{ route('admin.artikel.create') }}" class="bg-brand-green hover:bg-brand-green-dark text-white font-bold py-2 px-4 rounded mb-4 inline-block">
+        <a href="{{ route('admin.artikel.create') }}" class="bg-brand-green hover:bg-brand-green-dark bg-lime-500 text-white font-bold py-2 px-4 rounded mb-4 inline-block">
             Tambah Artikel Baru
         </a>
         <table class="min-w-full bg-white">
@@ -31,7 +31,7 @@
                         <td class="w-1/4 text-left py-3 px-4">{{ $artikel->author->name }}</td>
                         <td class="text-left py-3 px-4">{{ $artikel->publish_date->format('d M Y') }}</td>
                         <td class="py-3 px-4 flex gap-2">
-                            <a href="{{ route('admin.artikel.edit', $artikel) }}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded text-xs">Edit</a>
+                            <a href="{{ route('admin.artikel.edit', $artikel) }}" class="bg-yellow-500 text-white font-bold py-1 px-3 rounded text-xs">Edit</a>
                             <form action="{{ route('admin.artikel.destroy', $artikel) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus artikel ini?');">
                                 @csrf
                                 @method('DELETE')
