@@ -34,6 +34,7 @@ class PantiController extends Controller
         $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
             'alamat' => 'required|string',
+            'kecamatan' => 'required|string|max:255',
             'latitude' => 'nullable|numeric|between:-90,90', 
             'longitude' => 'nullable|numeric|between:-180,180', 
             'phone' => 'required|string|max:20',
@@ -77,6 +78,7 @@ class PantiController extends Controller
         $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
             'alamat' => 'required|string',
+            'kecamatan' => 'required|string|max:255',
             'latitude' => 'nullable|numeric|between:-90,90', 
             'longitude' => 'nullable|numeric|between:-180,180', 
             'phone' => 'required|string|max:20',
