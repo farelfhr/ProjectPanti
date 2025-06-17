@@ -7,7 +7,7 @@
                 <p>{{ session('error') }}</p>
             </div>
         @endif
-        <a href="{{ route('admin.kategori.create') }}" class="bg-brand-green hover:bg-brand-green-dark text-dark-green bg-lime-500 font-bold py-2 px-4 rounded mb-4 inline-block">
+        <a href="{{ route('admin.kategori.create') }}" class="bg-brand-green hover:bg-brand-green-dark text-white bg-lime-500 font-bold py-2 px-4 rounded mb-4 inline-block">
             Tambah Kategori Baru
         </a>
         <table class="min-w-full bg-white">
