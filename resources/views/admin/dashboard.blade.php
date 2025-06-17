@@ -38,6 +38,8 @@
             <a href="{{ route('admin.artikel.index') }}" class="bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors">Manajemen Artikel</a>
             <a href="{{ route('admin.panti.index') }}" class="bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors">Manajemen Panti</a>
             <a href="{{ route('admin.kategori.index') }}" class="bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors">Manajemen Kategori</a>
+            <a href="{{ route('admin.kegiatan.index') }}" class="bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors">Manajemen Kegiatan</a>
+            <a href="{{ route('admin.faqs.index') }}" class="bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors">Manajemen FAQ</a>
             <a href="{{ route('admin.kontak.index') }}" class="bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors">Pesan Masuk</a>
             <a href="{{ route('admin.users.index') }}" class="bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors">Manajemen Pengguna</a>
         </div>

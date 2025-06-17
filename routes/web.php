@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\DaftarPantiController;
+use App\Http\Controllers\KerjasamaController;
 
 use App\Http\Controllers\Admin\ArtikelController as AdminArtikelController;
 use App\Http\Controllers\Admin\PantiController as AdminPantiController;
@@ -15,6 +16,9 @@ use App\Http\Controllers\Admin\KategoriController as AdminKategoriController;
 use App\Http\Controllers\Admin\KebutuhanController as AdminKebutuhanController;
 use App\Http\Controllers\Admin\KontakController as AdminKontakController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\KegiatanController as AdminKegiatanController;
+use App\Http\Controllers\Admin\FaqController as AdminFaqController; // Tambahkan ini
+
 use App\Models\Panti;
 use App\Models\Artikel;
 
@@ -47,7 +51,7 @@ Route::get('/daftar-panti', [DaftarPantiController::class, 'index'])->name('daft
 Route::get('/panti/{id}', [PantiController::class, 'show'])->name('panti.show');
 
 Route::post('/kontak', [KontakController::class, 'store'])->name('kontak.store');
-Route::view('/kerjasama', 'kerjasama')->name('kerjasama');
+Route::get('/kerjasama', [KerjasamaController::class, 'index'])->name('kerjasama');
 Route::view('/tentang', 'tentang')->name('tentang');
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -70,6 +74,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     //User
     Route::resource('users', AdminUserController::class);
+
+    //Kegiatan
+    Route::resource('kegiatan', AdminKegiatanController::class);
+
+    //Faq
+    Route::resource('faqs', AdminFaqController::class);
 });
 
 require __DIR__ . '/auth.php';
