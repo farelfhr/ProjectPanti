@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="relative bg-gradient-to-br from-primary-cream via-light-cream to-soft-gray py-20">
+<section class="relative bg-gradient-to-br from-primary-cream via-light-cream to-soft-gray py-20 mt-[-4rem]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid lg:grid-cols-2 gap-12 items-center">
             {{-- Left Content --}}

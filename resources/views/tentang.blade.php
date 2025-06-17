@@ -51,7 +51,7 @@
 </style>
 
 <!-- Hero Section -->
-<section class="tk-gradient-warm py-20 md:py-28 relative overflow-hidden">
+<section class="tk-gradient-warm py-20 md:py-28 relative overflow-hidden mt-[-4rem]">
   <div class="absolute inset-0 opacity-5">
     <div class="absolute top-10 left-10 w-20 h-20 bg-[#41644A] rounded-full"></div>
     <div class="absolute top-40 right-20 w-16 h-16 bg-[#E9762B] rounded-full"></div>

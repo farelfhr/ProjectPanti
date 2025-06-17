@@ -34,6 +34,8 @@ class PantiController extends Controller
         $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
             'alamat' => 'required|string',
+            'latitude' => 'nullable|numeric|between:-90,90', 
+            'longitude' => 'nullable|numeric|between:-180,180', 
             'phone' => 'required|string|max:20',
             'email' => 'required|email|unique:panti,email',
             'social_media_url' => 'nullable|url',
@@ -75,6 +77,8 @@ class PantiController extends Controller
         $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
             'alamat' => 'required|string',
+            'latitude' => 'nullable|numeric|between:-90,90', 
+            'longitude' => 'nullable|numeric|between:-180,180', 
             'phone' => 'required|string|max:20',
             'email' => 'required|email|unique:panti,email,' . $panti->id_panti . ',id_panti',
             'social_media_url' => 'nullable|url',
@@ -104,7 +108,7 @@ class PantiController extends Controller
         if ($panti->gambar) {
             Storage::disk('public')->delete($panti->gambar);
         }
-        
+
         $panti->delete();
         return redirect()->route('admin.panti.index')->with('success', 'Data panti berhasil dihapus.');
     }

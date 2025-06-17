@@ -3,7 +3,7 @@
 @section('content')
     <div class="bg-white p-8 rounded-lg shadow-lg">
         <a href="{{ route('admin.panti.create') }}"
-            class="bg-brand-green hover:bg-brand-green-dark text-white font-bold py-2 px-4 rounded mb-4 inline-block">
+            class="bg-brand-green bg-brand-green-dark bg-lime-500 text-white font-bold py-2 px-4 rounded mb-4 inline-block">
             Tambah Panti Baru
         </a>
         <table class="min-w-full bg-white">
@@ -32,7 +32,7 @@
                         <td class="py-3 px-4">{{ $panti->phone }}</td>
                         <td class="py-3 px-4 flex gap-2">
                             <a href="{{ route('admin.panti.edit', $panti) }}"
-                                class="bg-brand-orange hover:bg-orange-600 text-white font-bold py-1 px-3 rounded text-xs">Edit</a>
+                                class="bg-brand-orange bg-orange-600 text-white font-bold py-1 px-3 rounded text-xs">Edit</a>
                             <form action="{{ route('admin.panti.destroy', $panti) }}" method="POST"
                                 onsubmit="return confirm('Yakin hapus data panti ini?');">
                                 @csrf
