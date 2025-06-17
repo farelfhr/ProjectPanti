@@ -31,5 +31,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PantiSeeder::class,
         ]);
+
+        $this->call([KegiatanSeeder::class]);
     }
 }

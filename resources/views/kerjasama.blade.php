@@ -189,68 +189,109 @@
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @forelse($kegiatan as $item)
-                    <div class="event-card bg-white rounded-xl shadow-lg card-hover animate-fade-in-up p-6"
-                        style="animation-delay: {{ $loop->index * 200 }}ms;" data-modal="modal-{{ $item->id }}">
+                @forelse($kegiatan as $event)
+                    <div class="event-card bg-white rounded-xl shadow-lg card-hover animate-fade-in-up p-6" style="animation-delay: {{ $loop->index * 200 }}ms;" data-modal="{{ $event['id'] }}">
                         <div class="flex flex-col gap-4">
-                            <p class="text-xl font-bold text-[#E9762B]">{{ $item->tanggal->format('l, d F Y') }}</p>
-                            <h2 class="text-xl font-semibold text-[#0D4715]">{{ $item->judul }}</h2>
+                            <p class="text-xl font-bold text-[#E9762B]">{{ ($event['tanggal'])->format('l, j F Y') }}</p>
+                            <h2 class="text-xl font-semibold text-[#0D4715]">{{ $event['judul'] }}</h2>
                             <div class="flex items-center gap-4 text-[#41644A]">
-                                <span>Pembicara: <span class="text-[#E9762B]">{{ $item->pembicara }}</span></span>
+                                <span>Pembicara: <span class="text-[#E9762B]">{{ $event['pembicara'] }}</span></span>
                                 <span class="text-[#41644A]">•</span>
                                 <span class="flex items-center gap-1">
-                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                     </svg>
-                                    {{ $item->lokasi }}
+                                    {{ $event['lokasi'] }}
                                 </span>
                             </div>
-                            <div
-                                class="flex gap-2 items-center text-sm text-[#41644A] py-1 px-2 bg-[#D0D5CB] rounded-full w-fit">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="size-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            <div class="flex gap-2 items-center text-sm text-[#41644A] py-1 px-2 bg-[#D0D5CB] rounded-full w-fit">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 </svg>
-                                <span>{{ $item->waktu }}</span>
+                                <span>{{ $event['waktu'] }}</span>
                             </div>
-                            <p class="text-[#41644A] leading-relaxed">{{ $item->deskripsi_singkat }}</p>
+                            <p class="text-[#41644A] leading-relaxed">{{ $event['deskripsi_singkat'] }}</p>
                         </div>
                     </div>
 
-                    <div id="modal-{{ $item->id }}"
-                        class="modal fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm animate-fade-in">
-                        <div
-                            class="bg-white rounded-2xl max-w-2xl w-full mx-4 max-h-[calc(95vh-8rem)] overflow-y-auto shadow-2xl animate-scale-in mt-24 scrollbar-hide">
+                    <!-- Modal -->
+                    <div id="{{ $event['id'] }}" class="modal fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm animate-fade-in">
+                        <div class="bg-white rounded-2xl max-w-2xl w-full mx-4 max-h-[calc(95vh-8rem)] overflow-y-auto shadow-2xl animate-scale-in mt-24 scrollbar-hide">
                             <div class="relative">
-                                <button
-                                    class="absolute top-4 right-4 z-10 p-2 bg-white bg-opacity-90 rounded-full hover:bg-opacity-100 transition-all duration-200 hover:scale-110"
-                                    onclick="closeModal('modal-{{ $item->id }}')">
-                                    <svg class="w-5 h-5 text-[#41644A]" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12"></path>
+                                <button class="absolute top-4 right-4 z-10 p-2 bg-white bg-opacity-90 rounded-full hover:bg-opacity-100 transition-all duration-200 hover:scale-110" onclick="closeModal('{{ $event['id'] }}')">
+                                    <svg class="w-5 h-5 text-[#41644A]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                     </svg>
                                 </button>
                                 <div class="h-64 bg-gradient-to-br from-[#41644A] to-[#0D4715] relative overflow-hidden">
-                                    {{-- Asumsi gambar akan disimpan di storage/app/public/kegiatan --}}
-                                    <img src="{{ $item->gambar ? asset('storage/' . $item->gambar) : '/images/PantiStock/1.jpg' }}"
-                                        alt="{{ $item->judul_modal }}" class="w-full h-full object-cover opacity-80">
+                                    <img src="{{ $event['gambar'] }}" alt="{{ $event['judul'] }}" class="w-full h-full object-cover opacity-80" loading="lazy" width="800" height="600">
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                                     <div class="absolute bottom-6 left-6 right-16">
-                                        <h2 class="text-2xl font-bold text-white mb-2">{{ $item->judul_modal }}</h2>
+                                        <h2 class="text-2xl font-bold text-white mb-2">{{ $event['judul_modal'] }}</h2>
                                     </div>
                                 </div>
                             </div>
                             <div class="p-6 overflow-y-auto scrollbar-hide">
-                                {{-- ... Konten modal lainnya disesuaikan dengan variabel $item ... --}}
-                                <h3 class="text-lg font-semibold text-[#0D4715] mb-3">Detail Agenda</h3>
-                                <p class="text-[#41644A] leading-relaxed">{{ $item->deskripsi_panjang }}</p>
-                                {{-- ... etc ... --}}
+                                <div class="mb-6">
+                                    <div class="flex items-start gap-4 text-[#41644A]">
+                                        <span>Pembicara: <span class="text-[#E9762B]">{{ $event['pembicara'] }}</span></span>
+                                        <span class="text-[#41644A]">•</span>
+                                        <span class="flex items-center gap-1">
+                                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                            </svg>
+                                            {{ $event['lokasi'] }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col gap-2 mb-6">
+                                    <div class="flex gap-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                        </svg>
+                                        <span class="font-bold">Kapan</span>
+                                    </div>
+
+                                    <div class="flex gap-4 items-center">
+                                        <span class="text-[#41644A]">{{ ($event['tanggal'])->format('l, j F Y') }}</span>
+                                        <span class="text-[#41644A] font-bold">{{ $event['waktu'] }}</span>
+                                    </div>    
+
+                                </div>
+                                <div class="mb-6">
+                                    <h3 class="text-lg font-semibold text-[#0D4715] mb-3">Detail Agenda</h3>
+                                    <p class="text-[#41644A] leading-relaxed">{{ $event['deskripsi_panjang'] }}</p>
+                                </div>
+                                <div class="border-t pt-6">
+                                    <h3 class="font-semibold text-[#0D4715] mb-4 flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                                        </svg>
+                                        Bagikan
+                                    </h3>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        <button class="share-link flex items-center justify-center gap-2 px-4 py-3 border border-[#D0D5CB] rounded-lg hover:bg-[#F1F0E9] transition-colors duration-200" data-url="{{ url('/kerjasama#' . $event['id']) }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                                            </svg>
+                                            <span class="font-medium">Salin Tautan</span>
+                                        </button>
+                                        <button class="flex items-center justify-center gap-2 px-4 py-3 border border-[#D0D5CB] rounded-lg hover:bg-[#F1F0E9] transition-colors duration-200">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 26" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                                            </svg>
+                                            <span class="font-medium">Undang Melalui Email</span>
+                                        </button>
+                                    </div>
+                                    <button class="w-full mt-3 flex items-center justify-center gap-2 px-4 py-3 bg-[#41644A] text-white rounded-lg hover:bg-[#0D4715] transition-colors duration-200 font-bold">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                                        </svg>
+                                        Tambahkan Ke Kalender
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
