@@ -91,8 +91,9 @@ class ArtikelController extends Controller
             $data['gambar'] = $path;
         }
 
-        $artikel->update($request->all());
-
+        //$artikel->update($request->all());
+        $artikel->update($data);
+        
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil diperbarui.');
     }
 
