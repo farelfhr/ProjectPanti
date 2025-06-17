@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="m-h-screen  px-20 py-8 ">
-    <div class="container mx-auto px-8 py-8">
+<div class="m-h-screen px-4 py-4 sm:px-6 sm:py-8 lg:px-20 lg:py-8">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {{-- Header --}}
         <div class="text-center mb-12">
             <h1 class="text-4xl md:text-5xl font-bold text-[#0D4715] mb-4">
@@ -22,8 +22,8 @@
             </div>
             
             <div class="bg-[#41644A] rounded-2xl p-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 mb-4 gap-6 py-6">
-                    <div class="md:col-span-2 flex justify-center items-center md:justify-start gap-2 md:pl-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mb-4 gap-6 py-6">
+                    <div class="md:col-span-2 lg:col-span-2 flex justify-center items-center md:justify-start gap-2 md:pl-8">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-white size-9">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z" />
                         </svg>
@@ -59,7 +59,7 @@
                         <div id="map" class="h-96 lg:h-full w-full object-cover"></div>
                     </div>
         
-                    <div class="grid grid-cols-2 lg:grid-cols-1 gap-6 justify-between">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6 justify-between">
                         <div class="stat-card-gradient p-6 bg-white rounded-2xl border border-[#41644A]/10 w-full">
                             <div class="flex gap-4 items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-9">

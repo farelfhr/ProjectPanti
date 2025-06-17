@@ -15,9 +15,9 @@
                 </div>
                 
                 <h1 class="text-4xl lg:text-6xl font-bold text-dark-green mb-6 leading-tight">
-                    Temukan
-                    <span class="text-primary-green block">Panti Asuhan</span>
-                    <span class="text-accent-orange">Terpercaya</span>
+                    Salurkan
+                    <span class="text-primary-green block">Kebaikan</span>
+                    <span class="text-accent-orange">Kepada Mereka</span>
                 </h1>
                 
                 <p class="text-lg text-primary-green mb-8 leading-relaxed">
@@ -257,13 +257,13 @@
                     {{-- Image --}}
                     <div class="relative overflow-hidden">
                         <img 
-                            src="{{ asset('images/artikel/' . $article->gambar_artikel) }}" 
+                            src="{{ asset('storage/' . $article->gambar) }}" 
                             alt="{{ $article->judul }}"
                             class="w-full h-48 object-cover hover:scale-110 transition-transform duration-500"
                         />
-                        <div class="absolute top-4 left-4">
+                        <div class="absolute top-4 right-4">
                             <span class="bg-accent-orange text-primary-cream px-3 py-1 rounded-full text-sm font-medium">
-                                {{ $article->kategori_artikel ?? 'Uncategorized' }}
+                                {{ $article->kategori->nama_kategori ?? 'Umum' }}
                             </span>
     </div>
 </div>

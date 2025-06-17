@@ -39,7 +39,7 @@ class PantiLatLngSeeder extends Seeder
                 "latitude" => "-7.910375",
                 "longitude" => "112.601550"
             ],
-            [
+            [, 
                 "nama" => "Pondok Anak Yatim (PAY) Salman",
                 "latitude" => "-7.957250",
                 "longitude" => "112.601800"
@@ -58,7 +58,7 @@ class PantiLatLngSeeder extends Seeder
                 "nama" => "Panti Asuhan Blimbing Malang (Mizan Amanah)",
                 "latitude" => "-7.973900",
                 "longitude" => "112.650800"
-            ],
+            ], 
             [
                 "nama" => "Panti Asuhan Yasibu 1",
                 "latitude" => "-8.026400",

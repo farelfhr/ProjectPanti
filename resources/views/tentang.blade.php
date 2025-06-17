@@ -69,7 +69,7 @@
           </div>
           
           <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-4">
-            <span class="text-[#E9762B]">Jembatan</span>
+            <span class="text-[#E9762B]">Titik</span>
             <br />
             <div class="flex items-center justify-center lg:justify-start gap-4 mt-2">
               <div class="w-14 h-14 bg-[#41644A] rounded-2xl flex items-center justify-center shadow-lg animate-bounce-soft">
