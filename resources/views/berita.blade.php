@@ -144,7 +144,7 @@
                             </div>
                             
                             <div class="relative z-10">
-                                <img class="w-full h-80 rounded-2xl shadow-md object-cover mb-6" src="{{ $berita_terkini[0]->gambar }}" alt="Berita Terkini">
+                                <img class="w-full h-80 rounded-2xl shadow-md object-cover mb-6" src="{{ $berita_terkini[0]->gambar }}" alt="Berita Terkini" loading="lazy" width="800" height="600">
                                 
                                 <h3 class="text-2xl lg:text-3xl font-bold mb-4 text-[#0D4715] hover:text-[#E9762B] transition-colors duration-300">{{ $berita_terkini[0]->judul }}</h3>
 
@@ -180,7 +180,7 @@
                                 </div>
                                 
                                 <div class="relative z-10">
-                                    <img class="rounded-xl shadow-md w-full h-48 object-cover mb-4" src="{{ $terkini->gambar }}" alt="Berita Populer">
+                                    <img class="rounded-xl shadow-md w-full h-48 object-cover mb-4" src="{{ $terkini->gambar }}" alt="Berita Populer" loading="lazy" width="800" height="600">
                                     <h3 class="text-2xl md:text-lg font-bold mb-3 text-[#0D4715] hover:text-[#E9762B] transition-colors duration-300">{{ $terkini->judul }}</h3>
                                     <div class="flex items-center gap-2 mb-3">
                                         <div class="w-6 h-6 bg-[#E9762B] rounded-full flex items-center justify-center">
@@ -271,7 +271,7 @@
                         </div>
                         
                         <div class="relative z-10">
-                            <img class="w-full h-48 rounded-2xl shadow-md object-cover mb-6 group-hover:scale-105 transition-transform duration-300" src="{{ $beritas->gambar }}" alt="Artikel">
+                            <img class="w-full h-48 rounded-2xl shadow-md object-cover mb-6 group-hover:scale-105 transition-transform duration-300" src="{{ $beritas->gambar }}" alt="Artikel" loading="lazy" width="800" height="600">
                             
                             <div class="flex items-center gap-3 mb-4">
                                 <div class="w-10 h-10 bg-[#E9762B] rounded-full flex items-center justify-center animate-bounce-soft">
@@ -391,7 +391,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
 
                         <div class="relative z-10">
-                            <img class="w-full h-48 rounded-2xl shadow-md object-cover mb-6 group-hover:scale-105 transition-transform duration-300" src="${gambar}" alt="Artikel" onerror="this.src='/images/default-artikel.jpg'">
+                            <img class="w-full h-48 rounded-2xl shadow-md object-cover mb-6 group-hover:scale-105 transition-transform duration-300" src="${gambar}" alt="Artikel" onerror="this.src='/images/default-artikel.jpg'" loading="lazy" width="800" height="600">
 
                             <div class="flex items-center gap-3 mb-4">
                                 <div class="w-10 h-10 bg-[#E9762B] rounded-full flex items-center justify-center animate-bounce-soft">
