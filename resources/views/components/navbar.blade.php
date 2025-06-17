@@ -15,7 +15,17 @@
     </div>
     <!-- Sign In Button -->
     <div class="flex items-center gap-2">
-        <a href="/login" class="hidden xl:inline px-8 py-2 rounded-full font-bold text-black border-2 border-[#0D4715] bg-white hover:bg-[#E9762B] hover:text-white transition shadow">Sign In</a>
+        @auth
+            @if(Auth::user()->is_admin == 1)
+                <a href="{{ route('admin.dashboard') }}" class="hidden xl:inline px-8 py-2 rounded-full font-bold text-black border-2 border-[#0D4715] bg-white hover:bg-[#E9762B] hover:text-white transition shadow">Admin Dashboard</a>
+            @endif
+            <form method="POST" action="{{ route('logout') }}" class="hidden xl:inline">
+                @csrf
+                <button type="submit" class="px-8 py-2 rounded-full font-bold text-black border-2 border-[#E9762B] bg-white hover:bg-[#E9762B] hover:text-white transition shadow">Log Out</button>
+            </form>
+        @else
+            <a href="/login" class="hidden xl:inline px-8 py-2 rounded-full font-bold text-black border-2 border-[#0D4715] bg-white hover:bg-[#E9762B] hover:text-white transition shadow">Sign In</a>
+        @endauth
         <!-- Hamburger -->
         <button class="xl:hidden flex items-center p-2 rounded-lg text-[#41644A] hover:bg-[#D0D5CB]" id="mobile-menu-button">
             <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
@@ -29,7 +39,17 @@
             <a href="/daftar-panti" class="block px-4 py-2 rounded-md font-bold text-black hover:bg-[#D0D5CB] transition">Daftar Panti</a>
             <a href="/kerjasama" class="block px-4 py-2 rounded-md font-bold text-black hover:bg-[#D0D5CB] transition">Kerjasama Kami</a>
             <a href="/tentang" class="block px-4 py-2 rounded-md font-bold text-black hover:bg-[#D0D5CB] transition">Tentang Kami</a>
-            <a href="/login" class="block px-4 py-2 rounded-full font-bold text-black border-2 border-[#0D4715] bg-white hover:bg-[#E9762B] hover:text-white transition shadow mt-2">Sign In</a>
+            @auth
+                @if(Auth::user()->is_admin == 1)
+                    <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 rounded-full font-bold text-black border-2 border-[#0D4715] bg-white hover:bg-[#E9762B] hover:text-white transition shadow mt-2">Admin Dashboard</a>
+                @endif
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="block w-full text-left px-4 py-2 rounded-full font-bold text-black border-2 border-[#E9762B] bg-white hover:bg-[#E9762B] hover:text-white transition shadow mt-2">Log Out</button>
+                </form>
+            @else
+                <a href="/login" class="block px-4 py-2 rounded-full font-bold text-black border-2 border-[#0D4715] bg-white hover:bg-[#E9762B] hover:text-white transition shadow mt-2">Sign In</a>
+            @endauth
         </div>
     </div>
     <script>
