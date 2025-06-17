@@ -72,4 +72,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('users', AdminUserController::class);
 });
 
+Route::get('/api/pantiasuhan', [App\Http\Controllers\PantiController::class, 'getPantiData']);
+
 require __DIR__ . '/auth.php';

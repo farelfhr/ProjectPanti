@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-[#F3F2EB]">
-    <div class="container mx-auto px-4 py-8">
+<div class="m-h-screen  px-20 py-8 ">
+    <div class="container mx-auto px-8 py-8">
         {{-- Header --}}
         <div class="text-center mb-12">
             <h1 class="text-4xl md:text-5xl font-bold text-[#0D4715] mb-4">
@@ -17,10 +17,10 @@
         <div class="max-w-7xl mx-auto mb-12 py-16 px-4 rounded-3xl backdrop-blur-lg">
             <div class="text-center mb-12">
                 <p class="text-3xl lg:text-4xl text-left lg:text-center mx-auto font-bold leading-relaxed">
-                    Jelajahi sebaran lokasi panti asuhan kami dan <span class="text-[#E9762B]">dampak nyata</span> yang telah kami berikan kepada <span class="text-[#E9762B]">anak-anak</span> di berbagai wilayah Indonesia
+                    Jelajahi sebaran lokasi panti asuhan kami dan <span class="text-[#E9762B]">dampak nyata</span> yang telah kami berikan kepada <span class="text-[#E9762B]">anak-anak</span> di berbagai wilayah Malang Raya
                 </p>
             </div>
-              
+            
             <div class="bg-[#41644A] rounded-2xl p-6">
                 <div class="grid grid-cols-1 md:grid-cols-4 mb-4 gap-6 py-6">
                     <div class="md:col-span-2 flex justify-center items-center md:justify-start gap-2 md:pl-8">
@@ -42,14 +42,14 @@
                     </div>
                     
                     <div class="flex flex-col gap-2">
-                        <label class="text-sm font-semibold text-white uppercase tracking-wider">Lokasi</label>
+                        <label class="text-sm font-semibold text-white uppercase tracking-wider">Lokasi Kecamatan</label>
                         <select class="px-4 py-3 border-2 border-[#41644A]/20 rounded-xl bg-white transition-all duration-300 focus:outline-none focus:border-[#41644A] focus:ring-4 focus:ring-[#41644A]/10" id="locationFilter">
                             <option value="all">Semua Lokasi</option>
-                            <option value="klojen">Kecamatan Klojen</option>
-                            <option value="lowokwaru">Kecamatan Lowokwaru</option>
-                            <option value="sukun">Kecamatan Sukun</option>
-                            <option value="blimbing">Kecamatan Blimbing</option>
-                            <option value="kedungkandang">Kecamatan Kedungkandang</option>
+                            <option value="klojen">klojen</option>
+                            <option value="lowokwaru">lowokwaru</option>
+                            <option value="sukun">sukun</option>
+                            <option value="blimbing">blimbing</option>
+                            <option value="kedungkandang">kedungkandang</option>
             </select>
         </div>
                 </div>
@@ -68,7 +68,7 @@
         
                                 <div class="flex flex-col gap-2">
                                     <div class="text-4xl font-bold leading-none" id="totalChildren">1,247</div>
-                                    <div class="font-medium uppercase tracking-wider text-xs">Total Anak Terlayani</div>
+                                    <div class="font-medium uppercase tracking-wider text-xs">Total Anak</div>
                                 </div>
                             </div>
                         </div>
@@ -100,17 +100,6 @@
         </div>
     </div>
 
-                        <div class="stat-card-gradient p-6 bg-white rounded-2xl border border-[#41644A]/10 w-full">
-                            <div class="flex gap-4 items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-9">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                </svg>
-        
-                                <div class="flex flex-col gap-2">
-                                    <div class="text-4xl font-bold leading-none mb-2" id="successRate">94%</div>
-                                    <div class="font-medium uppercase tracking-wider text-xs">Tingkat Keberhasilan</div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -167,7 +156,7 @@
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <button class="px-4 py-2 h-12 bg-[#41644A] text-[#F1F0E9] font-bold rounded-lg hover:bg-[#0D4715] transition-colors duration-300 flex items-center" data-district="semua">
+                    <button class="px-4 py-2 h-12 font-bold rounded-lg transition-colors duration-300 flex items-center active-filter-button" data-district="semua">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M22 3H2l10 12.46L22 3z"></path>
                             <path d="M2 3l10 12.46L22 3"></path>
@@ -318,19 +307,31 @@
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.min.js"></script>
 <script type="module" src="/js/interactive-map.js"></script>
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script src="/js/swiper.js"></script>
-<script>
+<script type="module">
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('search-input');
     const kecamatanButtons = document.querySelectorAll('.flex-wrap button');
-    const orphanageCards = document.querySelectorAll('.grid > div');
+    const orphanageCards = document.querySelectorAll('.grid > div[data-kecamatan]');
+
+    // Fungsi untuk memperbarui tampilan tombol filter
+    function updateButtonAppearance() {
+        kecamatanButtons.forEach(btn => {
+            if (btn.classList.contains('active-filter-button')) {
+                btn.classList.remove('border-2', 'border-[#D0D5CB]');
+                btn.classList.add('bg-[#41644A]', 'text-[#F1F0E9]');
+            } else {
+                btn.classList.remove('bg-[#41644A]', 'text-[#F1F0E9]');
+                btn.classList.add('border-2', 'border-[#D0D5CB]');
+            }
+        });
+    }
 
     function filterOrphanages() {
         const searchTerm = searchInput.value.toLowerCase();
-        const selectedKecamatanElement = document.querySelector('.flex-wrap button.bg-[#41644A]');
+        const selectedKecamatanElement = document.querySelector('.flex-wrap button.active-filter-button');
         let selectedKecamatan = '';
         if (selectedKecamatanElement) {
             selectedKecamatan = selectedKecamatanElement.dataset.district.toLowerCase().trim();
@@ -340,12 +341,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         console.log('Search Term:', searchTerm);
-        console.log('Selected Kecamatan:', selectedKecamatan);
+        console.log('Selected Kecamatan (from button):', selectedKecamatan);
 
         orphanageCards.forEach(card => {
             const name = card.querySelector('h3').textContent.toLowerCase();
-            const address = card.querySelector('.text-[#41644A] span').textContent.toLowerCase();
-            const cardKecamatan = card.querySelector('[data-kecamatan]')?.dataset.kecamatan.toLowerCase() || '';
+            const addressElement = card.querySelector('.text-\[\#41644A\] span');
+            const address = addressElement ? addressElement.textContent.toLowerCase() : '';
+            const cardKecamatan = card.dataset.kecamatan.toLowerCase() || '';
 
             console.log('Card Name:', name, 'Card Address:', address, 'Card Kecamatan:', cardKecamatan);
 
@@ -365,17 +367,18 @@ document.addEventListener('DOMContentLoaded', function() {
     kecamatanButtons.forEach(button => {
         button.addEventListener('click', function() {
             kecamatanButtons.forEach(btn => {
-                btn.classList.remove('bg-[#41644A]', 'text-[#F1F0E9]');
-                btn.classList.add('border-2', 'border-[#D0D5CB]');
+                btn.classList.remove('active-filter-button');
             });
 
-            this.classList.remove('border-2', 'border-[#D0D5CB]');
-            this.classList.add('bg-[#41644A]', 'text-[#F1F0E9]');
+            this.classList.add('active-filter-button');
+            updateButtonAppearance(); // Perbarui tampilan setelah mengubah kelas aktif
             
             filterOrphanages();
         });
     });
 
+    // Inisialisasi tampilan tombol saat DOM dimuat
+    updateButtonAppearance();
     filterOrphanages();
 });
 </script>

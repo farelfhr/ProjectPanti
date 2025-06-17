@@ -1,5 +1,3 @@
-import { orphanageData } from './orphange-data.js';
-
 // Inisialisasi peta
 let map = L.map("map").setView([-7.966724, 112.632532], 13);
 
@@ -8,18 +6,21 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 }).addTo(map);
 
 let markers = [];
-let currentYear = 2025;
-let timelineChart;
-let isPlaying = false;
+let orphanageData = []; // Variabel untuk menyimpan data panti asuhan
 
 // Fungsi untuk membuat marker kustom
 function createCustomMarker(data) {
-    const size = Math.max(20, Math.min(50, data.children / 3));
-    const color = data.programs.includes("pendidikan")
+    if (!data.lat || !data.lng) {
+        console.warn('Missing coordinates for:', data.nama);
+        return null;
+    }
+
+    const size = Math.max(20, Math.min(50, (data.children || 0) / 3));
+    const color = data.programs && data.programs.includes("pendidikan")
         ? "#41644A"
-        : data.programs.includes("kesehatan")
+        : data.programs && data.programs.includes("kesehatan")
         ? "#0D4715"
-        : data.programs.includes("keterampilan")
+        : data.programs && data.programs.includes("keterampilan")
         ? "#2D5233"
         : "#1F4025";
 
@@ -31,21 +32,18 @@ function createCustomMarker(data) {
         opacity: 1,
         fillOpacity: 0.8,
         className: "marker-pulse",
-    }).addTo(map);
-
-    // Event listener untuk tooltip hover
-    marker.on("mouseover", function (e) {
-        showTooltip(e, data);
     });
 
-    marker.on("mouseout", function () {
-        hideTooltip();
-    });
-
-    // Event listener untuk click
-    marker.on("click", function (e) {
-        showOrphanageDetails(data);
-    });
+    // Tambahkan popup dengan informasi panti
+    marker.bindPopup(`
+        <div class="p-2">
+            <h3 class="font-bold text-lg mb-2">${data.nama}</h3>
+            <p class="text-sm mb-1"><strong>Alamat:</strong> ${data.alamat}</p>
+            <p class="text-sm mb-1"><strong>Kecamatan:</strong> ${data.kecamatan}</p>
+            <p class="text-sm mb-1"><strong>Program:</strong> ${(data.programs || []).join(", ")}</p>
+            <p class="text-sm"><strong>Anak Asuh:</strong> ${data.children || 0}</p>
+        </div>
+    `);
 
     return marker;
 }
@@ -96,17 +94,6 @@ function showOrphanageDetails(data) {
                 <p><strong>Lokasi:</strong> ${data.city}</p>
                 <p><strong>Cerita:</strong> ${data.stories}</p>
             </div>
-            <div class="yearly-stats">
-                <h3>Perkembangan Jumlah Anak</h3>
-                <div class="stats-grid">
-                    ${Object.entries(data.yearlyData).map(([year, count]) => `
-                        <div class="stat-item">
-                            <span class="year">${year}</span>
-                            <span class="count">${count}</span>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
         </div>
     `;
 
@@ -115,164 +102,134 @@ function showOrphanageDetails(data) {
 }
 
 // Fungsi untuk memperbarui marker berdasarkan filter
-function updateMarkers() {
-    const programFilter = document.getElementById("programFilter").value;
-    const locationFilter = document.getElementById("locationFilter").value;
-
-    // Hapus marker yang ada
-    markers.forEach((marker) => map.removeLayer(marker));
+function updateMarkers(filteredData) {
+    // Hapus semua marker yang ada
+    markers.forEach(marker => map.removeLayer(marker));
     markers = [];
 
-    // Filter data
-    let filteredData = orphanageData.filter((item) => {
-        const programMatch =
-            programFilter === "all" || item.programs.includes(programFilter);
-        const locationMatch =
-            locationFilter === "all" || item.city === locationFilter;
-        return programMatch && locationMatch;
-    });
-
-    // Buat marker baru
-    filteredData.forEach((data) => {
+    // Tambahkan marker baru untuk data yang difilter
+    filteredData.forEach(data => {
         const marker = createCustomMarker(data);
-        markers.push(marker);
+        if (marker) {
+            marker.addTo(map);
+            markers.push(marker);
+        }
     });
 
     // Update statistik
-    updateStatistics(filteredData);
+    updateStats(filteredData);
+}
+
+// Fungsi untuk memfilter data berdasarkan kecamatan
+function filterByKecamatan(kecamatan) {
+    console.log('Filtering by kecamatan:', kecamatan);
+    
+    // Normalisasi nilai kecamatan yang dipilih
+    const selectedKecamatan = kecamatan === 'all' || kecamatan === 'semua' 
+        ? 'all' 
+        : kecamatan.toLowerCase().trim();
+    
+    if (selectedKecamatan === 'all') {
+        updateMarkers(orphanageData);
+    } else {
+        console.log('Orphanage data BEFORE filtering:', orphanageData);
+        const filteredData = orphanageData.filter(data => {
+            const dataKecamatan = data.kecamatan ? String(data.kecamatan).toLowerCase().trim() : '';
+            console.log('Evaluating filter for:', data.name, '[Data Kec]:', dataKecamatan, '[Selected Kec]:', selectedKecamatan, 'Match:', dataKecamatan === selectedKecamatan);
+            return dataKecamatan === selectedKecamatan;
+        });
+        console.log('Filtered data:', filteredData);
+        updateMarkers(filteredData);
+    }
+}
+
+// Event listener untuk dropdown dan button kecamatan
+document.addEventListener('DOMContentLoaded', function() {
+    // Event listener untuk dropdown
+    const locationFilter = document.getElementById('locationFilter');
+    if (locationFilter) {
+        locationFilter.addEventListener('change', function() {
+            filterByKecamatan(this.value);
+        });
+    }
+
+    // Event listener untuk button kecamatan
+    const kecamatanButtons = document.querySelectorAll('.flex-wrap button[data-district]');
+    kecamatanButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const kecamatan = this.dataset.district;
+            
+            // Update tampilan button
+            kecamatanButtons.forEach(btn => {
+                btn.classList.remove('bg-[#41644A]', 'text-[#F1F0E9]');
+                btn.classList.add('border-2', 'border-[#D0D5CB]');
+            });
+            this.classList.remove('border-2', 'border-[#D0D5CB]');
+            this.classList.add('bg-[#41644A]', 'text-[#F1F0E9]');
+            
+            // Update dropdown jika ada
+            if (locationFilter) {
+                locationFilter.value = kecamatan === 'semua' ? 'all' : kecamatan;
+            }
+            
+            filterByKecamatan(kecamatan);
+        });
+    });
+});
+
+// Fungsi untuk mengambil data dari API
+async function fetchOrphanageData() {
+    try {
+        const response = await fetch('/api/pantiasuhan');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        orphanageData = await response.json();
+        console.log('Fetched RAW data:', orphanageData);
+        
+        // Normalisasi data (termasuk mengekstrak kecamatan dari 'city')
+        orphanageData = orphanageData.map(data => {
+            const kecamatanMatch = data.city ? data.city.match(/Kec\. ([^,]+)/) : null;
+            const extractedKecamatan = kecamatanMatch && kecamatanMatch[1] ? kecamatanMatch[1].toLowerCase().trim() : '';
+
+            return {
+                ...data,
+                kecamatan: extractedKecamatan,
+                lat: parseFloat(data.lat),
+                lng: parseFloat(data.lng)
+            };
+        });
+        
+        console.log('Fetched NORMALIZED data:', orphanageData);
+        
+        // Inisialisasi peta dengan semua data
+        updateMarkers(orphanageData);
+        
+        // Update statistik
+        updateStats(orphanageData);
+    } catch (error) {
+        console.error('Error fetching orphanage data:', error);
+    }
 }
 
 // Fungsi untuk memperbarui statistik
-function updateStatistics(data) {
-    const totalChildren = data.reduce((sum, item) => sum + item.children, 0);
-    const totalLocations = data.length;
-    const totalPrograms =
-        [...new Set(data.flatMap((item) => item.programs))].length *
-        data.length;
-
-    document.getElementById("totalChildren").textContent =
-        totalChildren.toLocaleString();
-    document.getElementById("totalLocations").textContent = totalLocations;
-    document.getElementById("totalPrograms").textContent = totalPrograms;
+function updateStats(data) {
+    const totalChildren = data.reduce((sum, panti) => sum + (parseInt(panti.children) || 0), 0);
+    const totalLocations = new Set(data.map(panti => panti.kecamatan)).size;
+    const totalPrograms = new Set(data.flatMap(panti => panti.programs || [])).size;
+    
+    // Update elemen statistik
+    const totalChildrenElement = document.getElementById('totalChildren');
+    const totalLocationsElement = document.getElementById('totalLocations');
+    const totalProgramsElement = document.getElementById('totalPrograms');
+    
+    if (totalChildrenElement) totalChildrenElement.textContent = totalChildren.toLocaleString();
+    if (totalLocationsElement) totalLocationsElement.textContent = totalLocations;
+    if (totalProgramsElement) totalProgramsElement.textContent = totalPrograms;
 }
 
-// Fungsi untuk inisialisasi chart timeline
-function initTimelineChart() {
-    const ctx = document.getElementById("timelineChart").getContext("2d");
-    const years = ["2020", "2021", "2022", "2023", "2024"];
-    const datasets = orphanageData.map((item, index) => ({
-        label: item.name,
-        data: years.map((year) => item.yearlyData[year] || 0),
-        borderColor: `hsl(${120 + index * 30}, 60%, 40%)`,
-        backgroundColor: `hsla(${120 + index * 30}, 60%, 40%, 0.1)`,
-        borderWidth: 3,
-        fill: false,
-        tension: 0.4,
-    }));
-
-    timelineChart = new Chart(ctx, {
-        type: "line",
-        data: {
-            labels: years,
-            datasets: datasets,
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                title: {
-                    display: true,
-                    text: "Perkembangan Jumlah Anak per Tahun",
-                    font: {
-                        size: 16,
-                        weight: "bold",
-                    },
-                    color: "#41644A",
-                },
-                legend: {
-                    position: "bottom",
-                    labels: {
-                        boxWidth: 15,
-                        padding: 20,
-                    },
-                },
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: "Jumlah Anak",
-                    },
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: "Tahun",
-                    },
-                },
-            },
-            animation: {
-                duration: 2000,
-                easing: "easeInOutQuart",
-            },
-        },
-    });
-}
-
-// Fungsi untuk animasi timeline
-function playTimeline() {
-    if (isPlaying) return;
-
-    isPlaying = true;
-    const playButton = document.getElementById("playTimeline");
-    const playIcon = document.getElementById("playIcon");
-    const playText = document.getElementById("playText");
-
-    playIcon.textContent = "⏸";
-    playText.textContent = "Menjalankan...";
-
-    const years = [2020, 2021, 2022, 2023, 2024];
-    let currentIndex = 0;
-
-    const interval = setInterval(() => {
-        if (currentIndex >= years.length) {
-            clearInterval(interval);
-            isPlaying = false;
-            playIcon.textContent = "▶";
-            playText.textContent = "Putar Timeline";
-            return;
-        }
-
-        const year = years[currentIndex];
-        document.getElementById("yearSlider").value = year;
-        document.getElementById("yearValue").textContent = year;
-
-        // Update chart dengan animasi
-        timelineChart.update("active");
-
-        currentIndex++;
-    }, 1500);
-}
-
-// Event listeners
-document
-    .getElementById("programFilter")
-    .addEventListener("change", updateMarkers);
-document
-    .getElementById("locationFilter")
-    .addEventListener("change", updateMarkers);
-document.getElementById("yearSlider").addEventListener("input", function (e) {
-    document.getElementById("yearValue").textContent = e.target.value;
-    currentYear = parseInt(e.target.value);
-});
-document.getElementById("playTimeline").addEventListener("click", playTimeline);
-
-// Inisialisasi
-document.addEventListener("DOMContentLoaded", function () {
-    updateMarkers();
-    initTimelineChart();
-});
+// Panggil fungsi untuk mengambil data saat halaman dimuat
+fetchOrphanageData();
 
 // Tambahkan CSS untuk styling
 const style = document.createElement('style');
@@ -311,36 +268,6 @@ style.textContent = `
 
     .details-info {
         margin: 20px 0;
-    }
-
-    .yearly-stats {
-        margin-top: 20px;
-    }
-
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-        gap: 10px;
-        margin-top: 10px;
-    }
-
-    .stat-item {
-        background: #f5f5f5;
-        padding: 10px;
-        border-radius: 5px;
-        text-align: center;
-    }
-
-    .stat-item .year {
-        display: block;
-        font-weight: bold;
-        color: #41644A;
-    }
-
-    .stat-item .count {
-        display: block;
-        font-size: 1.2em;
-        margin-top: 5px;
     }
 
     .details-info p {
