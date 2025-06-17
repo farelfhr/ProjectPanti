@@ -18,6 +18,8 @@ class Panti extends Model
     protected $fillable = [
         'nama',
         'alamat',
+        'latitude',
+        'longitude',
         'phone',
         'email',
         'social_media_url',
