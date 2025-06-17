@@ -27,10 +27,13 @@
         <div class="flex-1 flex flex-col overflow-hidden">
             <header class="flex justify-between items-center p-6 bg-white border-b">
                 <h1 class="text-2xl font-semibold">@yield('title')</h1>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="text-red-500 hover:underline">Logout</button>
-                </form>
+                <div class="flex items-center gap-4">
+                    <a href="{{ route('home') }}" class="text-blue-500 hover:text-blue-700">Kembali ke Beranda</a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="text-red-500 hover:underline">Logout</button>
+                    </form>
+                </div>
             </header>
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
                 @if(session('success'))

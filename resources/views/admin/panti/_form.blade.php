@@ -81,7 +81,7 @@
 </div>
 
 <div class="flex justify-end">
-    <button type="submit" class="bg-brand-green hover:bg-brand-green-dark text-white font-bold py-2 px-4 rounded">
+    <button type="submit" class="bg-brand-green hover:bg-brand-green-dark text-white bg-lime-500 font-bold py-2 px-4 rounded">
         {{ isset($panti) ? 'Update Data Panti' : 'Simpan Data Panti' }}
     </button>
 </div>
