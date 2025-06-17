@@ -51,7 +51,7 @@ class ArtikelController extends Controller
             Log::info("Mencari artikel dengan kategori: " . $deskripsi);
             
             if ($deskripsi === 'semua') {
-                $artikel = Artikel::with('author')
+                $artikel = Artikel::with('author', 'kategori')
                     ->latest()
                     ->paginate(6);
                 
@@ -72,7 +72,7 @@ class ArtikelController extends Controller
                 Log::info("Kategori ditemukan: " . $kategori->nama . " (ID: " . $kategori->id_kategori . ")");
                 
                 $artikel = Artikel::where('id_kategori', $kategori->id_kategori)
-                    ->with('author')
+                    ->with('author', 'kategori')
                     ->latest()
                     ->paginate(6);
                 
@@ -100,7 +100,7 @@ class ArtikelController extends Controller
     public function getAllArtikel()
     {
         try {
-            $artikel = Artikel::latest()->with('author')->paginate(6);
+            $artikel = Artikel::latest()->with('author', 'kategori')->paginate(6);
             Log::info("getAllArtikel called, found: " . $artikel->count());
             return response()->json($artikel);
         } catch (\Exception $e) {
