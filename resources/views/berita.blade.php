@@ -383,7 +383,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const gambar = artikel.gambar || '';
 
             const articleHTML = `
-                <a href="/berita/${artikel.id_artikel}" class="block news-card" style="animation-delay: {{ $index * 0.1 }}s;">
+                <a href="/berita/${artikel.id_artikel}" class="block news-card";">
                     <div class="bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all duration-500 p-6 border border-[#D0D5CB] h-full relative overflow-hidden group">
 
                         <div class="absolute top-0 right-0 w-24 h-24 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
