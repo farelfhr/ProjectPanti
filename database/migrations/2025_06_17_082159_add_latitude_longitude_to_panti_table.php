@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('panti', function (Blueprint $table) {
-            $table->string('latitude')->nullable()->after('alamat');
-            $table->string('longitude')->nullable()->after('latitude');
+            if (!Schema::hasColumn('panti', 'latitude')) {
+                $table->string('latitude')->nullable()->after('alamat');
+            }
+            if (!Schema::hasColumn('panti', 'longitude')) {
+                $table->string('longitude')->nullable()->after('latitude');
+            }
         });
     }
 
