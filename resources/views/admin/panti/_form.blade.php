@@ -27,6 +27,30 @@
 <p class="text-sm text-gray-600 mb-4">
     💡 **Tips:** Untuk mendapatkan Latitude & Longitude, buka Google Maps, klik kanan pada lokasi panti, dan klik pada angka koordinat yang muncul untuk menyalinnya.
 </p>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+    <div>
+        <label for="jumlah_anak" class="block text-gray-700 text-sm font-bold mb-2">Jumlah Anak:</label>
+        <input type="number" name="jumlah_anak" id="jumlah_anak" value="{{ old('jumlah_anak', $panti->jumlah_anak ?? 0) }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" min="0" required>
+    </div>
+    <div>
+        <label for="kapasitas" class="block text-gray-700 text-sm font-bold mb-2">Kapasitas:</label>
+        <input type="number" name="kapasitas" id="kapasitas" value="{{ old('kapasitas', $panti->kapasitas ?? 0) }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" min="0" required>
+    </div>
+</div>
+
+<div class="mb-4">
+    <label for="tahun_berdiri" class="block text-gray-700 text-sm font-bold mb-2">Tahun Berdiri:</label>
+    <input type="number" name="tahun_berdiri" id="tahun_berdiri" value="{{ old('tahun_berdiri', $panti->tahun_berdiri ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" min="1900" max="{{ date('Y') }}">
+    <p class="text-xs text-gray-500 mt-1">Masukkan tahun berdirinya panti (contoh: 1990)</p>
+</div>
+
+<div class="mb-4">
+    <label for="deskripsi" class="block text-gray-700 text-sm font-bold mb-2">Deskripsi:</label>
+    <textarea name="deskripsi" id="deskripsi" rows="4" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700">{{ old('deskripsi', $panti->deskripsi ?? '') }}</textarea>
+    <p class="text-xs text-gray-500 mt-1">Jelaskan tentang panti asuhan, sejarah, visi misi, dan informasi penting lainnya</p>
+</div>
+
 <div class="mb-4">
     <label for="phone" class="block text-gray-700 text-sm font-bold mb-2">Telepon:</label>
     <input type="text" name="phone" id="phone" value="{{ old('phone', $panti->phone ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" required>
@@ -56,9 +80,8 @@
     @endif
 </div>
 
-<div class="flex items-center justify-between">
-    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-        {{ isset($panti) ? 'Update Data' : 'Simpan Data' }}
+<div class="flex justify-end">
+    <button type="submit" class="bg-brand-green hover:bg-brand-green-dark text-white font-bold py-2 px-4 rounded">
+        {{ isset($panti) ? 'Update Data Panti' : 'Simpan Data Panti' }}
     </button>
-    <a href="{{ route('admin.panti.index') }}" class="text-blue-500 hover:text-blue-800">Batal</a>
 </div>
