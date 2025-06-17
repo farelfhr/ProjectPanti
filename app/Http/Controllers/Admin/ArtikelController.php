@@ -63,7 +63,7 @@ class ArtikelController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Artikel $artikel)
     {
         return view('admin.artikel.edit', compact('artikel'));
     }
@@ -93,7 +93,7 @@ class ArtikelController extends Controller
 
         //$artikel->update($request->all());
         $artikel->update($data);
-        
+
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil diperbarui.');
     }
 
