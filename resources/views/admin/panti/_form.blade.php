@@ -7,6 +7,11 @@
     <label for="alamat" class="block text-gray-700 text-sm font-bold mb-2">Alamat:</label>
     <textarea name="alamat" id="alamat" rows="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" required>{{ old('alamat', $panti->alamat ?? '') }}</textarea>
 </div>
+<div class="mb-4">
+    <label for="kecamatan" class="block text-gray-700 text-sm font-bold mb-2">Kecamatan:</label>
+    <input type="text" name="kecamatan" id="kecamatan" value="{{ old('kecamatan', $panti->kecamatan ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" required>
+    <p class="text-xs text-gray-500 mt-1">Masukkan nama kecamatan (contoh: Klojen)</p>
+</div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
     <div>
         <label for="latitude" class="block text-gray-700 text-sm font-bold mb-2">Latitude:</label>

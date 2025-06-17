@@ -67,4 +67,30 @@ class PantiController extends Controller
     {
         //
     }
+
+    public function getPantiData()
+    {
+        $pantis = Panti::all();
+
+        $formattedPanti = $pantis->map(function ($panti) {
+            // Placeholder values for 'programs' and 'yearlyData'
+            // Adjust these based on your actual data structure if needed
+            $programs = ['umum']; // Example placeholder
+            $yearlyData = ['2020' => $panti->jumlah_anak, '2021' => $panti->jumlah_anak, '2022' => $panti->jumlah_anak, '2023' => $panti->jumlah_anak, '2024' => $panti->jumlah_anak]; // Example placeholder
+
+            return [
+                'id' => $panti->id_panti,
+                'name' => $panti->nama,
+                'children' => $panti->jumlah_anak,
+                'programs' => $programs,
+                'city' => $panti->alamat, // Using alamat as city for simplicity
+                'stories' => $panti->deskripsi,
+                'lat' => (float) $panti->latitude,
+                'lng' => (float) $panti->longitude,
+                'yearlyData' => $yearlyData,
+            ];
+        });
+
+        return response()->json($formattedPanti);
+    }
 }
