@@ -244,7 +244,7 @@
                                 </svg>
                             </button>
                             <div class="h-64 bg-gradient-to-br from-[#41644A] to-[#0D4715] relative overflow-hidden">
-                                <img src="{{ $event['modal_img'] }}" alt="{{ $event['title'] }}" class="w-full h-full object-cover opacity-80">
+                                <img src="{{ $event['modal_img'] }}" alt="{{ $event['title'] }}" class="w-full h-full object-cover opacity-80" loading="lazy" width="800" height="600">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                                 <div class="absolute bottom-6 left-6 right-16">
                                     <h2 class="text-2xl font-bold text-white mb-2">{{ $event['modal_title'] }}</h2>

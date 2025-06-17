@@ -18,10 +18,25 @@ class ArtikelFactory extends Factory
      */
     public function definition(): array
     {
+        $gambar = [
+            'images/PantiStock/1.jpg',
+            'images/PantiStock/2.jpg',
+            'images/PantiStock/3.jpg',
+            'images/PantiStock/4.jpg',
+            'images/PantiStock/5.jpg',
+            'images/PantiStock/6.webp',
+            'images/PantiStock/7.jpg',
+            'images/PantiStock/berita-populer-1.jpg',
+            'images/PantiStock/berita-populer-2.jpg',
+            'images/PantiStock/berita-terkini.jpg',
+            'images/PantiStock/panti-asuhan.jpg',
+        ];
+
         return [
             'judul' => fake()->sentence(),
             'konten' => fake()->text(),
-            'publish_date'=> now(),
+            'gambar' => fake()->randomElement($gambar),
+            'publish_date' => now(),
             'id_penulis' => User::factory(),
             'id_kategori' => Kategori::factory(),
         ];

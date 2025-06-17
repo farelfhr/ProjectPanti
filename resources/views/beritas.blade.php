@@ -9,10 +9,10 @@
   <div class="max-w-3xl mx-auto px-6 relative z-10">
     <div class="" href="/berita/{{ $beritas['id_artikel'] }}">
       <div class="flex flex-col gap-6">
-        <h3 class="text-5xl pt-8 font-bold">{{ $beritas['judul'] }}</h3>
+        <h3 class="text-5xl pt-8 font-bold">{{ $beritas->judul }}</h3>
         <p class="text-lg uppercase text-[#41644A] font-bold">{{ $beritas->kategori->nama }}</p>
-        <img class="w-96 h-auto mx-auto rounded-lg shadow-md object-cover" src="{{ $beritas['gambar'] }}" alt="Artikel">
-        <p class="text-lg">{{ $beritas['konten'] }}</p>
+        <img class="w-96 h-auto mx-auto rounded-lg shadow-md object-cover" src="{{ asset($beritas->gambar) }}" alt="Artikel" loading="lazy" width="800" height="600">
+        <p class="text-lg">{{ $beritas->konten }}</p>
       
         <div class="flex gap-2">
           <p class="font-bold">{{ $beritas->author->name }}</p>
@@ -22,7 +22,8 @@
 
         <a class="text-[#E9762B] font-bold hover:underline" href="/berita">kembali</a>
       </div>
-  </div>
+    <div>
+  <div>
 </div>
 
 @endsection 
