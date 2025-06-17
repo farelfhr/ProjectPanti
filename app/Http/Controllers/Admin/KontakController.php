@@ -36,7 +36,7 @@ class KontakController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Kontak $kontak)
     {
         return view('admin.kontak.show', compact('kontak'));
     }

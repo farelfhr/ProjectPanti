@@ -21,6 +21,9 @@ class Kontak extends Model
 
     protected $fillable = [
         'id_user',
+        'nama_pengirim',
+        'email_pengirim',
+        'telepon_pengirim',
         'subjek',
         'konten',
         'kategori',
