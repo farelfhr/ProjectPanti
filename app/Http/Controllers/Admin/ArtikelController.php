@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Artikel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ArtikelController extends Controller
 {
@@ -33,16 +34,20 @@ class ArtikelController extends Controller
         $request->validate([
             'judul' => 'required|string|max:255',
             'konten' => 'required|string',
-            // 'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048' // Contoh validasi gambar
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        Artikel::create([
-            'judul' => $request->judul,
-            'konten' => $request->konten,
-            'id_penulis' => auth()->id(),
-            'publish_date' => now(),
-            'id_kategori' => 1, // Ganti dengan kategori dinamis nanti
-        ]);
+        $data = $request->only(['judul', 'konten']);
+        $data['id_penulis'] = auth()->id();
+        $data['publish_date'] = now();
+        $data['id_kategori'] = 1;
+
+        if ($request->hasFile('gambar')) {
+            $path = $request->file('gambar')->store('artikel', 'public');
+            $data['gambar'] = $path;
+        }
+
+        Artikel::create($data);
 
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil dibuat.');
     }
@@ -71,7 +76,20 @@ class ArtikelController extends Controller
         $request->validate([
             'judul' => 'required|string|max:255',
             'konten' => 'required|string',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        $data = $request->only(['judul', 'konten']);
+
+        if ($request->hasFile('gambar')) {
+            // Hapus gambar lama jika ada
+            if ($artikel->gambar) {
+                Storage::disk('public')->delete($artikel->gambar);
+            }
+            // Simpan gambar baru
+            $path = $request->file('gambar')->store('artikel', 'public');
+            $data['gambar'] = $path;
+        }
 
         $artikel->update($request->all());
 
@@ -83,6 +101,10 @@ class ArtikelController extends Controller
      */
     public function destroy(Artikel $artikel)
     {
+        if ($artikel->gambar) {
+            Storage::disk('public')->delete($artikel->gambar);
+        }
+        
         $artikel->delete();
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil dihapus.');
     }
