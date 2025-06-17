@@ -51,7 +51,7 @@
 </style>
 
 <!-- Hero Section -->
-<section class="tk-gradient-warm py-20 md:py-28 relative overflow-hidden mt-[-4rem]">
+<section class="py-20 md:py-28 relative overflow-hidden mt-[-4rem]">
   <div class="absolute inset-0 opacity-5">
     <div class="absolute top-10 left-10 w-20 h-20 bg-[#41644A] rounded-full"></div>
     <div class="absolute top-40 right-20 w-16 h-16 bg-[#E9762B] rounded-full"></div>
@@ -329,7 +329,7 @@
 </section>
 
 <!-- Section Ajakan Berbuat Baik with Scrolling Image -->
-<section id="goodness-section" class="py-20 md:py-28 bg-[#F3F2EB] relative overflow-hidden">
+<section id="goodness-section" class="py-20 md:py-28  relative overflow-hidden">
   <div class="container mx-auto px-6 relative z-10">
     <div class="text-center mb-16 animate-fade-in-up">
       <h2 class="text-4xl md:text-5xl font-bold text-[#0D4715] mb-6 leading-tight">
