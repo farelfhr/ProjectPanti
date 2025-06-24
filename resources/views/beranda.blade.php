@@ -185,7 +185,7 @@
 
                         {{-- Actions --}}
                         <div class="flex space-x-3">
-                            <a href="{{ $orphanage->id ? route('panti.show', $orphanage->id) : '#' }}" class="flex-1 bg-primary-green text-primary-cream py-2 px-4 rounded-lg text-sm font-medium hover:bg-dark-green transition-colors duration-200">
+                            <a href="{{ $orphanage->id_panti ? route('panti.show', $orphanage->id_panti) : '#' }}" class="flex-1 bg-primary-green text-primary-cream py-2 px-4 rounded-lg text-sm font-medium hover:bg-dark-green transition-colors duration-200">
                                 Lihat Detail
                             </a>
                             <button class="bg-accent-orange text-primary-cream p-2 rounded-lg hover:bg-opacity-90 transition-colors duration-200">
@@ -293,7 +293,7 @@
                             {{ $article->excerpt ?? Str::limit($article->isi, 100) }}
                         </p>
 
-                        <a href="{{ $article->id ? route('berita.show', $article->id) : '#' }}" class="text-primary-green hover:text-dark-green font-medium text-sm flex items-center space-x-1 transition-colors duration-200">
+                        <a href="{{ $article->id_artikel ? route('berita.show', $article->id_artikel) : '#' }}" class="text-primary-green hover:text-dark-green font-medium text-sm flex items-center space-x-1 transition-colors duration-200">
                             <span>Baca Selengkapnya</span>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
