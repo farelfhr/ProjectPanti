@@ -288,18 +288,6 @@
                                 <div class="border-t pt-6">
 
                                     @php
-                                        $emailSubject = "Undangan Kegiatan: " . $event->nama_kegiatan;
-                                        $emailBody = "Assalamualaikum Wr. Wb.,\n\n";
-                                        $emailBody .= "Dengan hormat, kami mengundang Bapak/Ibu/Saudara/i untuk berpartisipasi dalam kegiatan kami:\n\n";
-                                        $emailBody .= "Nama Kegiatan: " . $event->nama_kegiatan . "\n";
-                                        $emailBody .= "Tanggal: " . \Carbon\Carbon::parse($event->tanggal)->isoFormat('dddd, D MMMM Y') . "\n";
-                                        $emailBody .= "Waktu: " . $event->waktu . " WIB\n";
-                                        $emailBody .= "Lokasi: " . ($event->panti ? $event->panti->nama_panti : 'Lokasi belum ditentukan') . "\n\n";
-                                        $emailBody .= "Deskripsi: " . strip_tags($event->deskripsi) . "\n\n";
-                                        $emailBody .= "Kehadiran Anda sangat berarti bagi kami dan anak-anak di panti.\n\n";
-                                        $emailBody .= "Terima kasih.\nWassalamualaikum Wr. Wb.";
-                                        $mailtoLink = "mailto:?subject=" . rawurlencode($emailSubject) . "&body=" . rawurlencode($emailBody);
-
                                         $eventDate = \Carbon\Carbon::parse($event->tanggal)->format('Y-m-d');
                                         
                                         $timeParts = explode(' - ', $event->waktu);
@@ -332,9 +320,9 @@
                                         </svg>
                                         Bagikan
                                     </h3>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <div>
                                         <button
-                                            data-action="copy-link" class="flex items-center justify-center gap-2 px-4 py-3 border border-[#D0D5CB] rounded-lg hover:bg-[#F1F0E9] transition-colors duration-200"
+                                            data-action="copy-link" class="w-full flex items-center justify-center gap-2 px-4 py-3 border border-[#D0D5CB] rounded-lg hover:bg-[#F1F0E9] transition-colors duration-200"
                                             data-url="{{ url('/kerjasama#' . $event['id']) }}">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="size-4">
@@ -343,15 +331,6 @@
                                             </svg>
                                             <span class="font-medium">Salin Tautan</span>
                                         </button>
-                                        <a href="{{ $mailtoLink }}" 
-                                            class="flex items-center justify-center gap-2 px-4 py-3 border border-[#D0D5CB] rounded-lg hover:bg-[#F1F0E9] transition-colors duration-200">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 26"
-                                                stroke-width="1.5" stroke="currentColor" class="size-4">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-                                            </svg>
-                                            <span class="font-medium">Undang Melalui Email</span>
-                                        </a>
                                     </div>
                                     <a href="{{ $gcal_link }}"
                                         class="w-full mt-3 flex items-center justify-center gap-2 px-4 py-3 bg-[#41644A] text-white rounded-lg hover:bg-[#0D4715] transition-colors duration-200 font-bold">
