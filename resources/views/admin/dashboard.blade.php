@@ -8,7 +8,7 @@
         <p class="text-gray-600 mt-2">Ini adalah pusat kendali untuk website TitikKebaikan. Anda bisa mengelola semua data dari menu di sebelah kiri.</p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 w-full">
         
         <div class="bg-white p-6 rounded-lg shadow-lg transform hover:-translate-y-1 transition-transform duration-300">
             <h3 class="text-lg font-semibold text-gray-500">Total Artikel</h3>
@@ -32,9 +32,9 @@
 
     </div>
 
-    <div class="mt-8 bg-white p-6 rounded-lg shadow-lg">
+    <div class="mt-8 bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full">
         <h3 class="text-xl font-bold text-gray-800">Akses Cepat</h3>
-        <div class="mt-4 flex flex-wrap gap-4">
+        <div class="mt-4 flex flex-wrap gap-2 md:gap-4 overflow-x-auto">
             <a href="{{ route('admin.artikel.index') }}" class="bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors">Manajemen Artikel</a>
             <a href="{{ route('admin.panti.index') }}" class="bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors">Manajemen Panti</a>
             <a href="{{ route('admin.kategori.index') }}" class="bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors">Manajemen Kategori</a>

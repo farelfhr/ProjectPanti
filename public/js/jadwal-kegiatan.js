@@ -65,4 +65,69 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     });
+
+    const form = document.getElementById('contact-form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const submitBtn = form.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Mengirim...';
+
+            // Remove previous feedback
+            const prevMsg = document.getElementById('form-message-ajax');
+            if (prevMsg) prevMsg.remove();
+
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': form.querySelector('input[name=_token]').value,
+                },
+                body: formData
+            })
+            .then(async res => {
+                const contentType = res.headers.get('content-type');
+                let data;
+                if (contentType && contentType.includes('application/json')) {
+                    data = await res.json();
+                } else {
+                    data = { html: await res.text() };
+                }
+                return { ok: res.ok, status: res.status, data };
+            })
+            .then(({ok, status, data}) => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Kirim Pesan';
+                // Success (login user)
+                if (ok && data.success) {
+                    form.reset();
+                    showAjaxMessage(data.success, 'success');
+                } else if (data.must_login) {
+                    showAjaxMessage(data.must_login, 'warning');
+                } else if (data.errors) {
+                    // Laravel validation errors
+                    let msg = Object.values(data.errors).map(arr => arr.join('<br>')).join('<br>');
+                    showAjaxMessage(msg, 'danger');
+                } else {
+                    showAjaxMessage('Terjadi kesalahan. Silakan coba lagi.', 'danger');
+                }
+            })
+            .catch(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Kirim Pesan';
+                showAjaxMessage('Terjadi kesalahan jaringan.', 'danger');
+            });
+        });
+    }
+
+    function showAjaxMessage(msg, type) {
+        const color = type === 'success' ? 'green' : (type === 'warning' ? 'yellow' : 'red');
+        const el = document.createElement('div');
+        el.id = 'form-message-ajax';
+        el.className = `mt-4 text-center p-3 bg-${color}-100 text-${color}-800 rounded-lg`;
+        el.innerHTML = msg;
+        form.parentNode.insertBefore(el, form.nextSibling);
+    }
 });

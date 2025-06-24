@@ -15,7 +15,7 @@ function createCustomMarker(data) {
         return null;
     }
 
-    const size = Math.max(20, Math.min(50, (data.children || 0) / 3));
+    const size = Math.max(20, Math.min(50, (data.jumlah_anak || 0) / 3));
     const color = data.programs && data.programs.includes("pendidikan")
         ? "#41644A"
         : data.programs && data.programs.includes("kesehatan")
@@ -41,7 +41,7 @@ function createCustomMarker(data) {
             <p class="text-sm mb-1"><strong>Alamat:</strong> ${data.alamat}</p>
             <p class="text-sm mb-1"><strong>Kecamatan:</strong> ${data.kecamatan}</p>
             <p class="text-sm mb-1"><strong>Program:</strong> ${(data.programs || []).join(", ")}</p>
-            <p class="text-sm"><strong>Anak Asuh:</strong> ${data.children || 0}</p>
+            <p class="text-sm"><strong>Anak Asuh:</strong> ${data.jumlah_anak || 0}</p>
         </div>
     `);
 
@@ -102,7 +102,7 @@ function showOrphanageDetails(data) {
 }
 
 // Fungsi untuk memperbarui marker berdasarkan filter
-function updateMarkers(filteredData) {
+function updateMarkers(filteredData, selectedKecamatan = null) {
     // Hapus semua marker yang ada
     markers.forEach(marker => map.removeLayer(marker));
     markers = [];
@@ -117,7 +117,12 @@ function updateMarkers(filteredData) {
     });
 
     // Update statistik
-    updateStats(filteredData);
+    updateStats(filteredData, selectedKecamatan);
+}
+
+// Fungsi normalisasi kecamatan (sederhana, data sudah konsisten)
+function normalizeKecamatan(str) {
+    return (str || '').toLowerCase().trim();
 }
 
 // Fungsi untuk memfilter data berdasarkan kecamatan
@@ -127,19 +132,18 @@ function filterByKecamatan(kecamatan) {
     // Normalisasi nilai kecamatan yang dipilih
     const selectedKecamatan = kecamatan === 'all' || kecamatan === 'semua' 
         ? 'all' 
-        : kecamatan.toLowerCase().trim();
+        : normalizeKecamatan(kecamatan);
     
     if (selectedKecamatan === 'all') {
-        updateMarkers(orphanageData);
+        updateMarkers(orphanageData, null);
     } else {
         console.log('Orphanage data BEFORE filtering:', orphanageData);
         const filteredData = orphanageData.filter(data => {
-            const dataKecamatan = data.kecamatan ? String(data.kecamatan).toLowerCase().trim() : '';
-            console.log('Evaluating filter for:', data.name, '[Data Kec]:', dataKecamatan, '[Selected Kec]:', selectedKecamatan, 'Match:', dataKecamatan === selectedKecamatan);
+            const dataKecamatan = normalizeKecamatan(data.kecamatan);
             return dataKecamatan === selectedKecamatan;
         });
         console.log('Filtered data:', filteredData);
-        updateMarkers(filteredData);
+        updateMarkers(filteredData, selectedKecamatan);
     }
 }
 
@@ -186,25 +190,26 @@ async function fetchOrphanageData() {
         }
         orphanageData = await response.json();
         console.log('Fetched RAW data:', orphanageData);
-        
-        // Normalisasi data (termasuk mengekstrak kecamatan dari 'city')
-        orphanageData = orphanageData.map(data => {
-            const kecamatanMatch = data.city ? data.city.match(/Kec\. ([^,]+)/) : null;
-            const extractedKecamatan = kecamatanMatch && kecamatanMatch[1] ? kecamatanMatch[1].toLowerCase().trim() : '';
-
-            return {
-                ...data,
-                kecamatan: extractedKecamatan,
-                lat: parseFloat(data.lat),
-                lng: parseFloat(data.lng)
-            };
-        });
-        
+        // Tidak perlu parsing kecamatan dari alamat/city, gunakan langsung data.kecamatan dari API
+        // orphanageData = orphanageData.map(data => {
+        //     const kecamatanMatch = data.city ? data.city.match(/Kec\. ([^,]+)/) : null;
+        //     const extractedKecamatan = kecamatanMatch && kecamatanMatch[1] ? kecamatanMatch[1].toLowerCase().trim() : '';
+        //     return {
+        //         ...data,
+        //         kecamatan: extractedKecamatan,
+        //         lat: parseFloat(data.lat),
+        //         lng: parseFloat(data.lng)
+        //     };
+        // });
+        // Data sudah benar, pastikan lat/lng tetap float
+        orphanageData = orphanageData.map(data => ({
+            ...data,
+            lat: parseFloat(data.lat),
+            lng: parseFloat(data.lng)
+        }));
         console.log('Fetched NORMALIZED data:', orphanageData);
-        
         // Inisialisasi peta dengan semua data
         updateMarkers(orphanageData);
-        
         // Update statistik
         updateStats(orphanageData);
     } catch (error) {
@@ -213,19 +218,33 @@ async function fetchOrphanageData() {
 }
 
 // Fungsi untuk memperbarui statistik
-function updateStats(data) {
-    const totalChildren = data.reduce((sum, panti) => sum + (parseInt(panti.children) || 0), 0);
-    const totalLocations = new Set(data.map(panti => panti.kecamatan)).size;
-    const totalPrograms = new Set(data.flatMap(panti => panti.programs || [])).size;
-    
-    // Update elemen statistik
+function updateStats(data, selectedKecamatan = null) {
+    const totalChildren = data.reduce((sum, panti) => sum + (parseInt(panti.jumlah_anak) || 0), 0);
+    const totalLocations = new Set(data.map(panti => normalizeKecamatan(panti.kecamatan))).size;
     const totalChildrenElement = document.getElementById('totalChildren');
     const totalLocationsElement = document.getElementById('totalLocations');
     const totalProgramsElement = document.getElementById('totalPrograms');
-    
+
     if (totalChildrenElement) totalChildrenElement.textContent = totalChildren.toLocaleString();
     if (totalLocationsElement) totalLocationsElement.textContent = totalLocations;
-    if (totalProgramsElement) totalProgramsElement.textContent = totalPrograms;
+
+    // Ambil jumlah program/kegiatan dari API, filter jika ada kecamatan terpilih
+    if (totalProgramsElement) {
+        fetch('/api/kegiatan')
+            .then(res => res.json())
+            .then(kegiatan => {
+                let filtered = kegiatan;
+                if (selectedKecamatan && selectedKecamatan !== 'all' && selectedKecamatan !== 'semua') {
+                    filtered = kegiatan.filter(k =>
+                        normalizeKecamatan(k.lokasi) === selectedKecamatan
+                    );
+                }
+                totalProgramsElement.textContent = filtered.length;
+            })
+            .catch(() => {
+                totalProgramsElement.textContent = '-';
+            });
+    }
 }
 
 // Panggil fungsi untuk mengambil data saat halaman dimuat

@@ -389,30 +389,26 @@
                 </div>
                 <div class="bg-primary-cream rounded-xl shadow-lg p-8 animate-fade-in-up" style="animation-delay: 400ms;">
                     <form id="contact-form" action="{{ route('kontak.store') }}" method="POST">
-                        @csrf {{-- WAJIB ADA: Untuk keamanan Laravel, ini tidak akan terlihat di halaman. --}}
-
+                        @csrf
                         <div class="mb-6">
                             <label class="block text-lg font-bold text-[#0D4715] mb-2">Nama Lengkap</label>
                             <input type="text" name="nama" placeholder="Nama Lengkap Anda"
-                                value="{{ old('nama') }}" {{-- Ini untuk menjaga input user jika validasi gagal --}}
+                                value="{{ old('nama', auth()->user()->name ?? '') }}"
                                 class="p-3 w-full bg-white border border-[#D0D5CB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E9762B] transition-all duration-300"
-                                required>
-                            {{-- Menampilkan pesan error jika validasi 'nama' gagal --}}
+                                required @if(!auth()->check()) autocomplete="off" @endif>
                             @error('nama')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
-
                         <div class="mb-6">
                             <label class="block text-lg font-bold text-[#0D4715] mb-2">Email</label>
-                            <input type="email" name="email" placeholder="Email Anda" value="{{ old('email') }}"
+                            <input type="email" name="email" placeholder="Email Anda" value="{{ old('email', auth()->user()->email ?? '') }}"
                                 class="p-3 w-full bg-white border border-[#D0D5CB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E9762B] transition-all duration-300"
-                                required>
+                                required @if(!auth()->check()) autocomplete="off" @endif>
                             @error('email')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
-
                         <div class="mb-6">
                             <label class="block text-lg font-bold text-[#0D4715] mb-2">Nomor Telepon</label>
                             <input type="tel" name="telepon" placeholder="Nomor Telepon Anda"
@@ -422,24 +418,20 @@
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
-
                         <div class="mb-6">
                             <label class="block text-lg font-bold text-[#0D4715] mb-2">Subjek Pesan</label>
                             <select name="subjek"
                                 class="p-3 w-full text-[#41644A] bg-white border border-[#D0D5CB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E9762B] transition-all duration-300"
                                 required>
                                 <option value="" selected disabled>Pilih Salah Satu</option>
-                                <option value="usulan-kerja-sama" @if (old('subjek') == 'usulan-kerja-sama') selected @endif>Usulan
-                                    Kerja Sama</option>
+                                <option value="usulan-kerja-sama" @if (old('subjek') == 'usulan-kerja-sama') selected @endif>Usulan Kerja Sama</option>
                                 <option value="pesan" @if (old('subjek') == 'pesan') selected @endif>Pesan</option>
-                                <option value="pertanyaan" @if (old('subjek') == 'pertanyaan') selected @endif>Pertanyaan
-                                </option>
+                                <option value="pertanyaan" @if (old('subjek') == 'pertanyaan') selected @endif>Pertanyaan</option>
                             </select>
                             @error('subjek')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
-
                         <div class="mb-6">
                             <label class="block text-lg font-bold text-[#0D4715] mb-2">Pesan</label>
                             <textarea name="pesan" placeholder="Tulis Pesan Kepada Kami"
@@ -449,11 +441,16 @@
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
-
                         <button type="submit"
-                            class="w-full bg-[#E9762B] hover:bg-[#D0661A] text-white font-bold py-3 rounded-lg transition-colors duration-300">Kirim
-                            Pesan</button>
+                            class="w-full bg-[#E9762B] hover:bg-[#D0661A] text-white font-bold py-3 rounded-lg transition-colors duration-300">Kirim Pesan</button>
                     </form>
+                    @if(session('must_login'))
+                        <div class="mt-4 text-center p-3 bg-yellow-100 text-yellow-800 rounded-lg">
+                            {{ session('must_login') }}
+                            <br>
+                            <a href="{{ route('login') }}" class="inline-block mt-2 bg-[#41644A] text-white px-6 py-2 rounded-lg font-bold hover:bg-[#0D4715] transition-colors duration-200">Login Sekarang</a>
+                        </div>
+                    @endif
 
                     {{-- Bagian ini akan menampilkan pesan sukses setelah form berhasil dikirim --}}
                     @if (session('success'))

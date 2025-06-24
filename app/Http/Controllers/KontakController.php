@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Auth;
 class KontakController extends Controller
 {
     public function store(Request $request){
+        if (!auth()->check()) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'must_login' => 'Anda harus login terlebih dahulu untuk mengirim pesan. Silakan login untuk melanjutkan.'
+                ], 401);
+            }
+            return back()->withInput()->with('must_login', 'Anda harus login terlebih dahulu untuk mengirim pesan. Silakan login untuk melanjutkan.');
+        }
         $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -27,6 +35,11 @@ class KontakController extends Controller
             'konten' => $validatedData['pesan'],
         ]);
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => 'Pesan Anda telah berhasil dikirim! Terima kasih.'
+            ]);
+        }
         return back()->with('success', 'Pesan Anda telah berhasil dikirim! Terima kasih.');
     }
 }

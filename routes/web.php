@@ -23,6 +23,8 @@ use App\Models\Panti;
 use App\Models\Artikel;
 use App\Models\Kegiatan;
 
+use App\Http\Controllers\KegiatanController as PublicKegiatanController;
+
 Route::get('/', function () {
     $orphanages = Panti::latest()->take(3)->get();
     $news = Artikel::latest()->take(3)->get();
@@ -90,5 +92,7 @@ Route::get('/api/pantiasuhan', [App\Http\Controllers\PantiController::class, 'ge
 Route::get('/debug-panti-data', function() {
     return response()->json(App\Models\Panti::select('id_panti', 'nama', 'latitude', 'longitude')->get());
 });
+
+Route::get('/api/kegiatan', [PublicKegiatanController::class, 'index']);
 
 require __DIR__ . '/auth.php';
