@@ -20,7 +20,9 @@ class PantiSeeder extends Seeder
                 'jumlah_anak' => 50,
                 'kapasitas' => 100,
                 'tahun_berdiri' => 1990,
-                'deskripsi' => 'Panti Asuhan Muhammadiyah Malang (PAMMA) adalah lembaga sosial yang menaungi anak-anak yatim dan dhuafa di Kota Malang. Berdiri sejak tahun 1990, PAMMA telah membantu ratusan anak untuk mendapatkan pendidikan dan kehidupan yang layak.'
+                'deskripsi' => 'Panti Asuhan Muhammadiyah Malang (PAMMA) adalah lembaga sosial yang menaungi anak-anak yatim dan dhuafa di Kota Malang. Berdiri sejak tahun 1990, PAMMA telah membantu ratusan anak untuk mendapatkan pendidikan dan kehidupan yang layak.',
+                'latitude' => -7.9868770,
+                'longitude' => 112.6225210,
             ],
             [
                 'nama' => 'Panti Asuhan Yatim Putri Aisyiyah',
@@ -32,7 +34,9 @@ class PantiSeeder extends Seeder
                 'jumlah_anak' => 30,
                 'kapasitas' => 50,
                 'tahun_berdiri' => 1995,
-                'deskripsi' => 'Panti Asuhan Yatim Putri Aisyiyah adalah lembaga yang khusus menaungi anak-anak yatim perempuan. Berdiri sejak tahun 1995, panti ini telah membantu banyak anak perempuan untuk mendapatkan pendidikan dan keterampilan hidup.'
+                'deskripsi' => 'Panti Asuhan Yatim Putri Aisyiyah adalah lembaga yang khusus menaungi anak-anak yatim perempuan. Berdiri sejak tahun 1995, panti ini telah membantu banyak anak perempuan untuk mendapatkan pendidikan dan keterampilan hidup.',
+                'latitude' => -7.9547000,
+                'longitude' => 112.6027000,
             ],
             [
                 'nama' => 'Panti Asuhan Al-Hidayah',
@@ -44,7 +48,9 @@ class PantiSeeder extends Seeder
                 'jumlah_anak' => 40,
                 'kapasitas' => 75,
                 'tahun_berdiri' => 2000,
-                'deskripsi' => 'Panti Asuhan Al-Hidayah adalah lembaga yang menaungi anak-anak yatim dan dhuafa dengan fokus pada pendidikan agama dan akademik. Berdiri sejak tahun 2000, panti ini telah membantu banyak anak untuk mendapatkan pendidikan yang berkualitas.'
+                'deskripsi' => 'Panti Asuhan Al-Hidayah adalah lembaga yang menaungi anak-anak yatim dan dhuafa dengan fokus pada pendidikan agama dan akademik. Berdiri sejak tahun 2000, panti ini telah membantu banyak anak untuk mendapatkan pendidikan yang berkualitas.',
+                'latitude' => -7.8858746,
+                'longitude' => 112.5382012,
             ],
             [
                 'nama' => 'Panti Asuhan Nurul Iman',
@@ -56,7 +62,9 @@ class PantiSeeder extends Seeder
                 'jumlah_anak' => 35,
                 'kapasitas' => 60,
                 'tahun_berdiri' => 2005,
-                'deskripsi' => 'Panti Asuhan Nurul Iman adalah lembaga yang menaungi anak-anak yatim dan dhuafa dengan fokus pada pendidikan karakter dan keterampilan. Berdiri sejak tahun 2005, panti ini telah membantu banyak anak untuk mengembangkan potensi mereka.'
+                'deskripsi' => 'Panti Asuhan Nurul Iman adalah lembaga yang menaungi anak-anak yatim dan dhuafa dengan fokus pada pendidikan karakter dan keterampilan. Berdiri sejak tahun 2005, panti ini telah membantu banyak anak untuk mengembangkan potensi mereka.',
+                'latitude' => -7.8928335,
+                'longitude' => 112.6507606,
             ],
             [
                 'nama' => 'Panti Asuhan Al-Ikhlas',
@@ -68,7 +76,9 @@ class PantiSeeder extends Seeder
                 'jumlah_anak' => 45,
                 'kapasitas' => 80,
                 'tahun_berdiri' => 2010,
-                'deskripsi' => 'Panti Asuhan Al-Ikhlas adalah lembaga yang menaungi anak-anak yatim dan dhuafa dengan fokus pada pendidikan formal dan non-formal. Berdiri sejak tahun 2010, panti ini telah membantu banyak anak untuk meraih masa depan yang lebih baik.'
+                'deskripsi' => 'Panti Asuhan Al-Ikhlas adalah lembaga yang menaungi anak-anak yatim dan dhuafa dengan fokus pada pendidikan formal dan non-formal. Berdiri sejak tahun 2010, panti ini telah membantu banyak anak untuk meraih masa depan yang lebih baik.',
+                'latitude' => -7.9876979,
+                'longitude' => 112.5855317,
             ]
         ];
 
