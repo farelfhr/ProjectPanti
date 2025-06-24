@@ -38,6 +38,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         updateUrlParams(search, kecamatan);
 
+        // Show loading state
+        orphanageGrid.innerHTML = '<div class="col-span-2 flex justify-center items-center py-12"><svg class="animate-spin h-8 w-8 text-[#41644A] mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg><span class="text-[#41644A] font-bold">Memuat data panti...</span></div>';
+
         fetch(`/daftar-panti?search=${encodeURIComponent(search)}&kecamatan=${encodeURIComponent(kecamatan)}`, {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'

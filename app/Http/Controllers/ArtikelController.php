@@ -138,6 +138,35 @@ class ArtikelController extends Controller
     }
 
     /**
+     * API endpoint: List artikel dengan filter kategori dan pencarian
+     */
+    public function apiIndex(Request $request)
+    {
+        $query = Artikel::with('author', 'kategori')->latest();
+
+        // Filter by kategori slug (deskripsi)
+        if ($request->filled('kategori') && $request->kategori !== 'semua') {
+            $kategori = Kategori::where('deskripsi', $request->kategori)->first();
+            if ($kategori) {
+                $query->where('id_kategori', $kategori->id_kategori);
+            } else {
+                return response()->json([
+                    'error' => 'Kategori tidak ditemukan',
+                    'available_categories' => Kategori::pluck('deskripsi')->toArray()
+                ], 404);
+            }
+        }
+
+        // Search by judul
+        if ($request->filled('q')) {
+            $query->where('judul', 'like', '%' . $request->q . '%');
+        }
+
+        $artikels = $query->paginate(6);
+        return response()->json($artikels);
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()

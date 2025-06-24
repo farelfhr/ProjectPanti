@@ -75,10 +75,15 @@ DB_PASSWORD=password
 php artisan migrate
 ```
 
-8. Jalankan seeder (jika ada)
+8. Jalankan seeder untuk membuat data awal (termasuk akun admin default):
 ```bash
 php artisan db:seed
 ```
+
+> **Catatan:** Seeder akan membuat beberapa akun admin default yang bisa digunakan untuk login ke panel admin:
+> - Email: **ferdi@gmail.com** / Password: **admin123**
+> - Email: **farel@gmail.com** / Password: **admin123**
+> - Email: **reyhan@gmail.com** / Password: **admin123**
 
 ## Menjalankan Aplikasi
 
@@ -86,34 +91,3 @@ php artisan db:seed
 ```bash
 php artisan serve
 ```
-
-2. Di terminal terpisah, jalankan Vite untuk development assets
-```bash
-npm run dev
-```
-
-3. Buka browser dan akses `http://localhost:8000`
-
-## Pengembangan
-
-Untuk menjalankan semua service development sekaligus (server, queue, logs, dan vite), gunakan perintah:
-```bash
-composer dev
-```
-
-## Testing
-
-Jalankan test suite menggunakan PHPUnit:
-```bash
-php artisan test
-```
-
-## Kontribusi
-
-1. Fork repository
-2. Buat branch fitur baru (`git checkout -b fitur-baru`)
-3. Commit perubahan (`git commit -m 'Menambahkan fitur baru'`)
-4. Push ke branch (`git push origin fitur-baru`)
-5. Buat Pull Request
-
-

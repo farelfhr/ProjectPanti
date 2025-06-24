@@ -23,7 +23,8 @@ class ArtikelController extends Controller
      */
     public function create()
     {
-        return view('admin.artikel.create');
+        $kategoris = \App\Models\Kategori::all();
+        return view('admin.artikel.create', compact('kategoris'));
     }
 
     /**
@@ -34,13 +35,13 @@ class ArtikelController extends Controller
         $request->validate([
             'judul' => 'required|string|max:255',
             'konten' => 'required|string',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'id_kategori' => 'required|exists:kategori,id_kategori',
         ]);
 
-        $data = $request->only(['judul', 'konten']);
+        $data = $request->only(['judul', 'konten', 'id_kategori']);
         $data['id_penulis'] = auth()->id();
         $data['publish_date'] = now();
-        $data['id_kategori'] = 1;
 
         if ($request->hasFile('gambar')) {
             $path = $request->file('gambar')->store('artikel', 'public');
@@ -65,7 +66,8 @@ class ArtikelController extends Controller
      */
     public function edit(Artikel $artikel)
     {
-        return view('admin.artikel.edit', compact('artikel'));
+        $kategoris = \App\Models\Kategori::all();
+        return view('admin.artikel.edit', compact('artikel', 'kategoris'));
     }
 
     /**

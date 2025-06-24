@@ -21,11 +21,15 @@ use App\Http\Controllers\Admin\FaqController as AdminFaqController; // Tambahkan
 
 use App\Models\Panti;
 use App\Models\Artikel;
+use App\Models\Kegiatan;
 
 Route::get('/', function () {
     $orphanages = Panti::latest()->take(3)->get();
     $news = Artikel::latest()->take(3)->get();
-    return view('beranda', compact('orphanages', 'news'));
+    $jumlahPanti = \App\Models\Panti::count();
+    $jumlahAnak = \App\Models\Panti::sum('jumlah_anak');
+    $jumlahProgram = Kegiatan::count();
+    return view('beranda', compact('orphanages', 'news', 'jumlahPanti', 'jumlahAnak', 'jumlahProgram'));
 })->name('home');
 
 Route::get('/dashboard', function () {
@@ -41,11 +45,9 @@ Route::middleware('auth')->group(function () {
 Route::get('/berita', [ArtikelController::class, 'index'])->name('berita.index');
 Route::get('/berita/{artikel}', [ArtikelController::class, 'show'])->name('berita.show');
 Route::get('/kategori/{deskripsi}', [ArtikelController::class, 'kategori']);
-Route::get('/artikel/search', [ArtikelController::class, 'search']);
 
-// API Routes untuk kategori - perbaikan di sini
-Route::get('/api/kategori/semua', [ArtikelController::class, 'getAllArtikel']);
-Route::get('/api/kategori/{deskripsi}', [ArtikelController::class, 'getArtikelByKategori']);
+// API endpoint artikel dinamis
+Route::get('/api/artikel', [ArtikelController::class, 'apiIndex']);
 
 Route::get('/daftar-panti', [DaftarPantiController::class, 'index'])->name('daftar-panti');
 Route::get('/panti/{id}', [PantiController::class, 'show'])->name('panti.show');

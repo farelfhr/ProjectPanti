@@ -4,7 +4,7 @@
         @if ($paginator->onFirstPage())
             <span class="px-4 py-2 rounded-full font-bold border border-[#ccc] text-gray-400 cursor-default">&laquo;</span>
         @else
-            <a href="{{ $paginator->previousPageUrl() }}#artikel" class="px-4 py-2 rounded-full font-bold border border-[#41644A] hover:bg-[#E9762B] hover:text-white transition duration-300 ease-in-out transform hover:scale-105">&laquo;</a>
+            <a href="{{ $paginator->previousPageUrl() }}#artikel" aria-label="Sebelumnya" class="px-4 py-2 rounded-full font-bold border border-[#41644A] hover:bg-[#E9762B] hover:text-white transition duration-300 ease-in-out transform hover:scale-105">&laquo;</a>
         @endif
 
         {{-- Dynamic Page Number --}}
@@ -27,7 +27,7 @@
             @if ($i == $current)
                 <span class="px-4 py-2 rounded-full font-bold border border-[#41644A] bg-[#E9762B] text-white">{{ $i }}</span>
             @else
-                <a href="{{ $paginator->url($i) }}#artikel" class="px-4 py-2 rounded-full font-bold border border-[#41644A] hover:bg-[#E9762B] hover:text-white transition duration-300 ease-in-out transform hover:scale-105">{{ $i }}</a>
+                <a href="{{ $paginator->url($i) }}#artikel" aria-label="Halaman {{ $i }}" class="px-4 py-2 rounded-full font-bold border border-[#41644A] hover:bg-[#E9762B] hover:text-white transition duration-300 ease-in-out transform hover:scale-105">{{ $i }}</a>
             @endif
         @endfor
 
@@ -37,12 +37,12 @@
         @endif
 
         @if ($end < $last)
-            <a href="{{ $paginator->url($last) }}#artikel" class="px-4 py-2 rounded-full font-bold border border-[#41644A] hover:bg-[#E9762B] hover:text-white transition duration-300 ease-in-out transform hover:scale-105">{{ $last }}</a>
+            <a href="{{ $paginator->url($last) }}#artikel" aria-label="Halaman terakhir" class="px-4 py-2 rounded-full font-bold border border-[#41644A] hover:bg-[#E9762B] hover:text-white transition duration-300 ease-in-out transform hover:scale-105">{{ $last }}</a>
         @endif
 
         {{-- Next Page Link --}}
         @if ($paginator->hasMorePages())
-            <a href="{{ $paginator->nextPageUrl() }}#artikel" class="px-4 py-2 rounded-full font-bold border border-[#41644A] hover:bg-[#E9762B] hover:text-white transition duration-300 ease-in-out transform hover:scale-105">&raquo;</a>
+            <a href="{{ $paginator->nextPageUrl() }}#artikel" aria-label="Berikutnya" class="px-4 py-2 rounded-full font-bold border border-[#41644A] hover:bg-[#E9762B] hover:text-white transition duration-300 ease-in-out transform hover:scale-105">&raquo;</a>
         @else
             <span class="px-4 py-2 rounded-full font-bold border border-[#ccc] text-gray-400 cursor-default">&raquo;</span>
         @endif

@@ -326,10 +326,13 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.remove('hover:bg-[#E9762B]', 'hover:text-white');
 
             // Show loading state
-/*             artikelContainer.innerHTML = '<div class="col-span-3 flex justify-center items-center py-8"><div class="text-[#41644A] font-bold">Memuat artikel...</div></div>';
- */
+            artikelContainer.innerHTML = '<div class="col-span-3 flex justify-center items-center py-8"><div class="text-[#41644A] font-bold">Memuat artikel...</div></div>';
+
             // Fetch articles
-            const url = `/api/kategori/${encodeURIComponent(kategori)}`;
+            const searchTerm = searchInput ? searchInput.value.trim() : '';
+            let url = `/api/artikel?`;
+            if (kategori && kategori !== 'semua') url += `kategori=${encodeURIComponent(kategori)}&`;
+            if (searchTerm) url += `q=${encodeURIComponent(searchTerm)}`;
 
             fetch(url)
                 .then(response => {
@@ -528,45 +531,50 @@ document.addEventListener('DOMContentLoaded', function() {
             return 'Tanggal tidak valid';
         }
     }
-});
 
-// Search functionality
+    // Search functionality
     const searchForm = document.getElementById('search-form');
     const searchInput = document.getElementById('search');
 
-    searchInput.addEventListener('input', function(e) {
-        e.preventDefault();
-        const query = searchInput.value.trim();
+    if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            e.preventDefault();
+            const query = searchInput.value.trim();
+            // Ambil kategori aktif
+            const activeBtn = document.querySelector('.kategori-btn.bg-\[\#E9762B\]');
+            const kategori = activeBtn ? activeBtn.dataset.kategori : '';
 
-        // Show loading state
-        artikelContainer.innerHTML = '<div class="col-span-3 flex justify-center items-center py-8"><div class="text-[#41644A] font-bold">Memuat artikel...</div></div>';
+            // Show loading state
+            artikelContainer.innerHTML = '<div class="col-span-3 flex justify-center items-center py-8"><div class="text-[#41644A] font-bold">Memuat artikel...</div></div>';
 
-        // Fetch articles based on search query
-        const url = `/api/artikel/search?search=${encodeURIComponent(query)}`;
+            // Fetch articles based on search and kategori
+            let url = `/api/artikel?`;
+            if (kategori && kategori !== 'semua') url += `kategori=${encodeURIComponent(kategori)}&`;
+            if (query) url += `q=${encodeURIComponent(query)}`;
 
-        fetch(url)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Search response data:', data);
-                updateArtikelList(data.data);
-                updatePagination(data);
-            })
-            .catch(error => {
-                console.error('Search error:', error);
-                artikelContainer.innerHTML = `
-                    <div class="col-span-3 text-center py-8">
-                        <p class="text-red-500 font-bold">Terjadi kesalahan saat memuat artikel</p>
-                        <p class="text-sm text-gray-600">${error.message}</p>
-                    </div>
-                `;
-                paginationContainer.innerHTML = '';
-            });
-    });
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    updateArtikelList(data.data);
+                    updatePagination(data);
+                })
+                .catch(error => {
+                    artikelContainer.innerHTML = `
+                        <div class="col-span-3 text-center py-8">
+                            <p class="text-red-500 font-bold">Terjadi kesalahan saat memuat artikel</p>
+                            <p class="text-sm text-gray-600">${error.message}</p>
+                        </div>
+                    `;
+                    paginationContainer.innerHTML = '';
+                });
+        });
+    }
+});
 </script>
 
 @endsection

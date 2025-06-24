@@ -26,13 +26,13 @@
                 </p>
                 
                 <div class="flex flex-col sm:flex-row gap-4 mb-12">
-                    <a href="/daftar-panti" class="btn-primary flex items-center justify-center space-x-2">
+                    <a href="/daftar-panti" class="btn-primary flex items-center justify-center space-x-2" aria-label="Jelajahi Panti Asuhan">
                         <span>Jelajahi Panti Asuhan</span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
                         </svg>
                     </a>
-                    <a href="/tentang" class="btn-secondary">
+                    <a href="/tentang" class="btn-secondary" aria-label="Pelajari Lebih Lanjut">
                         Pelajari Lebih Lanjut
                     </a>
                 </div>
@@ -45,7 +45,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21 12 1.5l9.75 19.5h-19.5Z" />
                             </svg>
             </div>
-                        <div class="text-2xl font-bold text-dark-green">25+</div>
+                        <div class="text-2xl font-bold text-dark-green">{{ $jumlahPanti }}</div>
                         <div class="text-sm text-primary-green">Panti Asuhan</div>
         </div>
                     <div class="text-center">
@@ -54,7 +54,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
               </svg>
         </div>
-                        <div class="text-2xl font-bold text-dark-green">500+</div>
+                        <div class="text-2xl font-bold text-dark-green">{{ $jumlahAnak }}</div>
                         <div class="text-sm text-primary-green">Anak Asuh</div>
     </div>
                     <div class="text-center">
@@ -63,8 +63,8 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                             </svg>
 </div>
-                        <div class="text-2xl font-bold text-dark-green">1000+</div>
-                        <div class="text-sm text-primary-green">Donatur</div>
+                        <div class="text-2xl font-bold text-dark-green">{{ $jumlahProgram }}</div>
+                        <div class="text-sm text-primary-green">Program/Kegiatan</div>
     </div>
         </div>
         </div>

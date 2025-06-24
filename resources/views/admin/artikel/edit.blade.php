@@ -6,7 +6,7 @@
     <div class="bg-white p-8 rounded-lg shadow-lg">
         <form action="{{ route('admin.artikel.update', $artikel) }}" method="POST" enctype="multipart/form-data">
             @method('PUT')
-            @include('admin.artikel._form')
+            @include('admin.artikel._form', ['kategoris' => $kategoris])
         </form>
     </div>
 @endsection

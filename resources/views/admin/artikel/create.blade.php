@@ -5,7 +5,7 @@
 @section('content')
     <div class="bg-white p-8 rounded-lg shadow-lg">
         <form action="{{ route('admin.artikel.store') }}" method="POST" enctype="multipart/form-data">
-            @include('admin.artikel._form')
+            @include('admin.artikel._form', ['kategoris' => $kategoris])
         </form>
     </div>
 @endsection
