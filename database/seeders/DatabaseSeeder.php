@@ -22,16 +22,16 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]); */
 
-        $this->call([KategoriSeeder::class, UserSeeder::class]);
+        $this->call([
+            KategoriSeeder::class,
+            KegiatanSeeder::class,
+            PantiSeeder::class,
+            UserSeeder::class,
+            FaqSeeder::class,
+        ]);
         Artikel::factory(20)->recycle([
             Kategori::all(),
             User::all()
         ])->create();
-
-        $this->call([
-            PantiSeeder::class,
-        ]);
-
-        $this->call([KegiatanSeeder::class]);
     }
 }

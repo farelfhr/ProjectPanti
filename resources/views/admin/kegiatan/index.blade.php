@@ -2,7 +2,7 @@
 @section('title', 'Manajemen Kegiatan Kerjasama')
 @section('content')
 <div class="bg-white p-8 rounded-lg shadow-lg">
-    <a href="{{ route('admin.kegiatan.create') }}" class="bg-brand-green hover:bg-brand-green-dark text-white font-bold py-2 px-4 rounded mb-6 inline-block">
+    <a href="{{ route('admin.kegiatan.create') }}" class="bg-lime-500 hover:bg-brand-green-dark  text-white font-bold py-2 px-4 rounded mb-6 inline-block">
         Tambah Kegiatan Baru
     </a>
     <table class="min-w-full bg-white">
