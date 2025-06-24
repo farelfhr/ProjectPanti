@@ -2,10 +2,11 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="sm:scroll-smooth">
 <head>
     <meta charset="utf-t">
+    <link rel="icon" type="image/gif" href="/images/titik_kebaikan_icon.gif">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Admin Panel') - {{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title', 'Admin Panel') - Titik Kebaikan</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
