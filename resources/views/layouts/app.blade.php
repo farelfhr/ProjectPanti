@@ -36,9 +36,9 @@
             <footer class="bg-[#0D4715] py-16 text-[#F1F0E9] font-medium">
                 <div class="max-w-6xl py-10 mx-auto">
                     <div>
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                        <div class="grid grid-cols-1 md:grid-cols-4 px-4 md:px-8 xl:px-0 gap-12">
                             <!-- Kolom 1: Logo dan Deskripsi -->
-                            <div class="flex flex-col col-span-2 gap-4">
+                            <div class="flex flex-col md:col-span-2 gap-4">
                                 <div class="flex items-center gap-3 mb-4">
                                     <img src="{{ asset('images/titik_kebaikan_logo.jpg') }}" alt="Titik Kebaikan Logo" class="h-12 w-auto"/>
                                     <div>
@@ -51,11 +51,11 @@
                                     dan panti asuhan di Kota Malang untuk menciptakan
                                     masa depan yang lebih cerah dan penuh harapan.
                                 </p>
-                                <div class="flex items-center gap-2 text-[#E9762B]">
+                                <div class="flex items-center col-span-1 gap-2 text-[#E9762B]">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                                     <span>Bersama kita wujudkan harapan</span>
                                 </div>
-                                <div class="flex gap-4 mt-6">
+                                <div class="flex gap-4 col-span-1 mt-6">
                                     <a href="#" class="bg-white bg-opacity-20 p-3 rounded-full hover:bg-opacity-40 transition-colors duration-300">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
                                     </a>
