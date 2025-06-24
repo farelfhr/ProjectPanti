@@ -2,19 +2,19 @@
 
 @section('content')
 <div class="m-h-screen px-4 py-4 sm:px-6 sm:py-8 lg:px-20 lg:py-8">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mx-auto pb-8">
         {{-- Header --}}
-        <div class="text-center mb-12">
+        <div class="text-left lg:text-center">
             <h1 class="text-4xl md:text-5xl font-bold text-[#0D4715] mb-4">
                 Daftar Panti Asuhan
             </h1>
-            <p class="text-lg text-[#41644A] max-w-2xl mx-auto">
+            <p class="text-lg text-[#41644A] max-w-2xl lg:mx-auto">
                 Temukan dan bantu panti asuhan di Kota Malang untuk memberikan masa depan yang lebih cerah bagi anak-anak.
             </p>
         </div>
 
         {{-- Peta Interaktif Section --}}
-        <div class="max-w-7xl mx-auto mb-12 py-16 px-4 rounded-3xl backdrop-blur-lg">
+        <div class="max-w-8xl mx-auto py-12 rounded-3xl backdrop-blur-lg">
             <div class="text-center mb-12">
                 <p class="text-3xl lg:text-4xl text-left lg:text-center mx-auto font-bold leading-relaxed">
                     Jelajahi sebaran lokasi panti asuhan kami dan <span class="text-[#E9762B]">dampak nyata</span> yang telah kami berikan kepada <span class="text-[#E9762B]">anak-anak</span> di berbagai wilayah Malang Raya
@@ -196,7 +196,7 @@
             </div>
 
     {{-- CTA Section --}}
-    <div class="mt-16 pt-16 pb-40 rounded-t-[100px] lg:rounded-t-[150px] bg-gradient-to-b from-[#2c4332] to-[#0e1811]">
+    <div class="mt-16 pt-16 pb-40 rounded-t-[100px] lg:rounded-t-[150px] px-6 lg:px-0 bg-gradient-to-b from-[#2c4332] to-[#0e1811]">
         <div class="text-center py-8 mb-8 lg:mb-16">
             <h1 class="text-4xl xl:text-6xl text-white mb-8 text-left lg:text-center lg:mx-auto font-bold lg:w-4/5">
                <span class="text-[#E9762B]">Mari Berbagi Kebahagiaan</span> untuk Panti Asuhan
@@ -207,7 +207,7 @@
             </p>
             </div>
 
-        <div class="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
+        <div class="flex flex-col sm:flex-row gap-4 lg:justify-center relative z-10">
             <a href="#" class="bg-[#E9762B] text-white hover:bg-[#d06426] font-semibold px-8 py-3 rounded-lg transition-colors duration-300">
                 Mulai Berdonasi
             </a>
