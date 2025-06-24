@@ -26,69 +26,68 @@
     </style>
 </head>
 <body class="flex h-screen bg-light-gray">
-    <aside id="adminSidebar" class="w-64 flex-shrink-0 bg-gray-800 text-gray-300 flex flex-col">
-        <div id="adminSidebar" class="h-20 flex items-center justify-center bg-gray-900">
+    <!-- Sidebar -->
+    <aside id="adminSidebar" class="fixed inset-y-0 left-0 z-30 w-64 bg-gray-800 text-gray-300 flex flex-col transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-200 ease-in-out">
+        <div class="h-20 flex items-center justify-center bg-gray-900">
             <h1 class="text-2xl font-bold text-white">{{ config('app.name') }}'s Admin</h1>
         </div>
         <!-- Sidebar -->
         <nav class="flex-grow px-4 py-6">
-            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 sidebar-link active">
+            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 sidebar-link{{ Route::is('admin.dashboard') ? ' active' : '' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
                 <span>Dashboard</span>
             </a>
 
-            <a href="{{ route('admin.artikel.index') }}" class="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg transition-colors duration-200 sidebar-link">
+            <a href="{{ route('admin.artikel.index') }}" class="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg transition-colors duration-200 sidebar-link{{ Route::is('admin.artikel.*') ? ' active' : '' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h4"/><path d="M16 2v20"/><path d="M8 7h4"/><path d="M8 12h4"/><path d="M8 17h4"/></svg>
                 <span>Manajemen Artikel</span>
             </a>
 
-            <a href="{{ route('admin.panti.index') }}" class="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg transition-colors duration-200 sidebar-link">
+            <a href="{{ route('admin.panti.index') }}" class="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg transition-colors duration-200 sidebar-link{{ Route::is('admin.panti.*') ? ' active' : '' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                 <span>Manajemen Panti</span>
             </a>
 
-            <a href="{{ route('admin.kategori.index') }}" class="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg transition-colors duration-200 sidebar-link">
+            <a href="{{ route('admin.kategori.index') }}" class="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg transition-colors duration-200 sidebar-link{{ Route::is('admin.kategori.*') ? ' active' : '' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
                 <span>Manajemen Kategori</span>
             </a>
 
-            <a href="{{ route('admin.kegiatan.index') }}" class="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg transition-colors duration-200 sidebar-link">
+            <a href="{{ route('admin.kegiatan.index') }}" class="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg transition-colors duration-200 sidebar-link{{ Route::is('admin.kegiatan.*') ? ' active' : '' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
                 <span>Manajemen Kegiatan</span>
             </a>
 
-            <a href="{{ route('admin.faqs.index') }}" class="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg transition-colors duration-200 sidebar-link">
+            <a href="{{ route('admin.faqs.index') }}" class="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg transition-colors duration-200 sidebar-link{{ Route::is('admin.faqs.*') ? ' active' : '' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
                 <span>Manajemen FAQ</span>
             </a>
 
-            <a href="{{ route('admin.kontak.index') }}" class="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg transition-colors duration-200 sidebar-link">
+            <a href="{{ route('admin.kontak.index') }}" class="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg transition-colors duration-200 sidebar-link{{ Route::is('admin.kontak.*') ? ' active' : '' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
                 <span>Pesan Masuk</span>
             </a>
 
-            <a href="{{ route('admin.users.index') }}" class="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg transition-colors duration-200 sidebar-link">
+            <a href="{{ route('admin.users.index') }}" class="flex items-center gap-3 px-4 py-3 mt-2 rounded-lg transition-colors duration-200 sidebar-link{{ Route::is('admin.users.*') ? ' active' : '' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                 <span>Manajemen Pengguna</span>
             </a>
         </nav>
 
         <div class="px-4 py-4 bg-gray-900">
-            <div class="flex items-center gap-3">
-                <img src="https://placehold.co/40x40/E2E8F0/333?text=A" alt="Avatar Admin" class="rounded-full w-10 h-10">
-                <div>
-                    <!--
-                        Ganti dengan data pengguna yang sedang login
-                        `Auth::user()->name`
-                    -->
-                    <p class="font-semibold text-white text-sm">{{ Auth::user()->name }}</p>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="text-xs text-red-400 hover:underline">Logout</button>
-                    </form>
+            <div class="flex flex-col gap-3">
+                <a href="{{ route('home') }}" class="w-full mb-2 inline-block text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-colors duration-200">Kembali ke Beranda</a>
+                <div class="flex items-center gap-3">
+                    <img src="https://placehold.co/40x40/E2E8F0/333?text=A" alt="Avatar Admin" class="rounded-full w-10 h-10">
+                    <div>
+                        <p class="font-semibold text-white text-sm">{{ Auth::user()->name }}</p>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="text-xs text-red-400 hover:underline">Logout</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-            {{-- <a href="{{ route('home') }}" class="text-blue-500 hover:text-blue-700">Kembali ke Beranda</a> --}}
         </div>
     </aside>
 
@@ -127,20 +126,27 @@
         function toggleSidebar(show) {
             const sidebar = document.getElementById('adminSidebar');
             const overlay = document.getElementById('sidebarOverlay');
-            const main = document.getElementById('adminMain');
             if (show) {
                 sidebar.classList.remove('-translate-x-full');
                 overlay.classList.remove('hidden');
-                if(window.innerWidth < 768) main.classList.add('ml-64');
+                document.body.classList.add('overflow-hidden');
             } else {
                 sidebar.classList.add('-translate-x-full');
                 overlay.classList.add('hidden');
-                if(window.innerWidth < 768) main.classList.remove('ml-64');
+                document.body.classList.remove('overflow-hidden');
             }
         }
+        // Tutup sidebar jika resize ke desktop
         window.addEventListener('resize', function() {
-            const main = document.getElementById('adminMain');
-            if(window.innerWidth >= 768) main.classList.remove('ml-64');
+            const sidebar = document.getElementById('adminSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if(window.innerWidth >= 768) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+            }
         });
     </script>
 </body>
