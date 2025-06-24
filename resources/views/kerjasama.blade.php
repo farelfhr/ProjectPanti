@@ -343,9 +343,7 @@
                                             </svg>
                                             <span class="font-medium">Salin Tautan</span>
                                         </button>
-                                        <button data-action="open-email-modal" 
-                                            data-email-subject="{{ $emailSubject }}" 
-                                            data-email-body="{{ $emailBody }}"   
+                                        <a href="{{ $mailtoLink }}" 
                                             class="flex items-center justify-center gap-2 px-4 py-3 border border-[#D0D5CB] rounded-lg hover:bg-[#F1F0E9] transition-colors duration-200">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 26"
                                                 stroke-width="1.5" stroke="currentColor" class="size-4">
@@ -353,7 +351,7 @@
                                                     d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
                                             </svg>
                                             <span class="font-medium">Undang Melalui Email</span>
-                                        </button>
+                                        </a>
                                     </div>
                                     <a href="{{ $gcal_link }}"
                                         class="w-full mt-3 flex items-center justify-center gap-2 px-4 py-3 bg-[#41644A] text-white rounded-lg hover:bg-[#0D4715] transition-colors duration-200 font-bold">
@@ -376,39 +374,6 @@
             </div>
         </div>
     </section>
-
-    <div id="email-share-modal" class="modal fixed inset-0 z-[60] hidden items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
-        <div class="modal-content bg-white rounded-2xl max-w-lg w-full mx-4 shadow-2xl animate-scale-in">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold text-gray-900">Bagikan Undangan via Email</h3>
-                    <button class="close-modal-btn p-1 rounded-full hover:bg-gray-200">
-                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
-                </div>
-                
-                <form id="email-share-form">
-                    <div class="mb-4">
-                        <label for="recipient-email" class="block text-sm font-medium text-gray-700 mb-1">Email Penerima</label>
-                        <input type="email" id="recipient-email" placeholder="contoh@email.com" required class="p-3 w-full bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E9762B]">
-                    </div>
-                    <div class="mb-4">
-                        <label for="email-subject" class="block text-sm font-medium text-gray-700 mb-1">Subjek</label>
-                        <input type="text" id="email-subject" readonly class="p-3 w-full bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
-                    </div>
-                    <div class="mb-4">
-                        <label for="email-body" class="block text-sm font-medium text-gray-700 mb-1">Isi Pesan</label>
-                        <textarea id="email-body" readonly rows="6" class="p-3 w-full bg-gray-100 border border-gray-300 rounded-lg resize-none cursor-not-allowed"></textarea>
-                    </div>
-                    <div class="flex justify-end">
-                        <button type="submit" class="bg-[#41644A] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#0D4715] transition-colors">
-                            Kirim Undangan
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <!-- Hubungi Kami Section -->
     <section class="py-20 bg-white relative">
