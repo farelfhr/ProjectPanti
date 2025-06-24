@@ -29,9 +29,14 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             FaqSeeder::class,
         ]);
-        Artikel::factory(20)->recycle([
-            Kategori::all(),
-            User::all()
-        ])->create();
+
+        $kategoriList = \App\Models\Kategori::all();
+        $userList = \App\Models\User::all();
+        foreach ($kategoriList as $kategori) {
+            \App\Models\Artikel::factory(2)->create([
+                'id_kategori' => $kategori->id_kategori,
+                'id_penulis' => $userList->random()->id,
+            ]);
+        }
     }
 }

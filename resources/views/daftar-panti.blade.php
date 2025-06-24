@@ -31,14 +31,8 @@
     </div>
 
                     <div class="flex flex-col gap-2">
-                        <label class="text-sm font-semibold text-white uppercase tracking-wider">Program</label>
-                        <select class="px-4 py-3 border-2 border-[#41644A]/20 rounded-xl bg-white transition-all duration-300 focus:outline-none focus:border-[#41644A] focus:ring-4 focus:ring-[#41644A]/10" id="programFilter">
-                            <option value="all">Semua Program</option>
-                            <option value="pendidikan">Pendidikan</option>
-                            <option value="kesehatan">Kesehatan</option>
-                            <option value="keterampilan">Keterampilan</option>
-                            <option value="pemberdayaan">Pemberdayaan</option>
-            </select>
+                        <label class="text-sm font-semibold text-white uppercase tracking-wider"></label>
+                       
                     </div>
                     
                     <div class="flex flex-col gap-2">

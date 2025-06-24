@@ -498,8 +498,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     .then(data => {
                         updateArtikelList(data.data);
                         updatePagination(data);
-                        // Scroll ke bagian artikel
-                        document.getElementById('artikel').scrollIntoView({ behavior: 'smooth' });
                     })
                     .catch(error => {
                         console.error('Error fetching page:', error);

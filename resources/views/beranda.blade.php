@@ -116,7 +116,7 @@
         {{-- Section Header --}}
         <div class="text-center mb-16 animate-fade-in">
             <h2 class="text-3xl lg:text-4xl font-bold text-dark-green mb-4">
-                Panti Asuhan Unggulan
+                Cari Panti Asuhan
             </h2>
             <p class="text-lg text-primary-green max-w-2xl mx-auto">
                 Temukan panti asuhan terpercaya di Malang yang membutuhkan dukungan Anda

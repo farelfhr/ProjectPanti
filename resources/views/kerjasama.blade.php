@@ -427,6 +427,16 @@
                             @enderror
                         </div>
                         <div class="mb-6">
+                            <label class="block text-lg font-bold text-[#0D4715] mb-2">Email</label>
+                            <input type="email" name="email" placeholder="Email Anda"
+                                value="{{ old('email', auth()->user()->email ?? '') }}"
+                                class="p-3 w-full bg-white border border-[#D0D5CB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E9762B] transition-all duration-300"
+                                required @if(!auth()->check()) autocomplete="off" @endif>
+                            @error('email')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="mb-6">
                             <label class="block text-lg font-bold text-[#0D4715] mb-2">Subjek Pesan</label>
                             <select name="subjek"
                                 class="p-3 w-full text-[#41644A] bg-white border border-[#D0D5CB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E9762B] transition-all duration-300"
@@ -452,20 +462,6 @@
                         <button type="submit"
                             class="w-full bg-[#E9762B] hover:bg-[#D0661A] text-white font-bold py-3 rounded-lg transition-colors duration-300">Kirim Pesan</button>
                     </form>
-                    @if(session('must_login'))
-                        <div class="mt-4 text-center p-3 bg-yellow-100 text-yellow-800 rounded-lg">
-                            {{ session('must_login') }}
-                            <br>
-                            <a href="{{ route('login') }}" class="inline-block mt-2 bg-[#41644A] text-white px-6 py-2 rounded-lg font-bold hover:bg-[#0D4715] transition-colors duration-200">Login Sekarang</a>
-                        </div>
-                    @endif
-
-                    {{-- Bagian ini akan menampilkan pesan sukses setelah form berhasil dikirim --}}
-                    @if (session('success'))
-                        <div id="form-message" class="mt-4 text-center p-3 bg-green-100 text-green-800 rounded-lg">
-                            {{ session('success') }}
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>
@@ -518,4 +514,142 @@
     </section>
 
     <script src="/js/jadwal-kegiatan.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.getElementById('contact-form');
+            const submitButton = contactForm.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+            
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Disable button dan ubah text
+                submitButton.disabled = true;
+                submitButton.textContent = 'Mengirim...';
+                submitButton.classList.add('opacity-75');
+                
+                // Hapus pesan error sebelumnya
+                const existingMessages = document.querySelectorAll('.error-message, .ajax-message');
+                existingMessages.forEach(msg => msg.remove());
+                
+                // Ambil form data
+                const formData = new FormData(contactForm);
+                
+                // Kirim AJAX request
+                fetch(contactForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Reset button
+                    submitButton.disabled = false;
+                    submitButton.textContent = originalButtonText;
+                    submitButton.classList.remove('opacity-75');
+                    
+                    if (data.success) {
+                        // Tampilkan pesan sukses
+                        showMessage(data.success, 'success');
+                        // Reset form
+                        contactForm.reset();
+                    } else if (data.must_login) {
+                        // Tampilkan pesan login required
+                        showMessage(data.must_login, 'warning');
+                    } else if (data.errors) {
+                        // Tampilkan error validasi
+                        Object.keys(data.errors).forEach(field => {
+                            const input = contactForm.querySelector(`[name="${field}"]`);
+                            if (input) {
+                                // Tambahkan border merah
+                                input.classList.add('border-red-500');
+                                
+                                const errorDiv = document.createElement('div');
+                                errorDiv.className = 'error-message text-red-500 text-xs mt-1';
+                                errorDiv.textContent = data.errors[field][0];
+                                input.parentNode.appendChild(errorDiv);
+                                
+                                // Hapus border merah saat user mulai mengetik
+                                input.addEventListener('input', function() {
+                                    this.classList.remove('border-red-500');
+                                    const errorMsg = this.parentNode.querySelector('.error-message');
+                                    if (errorMsg) {
+                                        errorMsg.remove();
+                                    }
+                                }, { once: true });
+                            }
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    submitButton.disabled = false;
+                    submitButton.textContent = originalButtonText;
+                    submitButton.classList.remove('opacity-75');
+                    showMessage('Silahkan login terlebih dahulu!.', 'error');
+                });
+            });
+            
+            function showMessage(message, type) {
+                // Hapus pesan sebelumnya
+                const existingMessage = document.querySelector('.ajax-message');
+                if (existingMessage) {
+                    existingMessage.remove();
+                }
+                
+                // Buat elemen pesan baru
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'ajax-message mt-4 text-center p-3 rounded-lg animate-fade-in-up';
+                
+                // Set warna berdasarkan tipe
+                if (type === 'success') {
+                    messageDiv.className += ' bg-green-100 text-green-800 border border-green-200';
+                } else if (type === 'warning') {
+                    messageDiv.className += ' bg-yellow-100 text-yellow-800 border border-yellow-200';
+                } else if (type === 'error') {
+                    messageDiv.className += ' bg-red-100 text-red-800 border border-red-200';
+                }
+                
+                messageDiv.textContent = message;
+                
+                // Tambahkan tombol login jika perlu login
+                if (type === 'warning') {
+                    const loginButton = document.createElement('a');
+                    loginButton.href = '{{ route("login") }}';
+                    loginButton.className = 'inline-block mt-2 bg-[#41644A] text-white px-6 py-2 rounded-lg font-bold hover:bg-[#0D4715] transition-colors duration-200';
+                    loginButton.textContent = 'Login Sekarang';
+                    messageDiv.appendChild(document.createElement('br'));
+                    messageDiv.appendChild(loginButton);
+                }
+                
+                // Tambahkan ke form
+                contactForm.appendChild(messageDiv);
+                
+                // Auto hide setelah 5 detik untuk pesan sukses
+                if (type === 'success') {
+                    setTimeout(() => {
+                        if (messageDiv.parentNode) {
+                            messageDiv.style.opacity = '0';
+                            messageDiv.style.transform = 'translateY(-10px)';
+                            messageDiv.style.transition = 'all 0.3s ease';
+                            setTimeout(() => {
+                                if (messageDiv.parentNode) {
+                                    messageDiv.remove();
+                                }
+                            }, 300);
+                        }
+                    }, 5000);
+                }
+            }
+        });
+    </script>
 @endsection
