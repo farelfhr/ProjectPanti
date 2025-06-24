@@ -286,6 +286,44 @@
                                     <p class="text-[#41644A] leading-relaxed">{{ $event['deskripsi_panjang'] }}</p>
                                 </div>
                                 <div class="border-t pt-6">
+
+                                    @php
+                                        $emailSubject = "Undangan Kegiatan: " . $event->nama_kegiatan;
+                                        $emailBody = "Assalamualaikum Wr. Wb.,\n\n";
+                                        $emailBody .= "Dengan hormat, kami mengundang Bapak/Ibu/Saudara/i untuk berpartisipasi dalam kegiatan kami:\n\n";
+                                        $emailBody .= "Nama Kegiatan: " . $event->nama_kegiatan . "\n";
+                                        $emailBody .= "Tanggal: " . \Carbon\Carbon::parse($event->tanggal)->isoFormat('dddd, D MMMM Y') . "\n";
+                                        $emailBody .= "Waktu: " . $event->waktu . " WIB\n";
+                                        $emailBody .= "Lokasi: " . ($event->panti ? $event->panti->nama_panti : 'Lokasi belum ditentukan') . "\n\n";
+                                        $emailBody .= "Deskripsi: " . strip_tags($event->deskripsi) . "\n\n";
+                                        $emailBody .= "Kehadiran Anda sangat berarti bagi kami dan anak-anak di panti.\n\n";
+                                        $emailBody .= "Terima kasih.\nWassalamualaikum Wr. Wb.";
+                                        $mailtoLink = "mailto:?subject=" . rawurlencode($emailSubject) . "&body=" . rawurlencode($emailBody);
+
+                                        $eventDate = \Carbon\Carbon::parse($event->tanggal)->format('Y-m-d');
+                                        
+                                        $timeParts = explode(' - ', $event->waktu);
+                                        $startTimeString = trim($timeParts[0]);
+                                        $endTimeString = isset($timeParts[1]) ? trim($timeParts[1]) : null;
+                                        
+                                        $startDateTime = \Carbon\Carbon::parse($eventDate . ' ' . $startTimeString, 'Asia/Jakarta');
+                                        
+                                        if ($endTimeString) {
+                                            $endDateTime = \Carbon\Carbon::parse($eventDate . ' ' . $endTimeString, 'Asia/Jakarta');
+                                        } else {
+                                            $endDateTime = $startDateTime->copy()->addHour();
+                                        }
+
+                                        $gcal_start = $startDateTime->utc()->format('Ymd\THis\Z');
+                                        $gcal_end = $endDateTime->utc()->format('Ymd\THis\Z');
+
+                                        $gcal_link = "https://www.google.com/calendar/render?action=TEMPLATE";
+                                        $gcal_link .= "&text=" . rawurlencode($event->nama_kegiatan);
+                                        $gcal_link .= "&dates=" . $gcal_start . "/" . $gcal_end;
+                                        $gcal_link .= "&details=" . rawurlencode("Untuk detail lebih lanjut, hubungi penyelenggara.\n\n" . strip_tags($event->deskripsi));
+                                        $gcal_link .= "&location=" . rawurlencode($event->panti ? $event->panti->nama_panti : 'Lokasi belum ditentukan');
+                                    @endphp
+
                                     <h3 class="font-semibold text-[#0D4715] mb-4 flex items-center gap-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="size-4">
@@ -296,7 +334,7 @@
                                     </h3>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                         <button
-                                            class="share-link flex items-center justify-center gap-2 px-4 py-3 border border-[#D0D5CB] rounded-lg hover:bg-[#F1F0E9] transition-colors duration-200"
+                                            data-action="copy-link" class="flex items-center justify-center gap-2 px-4 py-3 border border-[#D0D5CB] rounded-lg hover:bg-[#F1F0E9] transition-colors duration-200"
                                             data-url="{{ url('/kerjasama#' . $event['id']) }}">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="size-4">
@@ -305,7 +343,9 @@
                                             </svg>
                                             <span class="font-medium">Salin Tautan</span>
                                         </button>
-                                        <button
+                                        <button data-action="open-email-modal" 
+                                            data-email-subject="{{ $emailSubject }}" 
+                                            data-email-body="{{ $emailBody }}"   
                                             class="flex items-center justify-center gap-2 px-4 py-3 border border-[#D0D5CB] rounded-lg hover:bg-[#F1F0E9] transition-colors duration-200">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 26"
                                                 stroke-width="1.5" stroke="currentColor" class="size-4">
@@ -315,7 +355,7 @@
                                             <span class="font-medium">Undang Melalui Email</span>
                                         </button>
                                     </div>
-                                    <button
+                                    <a href="{{ $gcal_link }}"
                                         class="w-full mt-3 flex items-center justify-center gap-2 px-4 py-3 bg-[#41644A] text-white rounded-lg hover:bg-[#0D4715] transition-colors duration-200 font-bold">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="size-4">
@@ -323,7 +363,7 @@
                                                 d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
                                         </svg>
                                         Tambahkan Ke Kalender
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -336,6 +376,39 @@
             </div>
         </div>
     </section>
+
+    <div id="email-share-modal" class="modal fixed inset-0 z-[60] hidden items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
+        <div class="modal-content bg-white rounded-2xl max-w-lg w-full mx-4 shadow-2xl animate-scale-in">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-900">Bagikan Undangan via Email</h3>
+                    <button class="close-modal-btn p-1 rounded-full hover:bg-gray-200">
+                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                
+                <form id="email-share-form">
+                    <div class="mb-4">
+                        <label for="recipient-email" class="block text-sm font-medium text-gray-700 mb-1">Email Penerima</label>
+                        <input type="email" id="recipient-email" placeholder="contoh@email.com" required class="p-3 w-full bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E9762B]">
+                    </div>
+                    <div class="mb-4">
+                        <label for="email-subject" class="block text-sm font-medium text-gray-700 mb-1">Subjek</label>
+                        <input type="text" id="email-subject" readonly class="p-3 w-full bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
+                    </div>
+                    <div class="mb-4">
+                        <label for="email-body" class="block text-sm font-medium text-gray-700 mb-1">Isi Pesan</label>
+                        <textarea id="email-body" readonly rows="6" class="p-3 w-full bg-gray-100 border border-gray-300 rounded-lg resize-none cursor-not-allowed"></textarea>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="submit" class="bg-[#41644A] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#0D4715] transition-colors">
+                            Kirim Undangan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- Hubungi Kami Section -->
     <section class="py-20 bg-white relative">

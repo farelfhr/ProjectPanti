@@ -1,133 +1,71 @@
-function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.classList.add("hidden");
-        modal.classList.remove("flex");
-        document.body.style.overflow = ""; // Restore scrolling
+document.addEventListener('DOMContentLoaded', () => {
+    const eventCards = document.querySelectorAll('.event-card');
+    const modals = document.querySelectorAll('.modal');
+    
+    // PERUBAHAN DI SINI: Mencari atribut data-action, bukan kelas .share-link
+    const copyLinkButtons = document.querySelectorAll('[data-action="copy-link"]');
+
+    // Fungsi untuk membuka modal
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.classList.add('overflow-hidden');
+        }
     }
-}
 
-document.addEventListener("DOMContentLoaded", () => {
-    const eventCards = document.querySelectorAll(".event-card");
-    const modals = document.querySelectorAll(".modal");
-    const closeButtons = document.querySelectorAll(".close-modal-btn");
+    // Fungsi untuk menutup modal (dijadikan global agar bisa diakses dari `onclick`)
+    window.closeModal = function(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.classList.remove('overflow-hidden');
+        }
+    }
 
-    // Open modal and disable body scroll
-    eventCards.forEach((card) => {
-        card.addEventListener("click", () => {
-            const modalId = card.getAttribute("data-modal");
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.remove("hidden");
-                modal.classList.add("flex");
-                document.body.style.overflow = "hidden"; // Disable scrolling
-            }
+    // Event listener untuk setiap kartu kegiatan
+    eventCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const modalId = card.dataset.modal;
+            openModal(modalId);
         });
     });
 
-    // Close modal when clicking the close button
-    closeButtons.forEach((button) => {
-        button.addEventListener("click", (event) => {
-            event.stopPropagation(); // Prevent click from bubbling to modal
-            const modalId = button.getAttribute("data-modal-id");
-            closeModal(modalId);
-        });
-    });
-
-    // Close modal when clicking outside
-    modals.forEach((modal) => {
-        modal.addEventListener("click", (event) => {
-            if (event.target === modal) {
+    // Event listener untuk menutup modal saat mengklik area luar
+    modals.forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            // Hanya tutup jika yang diklik adalah latar belakang modal itu sendiri
+            if (e.target === modal) {
                 closeModal(modal.id);
             }
         });
     });
 
-    // Close modal when pressing Escape key
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-            modals.forEach((modal) => {
-                if (!modal.classList.contains("hidden")) {
-                    closeModal(modal.id);
-                }
-            });
-        }
-    });
+    // PERUBAHAN DI SINI: Event listener ini sekarang HANYA untuk tombol salin tautan
+    copyLinkButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.stopPropagation(); // Mencegah event "naik" ke parent, penting untuk elemen di dalam modal
 
-    // Share link functionality
-    document.querySelectorAll(".share-link").forEach((button) => {
-        button.addEventListener("click", () => {
-            const url = button.getAttribute("data-url");
+            const url = button.dataset.url;
+            if (!url) return;
+
             navigator.clipboard.writeText(url).then(() => {
-                alert("Tautan telah disalin ke clipboard!");
-            }).catch((err) => {
-                console.error("Gagal menyalin tautan:", err);
+                const span = button.querySelector('span');
+                const originalText = span.textContent;
+                span.textContent = 'Tautan Disalin!';
+                button.disabled = true;
+
+                setTimeout(() => {
+                    span.textContent = originalText;
+                    button.disabled = false;
+                }, 2000);
+            }).catch(err => {
+                console.error('Gagal menyalin tautan: ', err);
+                const span = button.querySelector('span');
+                span.textContent = 'Gagal Menyalin';
             });
         });
     });
-
-    const form = document.getElementById('contact-form');
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(form);
-            const submitBtn = form.querySelector('button[type="submit"]');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Mengirim...';
-
-            // Remove previous feedback
-            const prevMsg = document.getElementById('form-message-ajax');
-            if (prevMsg) prevMsg.remove();
-
-            fetch(form.action, {
-                method: 'POST',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': form.querySelector('input[name=_token]').value,
-                },
-                body: formData
-            })
-            .then(async res => {
-                const contentType = res.headers.get('content-type');
-                let data;
-                if (contentType && contentType.includes('application/json')) {
-                    data = await res.json();
-                } else {
-                    data = { html: await res.text() };
-                }
-                return { ok: res.ok, status: res.status, data };
-            })
-            .then(({ok, status, data}) => {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Kirim Pesan';
-                // Success (login user)
-                if (ok && data.success) {
-                    form.reset();
-                    showAjaxMessage(data.success, 'success');
-                } else if (data.must_login) {
-                    showAjaxMessage(data.must_login, 'warning');
-                } else if (data.errors) {
-                    // Laravel validation errors
-                    let msg = Object.values(data.errors).map(arr => arr.join('<br>')).join('<br>');
-                    showAjaxMessage(msg, 'danger');
-                } else {
-                    showAjaxMessage('Terjadi kesalahan. Silakan coba lagi.', 'danger');
-                }
-            })
-            .catch(() => {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Kirim Pesan';
-                showAjaxMessage('Terjadi kesalahan jaringan.', 'danger');
-            });
-        });
-    }
-
-    function showAjaxMessage(msg, type) {
-        const color = type === 'success' ? 'green' : (type === 'warning' ? 'yellow' : 'red');
-        const el = document.createElement('div');
-        el.id = 'form-message-ajax';
-        el.className = `mt-4 text-center p-3 bg-${color}-100 text-${color}-800 rounded-lg`;
-        el.innerHTML = msg;
-        form.parentNode.insertBefore(el, form.nextSibling);
-    }
 });
