@@ -186,7 +186,7 @@
 
                         {{-- Actions --}}
                         <div class="flex space-x-3">
-                            <a href="{{ $orphanage->id ? route('panti.show', $orphanage->id) : '#' }}" class="flex-1 bg-primary-green text-primary-cream py-2 px-4 rounded-lg text-sm font-medium hover:bg-dark-green transition-colors duration-200">
+                            <a href="{{ $orphanage->id_panti ? route('panti.show', $orphanage->id_panti) : '#' }}" class="flex-1 bg-primary-green text-primary-cream py-2 px-4 rounded-lg text-sm font-medium hover:bg-dark-green transition-colors duration-200">
                                 Lihat Detail
                             </a>
                             <button class="bg-accent-orange text-primary-cream p-2 rounded-lg hover:bg-opacity-90 transition-colors duration-200">

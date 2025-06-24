@@ -383,7 +383,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const kategoriArtikel = artikel.kategori?.nama || 'Tidak Ada Kategori';
             const publishDate = formatDate(artikel.publish_date);
             const konten = artikel.konten ? artikel.konten.substring(0, 100) + '...' : '';
-            const gambar = artikel.gambar || '';
+            const gambar = artikel.gambar ? window.location.origin + '/storage/' + artikel.gambar : '';;
 
             const articleHTML = `
                 <a href="/berita/${artikel.id_artikel}" class="block news-card";">
