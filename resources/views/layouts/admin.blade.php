@@ -18,6 +18,8 @@
                 <a href="{{ route('admin.artikel.index') }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Manajemen Artikel</a>
                 <a href="{{ route('admin.panti.index') }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Manajemen Panti</a>
                 <a href="{{ route('admin.kategori.index') }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Manajemen Kategori</a>
+                <a href="{{ route('admin.kegiatan.index') }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Manajemen Kegiatan</a>
+                <a href="{{ route('admin.faqs.index') }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Manajemen FAQ</a>
                 <a href="{{ route('admin.kontak.index') }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Pesan Masuk</a>
                 <a href="{{ route('admin.users.index') }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Manajemen Pengguna</a>
                 {{-- Tambahkan link manajemen lain di sini (Panti, Kategori, dll) --}}
