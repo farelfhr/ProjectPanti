@@ -439,15 +439,6 @@
                             @enderror
                         </div>
                         <div class="mb-6">
-                            <label class="block text-lg font-bold text-[#0D4715] mb-2">Email</label>
-                            <input type="email" name="email" placeholder="Email Anda" value="{{ old('email', auth()->user()->email ?? '') }}"
-                                class="p-3 w-full bg-white border border-[#D0D5CB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E9762B] transition-all duration-300"
-                                required @if(!auth()->check()) autocomplete="off" @endif>
-                            @error('email')
-                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="mb-6">
                             <label class="block text-lg font-bold text-[#0D4715] mb-2">Nomor Telepon</label>
                             <input type="tel" name="telepon" placeholder="Nomor Telepon Anda"
                                 value="{{ old('telepon') }}"
