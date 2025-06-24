@@ -81,9 +81,7 @@ php artisan db:seed
 ```
 
 > **Catatan:** Seeder akan membuat beberapa akun admin default yang bisa digunakan untuk login ke panel admin:
-> - Email: **ferdi@gmail.com** / Password: **admin123**
-> - Email: **farel@gmail.com** / Password: **admin123**
-> - Email: **reyhan@gmail.com** / Password: **admin123**
+> - Email: **admin@gmail.com** / Password: **admin123**
 
 ## Menjalankan Aplikasi
 
