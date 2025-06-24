@@ -28,7 +28,11 @@ class Panti extends Model
         'jumlah_anak',
         'kapasitas',
         'tahun_berdiri',
-        'deskripsi'
+        'deskripsi',
+        'qr_code',
+        'whatsapp_number',
+        'bank_account',
+        'bank_name'
     ];
 
     public function kebutuhan(): HasMany

@@ -122,6 +122,7 @@
                 </div>
             </footer>
         </div>
+        <script src="{{ asset('js/donation-modal.js') }}"></script>
         @stack('scripts')
     </body>
 </html>

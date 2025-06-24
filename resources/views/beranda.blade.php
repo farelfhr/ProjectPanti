@@ -75,8 +75,8 @@
                     <div class="bg-gradient-to-br from-primary-green to-dark-green rounded-2xl p-8 transform rotate-3 shadow-2xl">
                         <div class="bg-primary-cream rounded-xl overflow-hidden transform -rotate-3">
                             <img 
-                                src="https://bucket-api.baznas.go.id/bucket-api/file?bucket=bzn-fdr-smb-p5739641&file=attachments/new_artikel/ODE3MTE3MjA2MTY0Mzg.jpg" 
-                                alt="Anak-anak di panti asuhan"
+                                src="/images/orphanages/mainPage.jpg" 
+                                alt="Titik Kebaikan - Gambar Utama"
                                 class="w-full h-96 object-cover"
                             />
                             <div class="p-6">
@@ -88,7 +88,7 @@
                                         {{ $heroOrphanage->nama_panti }}
                                     </h3>
                                     <p class="text-primary-green text-sm">
-                                        Melayani {{ $heroOrphanage->jumlah_anak }} anak dengan penuh kasih sayang sejak {{ $heroOrphanage->tahun_berdiri }}
+                                        Melayani {{ $heroOrphanage->jumlah_anak }} anak dengan penuh kasih sayang melalui informasi Panti
                                     </p>
                                 @else
                                     <h3 class="text-lg font-semibold text-dark-green mb-2">

@@ -60,60 +60,18 @@
             <h3 class="text-lg font-semibold text-gray-700 mb-4">Aktivitas Terbaru</h3>
             <div class="space-y-4">
                 @forelse($recentActivities as $activity)
-                    @switch($activity->type)
-                        
-                        @case('panti_baru')
-                        <div class="flex items-start gap-3">
-                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-500"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                            </div>
-                            <div>
-                                <p class="text-sm font-medium text-gray-800">Panti baru terdaftar</p>
-                                <p class="text-xs text-gray-500">
-                                    {{ $activity->nama_panti }}.
-                                    <span class="italic">
-                                        {{ $activity->created_at->diffForHumans() }}.
-                                    </span>
-                                </p>
-                            </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-500"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                         </div>
-                        @break
-
-                        @case('artikel_baru')
-                        <div class="flex items-start gap-3">
-                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-500"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-                            </div>
-                            <div>
-                                <p class="text-sm font-medium text-gray-800">Artikel baru ditambahkan</p>
-                                <p class="text-xs text-gray-500">
-                                    "\Illuminate\Support\Str::limit($activity->judul, 30) Pentingnya Nutrisi..." oleh Admin.
-                                    <span class="italic">
-                                        {{ $activity->created_at->diffForHumans() }}.
-                                    </span>
-                                </p>
-                            </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-800">{{ $activity->action }}</p>
+                            <p class="text-xs text-gray-500">
+                                {{ $activity->description }}
+                                <span class="italic">oleh {{ $activity->user_name }}, {{ $activity->created_at->diffForHumans() }}</span>
+                            </p>
                         </div>
-                        @break
-
-                        @case('pesan_baru')
-                        <div class="flex items-start gap-3">
-                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                            </div>
-                            <div>
-                                <p class="text-sm font-medium text-gray-800">Pesan baru diterima</p>
-                                <p class="text-xs text-gray-500">
-                                    Dari {{ $activity->nama }}.
-                                    <span class="italic">
-                                        {{ $activity->created_at->diffForHumans() }}.
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
-                        @break
-
-                    @endswitch
+                    </div>
                 @empty
                 <div class="text-center py-4">
                     <p class="text-sm text-gray-500">Tidak ada aktivitas terbaru.</p>

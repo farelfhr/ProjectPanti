@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -60,6 +61,13 @@ class UserController extends Controller
 
         $user->is_admin = $request->has('is_admin');
         $user->save();
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Edit User',
+            'subject_type' => 'User',
+            'subject_id' => $user->id,
+            'description' => 'Nama: ' . $user->name,
+        ]);
 
         return redirect()->route('admin.users.index')->with('success', 'Peran pengguna berhasil diperbarui.');
     }
@@ -73,6 +81,13 @@ class UserController extends Controller
             return back()->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
         }
 
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Hapus User',
+            'subject_type' => 'User',
+            'subject_id' => $user->id,
+            'description' => 'Nama: ' . $user->name,
+        ]);
         $user->delete();
         return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil dihapus.');
     }

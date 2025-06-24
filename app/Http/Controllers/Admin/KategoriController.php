@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kategori;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
 class KategoriController extends Controller
@@ -22,7 +23,14 @@ class KategoriController extends Controller
     public function store(Request $request)
     {
         $request->validate(['nama' => 'required|string|unique:kategori,nama|max:255', 'deskripsi' => 'nullable|string']);
-        Kategori::create($request->all());
+        $kategori = Kategori::create($request->all());
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Tambah Kategori',
+            'subject_type' => 'Kategori',
+            'subject_id' => $kategori->id_kategori,
+            'description' => 'Nama: ' . $kategori->nama,
+        ]);
         return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil ditambahkan.');
     }
 
@@ -35,11 +43,25 @@ class KategoriController extends Controller
     {
         $request->validate(['nama' => 'required|string|max:255|unique:kategori,nama,' . $kategori->id_kategori . ',id_kategori', 'deskripsi' => 'nullable|string']);
         $kategori->update($request->all());
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Edit Kategori',
+            'subject_type' => 'Kategori',
+            'subject_id' => $kategori->id_kategori,
+            'description' => 'Nama: ' . $kategori->nama,
+        ]);
         return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil diperbarui.');
     }
 
     public function destroy(Kategori $kategori)
     {
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Hapus Kategori',
+            'subject_type' => 'Kategori',
+            'subject_id' => $kategori->id_kategori,
+            'description' => 'Nama: ' . $kategori->nama,
+        ]);
         // Tambahan: Cek jika ada artikel yang menggunakan kategori ini sebelum menghapus
         if ($kategori->artikel()->count() > 0) {
             return back()->with('error', 'Kategori tidak dapat dihapus karena masih digunakan oleh artikel.');

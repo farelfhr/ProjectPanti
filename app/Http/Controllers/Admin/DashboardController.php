@@ -7,6 +7,7 @@ use App\Models\Artikel;
 use App\Models\Panti;
 use App\Models\Kontak;
 use App\Models\User;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -17,19 +18,7 @@ class DashboardController extends Controller
         $jumlahPesan = Kontak::count();
         $jumlahUser = User::count();
 
-        $recentPanti = Panti::latest()->take(5)->get()->map(function($item) {
-            $item->type = 'panti_baru';
-            return $item;
-        });
-        $recentArtikel = Artikel::latest()->take(5)->get()->map(function($item) {
-            $item->type = 'artikel_baru';
-            return $item;
-        });
-        $recentKontak = Kontak::latest()->take(5)->get()->map(function($item) {
-            $item->type = 'pesan_baru';
-            return $item;
-        });
-        $recentActivities = $recentPanti->concat($recentArtikel)->concat($recentKontak)->sortByDesc('created_at')->take(5);
+        $recentActivities = ActivityLog::latest()->limit(10)->get();
 
         return view('admin.dashboard', compact('jumlahArtikel', 'jumlahPanti', 'jumlahPesan', 'jumlahUser', 'recentActivities'));
     }

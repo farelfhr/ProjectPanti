@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Panti;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\ActivityLog;
 
 class PantiController extends Controller
 {
@@ -41,6 +42,10 @@ class PantiController extends Controller
             'email' => 'required|email|unique:panti,email',
             'social_media_url' => 'nullable|url',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'qr_code' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'whatsapp_number' => 'nullable|string|max:20',
+            'bank_account' => 'nullable|string|max:50',
+            'bank_name' => 'nullable|string|max:100',
         ]);
 
         if ($request->hasFile('gambar')) {
@@ -48,7 +53,19 @@ class PantiController extends Controller
             $validatedData['gambar'] = $path;
         }
 
-        Panti::create($validatedData);
+        if ($request->hasFile('qr_code')) {
+            $path = $request->file('qr_code')->store('qr-codes', 'public');
+            $validatedData['qr_code'] = $path;
+        }
+
+        $panti = Panti::create($validatedData);
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Tambah Panti',
+            'subject_type' => 'Panti',
+            'subject_id' => $panti->id_panti,
+            'description' => 'Nama: ' . $panti->nama,
+        ]);
 
         return redirect()->route('admin.panti.index')->with('success', 'Data panti berhasil ditambahkan.');
     }
@@ -85,6 +102,10 @@ class PantiController extends Controller
             'email' => 'required|email|unique:panti,email,' . $panti->id_panti . ',id_panti',
             'social_media_url' => 'nullable|url',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'qr_code' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'whatsapp_number' => 'nullable|string|max:20',
+            'bank_account' => 'nullable|string|max:50',
+            'bank_name' => 'nullable|string|max:100',
         ]);
 
         if ($request->hasFile('gambar')) {
@@ -97,7 +118,24 @@ class PantiController extends Controller
             $validatedData['gambar'] = $path;
         }
 
+        if ($request->hasFile('qr_code')) {
+            // Hapus QR code lama jika ada
+            if ($panti->qr_code) {
+                Storage::disk('public')->delete($panti->qr_code);
+            }
+            // Simpan QR code baru
+            $path = $request->file('qr_code')->store('qr-codes', 'public');
+            $validatedData['qr_code'] = $path;
+        }
+
         $panti->update($validatedData);
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Edit Panti',
+            'subject_type' => 'Panti',
+            'subject_id' => $panti->id_panti,
+            'description' => 'Nama: ' . $panti->nama,
+        ]);
 
         return redirect()->route('admin.panti.index')->with('success', 'Data panti berhasil diperbarui.');
     }
@@ -111,6 +149,13 @@ class PantiController extends Controller
             Storage::disk('public')->delete($panti->gambar);
         }
 
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Hapus Panti',
+            'subject_type' => 'Panti',
+            'subject_id' => $panti->id_panti,
+            'description' => 'Nama: ' . $panti->nama,
+        ]);
         $panti->delete();
         return redirect()->route('admin.panti.index')->with('success', 'Data panti berhasil dihapus.');
     }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Artikel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\ActivityLog;
 
 class ArtikelController extends Controller
 {
@@ -48,7 +49,15 @@ class ArtikelController extends Controller
             $data['gambar'] = $path;
         }
 
-        Artikel::create($data);
+        $artikel = Artikel::create($data);
+        dd('masuk logging', auth()->user());
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Tambah Artikel',
+            'subject_type' => 'Artikel',
+            'subject_id' => $artikel->id,
+            'description' => 'Judul: ' . $artikel->judul,
+        ]);
 
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil dibuat.');
     }
@@ -93,8 +102,14 @@ class ArtikelController extends Controller
             $data['gambar'] = $path;
         }
 
-        //$artikel->update($request->all());
         $artikel->update($data);
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Edit Artikel',
+            'subject_type' => 'Artikel',
+            'subject_id' => $artikel->id,
+            'description' => 'Judul: ' . $artikel->judul,
+        ]);
 
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil diperbarui.');
     }
@@ -108,6 +123,13 @@ class ArtikelController extends Controller
             Storage::disk('public')->delete($artikel->gambar);
         }
         
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Hapus Artikel',
+            'subject_type' => 'Artikel',
+            'subject_id' => $artikel->id,
+            'description' => 'Judul: ' . $artikel->judul,
+        ]);
         $artikel->delete();
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil dihapus.');
     }

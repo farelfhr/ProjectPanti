@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kebutuhan;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
 class KebutuhanController extends Controller
@@ -36,7 +37,14 @@ class KebutuhanController extends Controller
             'urgency_level' => 'required|string',
         ]);
 
-        Kebutuhan::create($validatedData);
+        $kebutuhan = Kebutuhan::create($validatedData);
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Tambah Kebutuhan',
+            'subject_type' => 'Kebutuhan',
+            'subject_id' => $kebutuhan->id,
+            'description' => 'Nama: ' . $kebutuhan->nama_kebutuhan,
+        ]);
 
         return back()->with('success', 'Kebutuhan berhasil ditambahkan.');
     }
@@ -60,9 +68,25 @@ class KebutuhanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Kebutuhan $kebutuhan)
     {
-        //
+        $validatedData = $request->validate([
+            'id_panti' => 'required|exists:panti,id_panti',
+            'tipe' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'urgency_level' => 'required|string',
+        ]);
+
+        $kebutuhan->update($validatedData);
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Edit Kebutuhan',
+            'subject_type' => 'Kebutuhan',
+            'subject_id' => $kebutuhan->id,
+            'description' => 'Nama: ' . $kebutuhan->nama_kebutuhan,
+        ]);
+
+        return back()->with('success', 'Kebutuhan berhasil diupdate.');
     }
 
     /**
@@ -70,6 +94,13 @@ class KebutuhanController extends Controller
      */
     public function destroy(Kebutuhan $kebutuhan)
     {
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Hapus Kebutuhan',
+            'subject_type' => 'Kebutuhan',
+            'subject_id' => $kebutuhan->id,
+            'description' => 'Nama: ' . $kebutuhan->nama_kebutuhan,
+        ]);
         $kebutuhan->delete();
         return back()->with('success', 'Kebutuhan berhasil dihapus.');
     }

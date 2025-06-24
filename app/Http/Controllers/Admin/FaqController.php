@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
 class FaqController extends Controller
@@ -26,7 +27,14 @@ class FaqController extends Controller
             'answer' => 'required|string',
         ]);
 
-        Faq::create($validated);
+        $faq = Faq::create($validated);
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Tambah FAQ',
+            'subject_type' => 'FAQ',
+            'subject_id' => $faq->id,
+            'description' => 'Pertanyaan: ' . $faq->question,
+        ]);
         return redirect()->route('admin.faqs.index')->with('success', 'FAQ berhasil ditambahkan.');
     }
 
@@ -43,11 +51,25 @@ class FaqController extends Controller
         ]);
 
         $faq->update($validated);
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Edit FAQ',
+            'subject_type' => 'FAQ',
+            'subject_id' => $faq->id,
+            'description' => 'Pertanyaan: ' . $faq->question,
+        ]);
         return redirect()->route('admin.faqs.index')->with('success', 'FAQ berhasil diperbarui.');
     }
 
     public function destroy(Faq $faq)
     {
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Hapus FAQ',
+            'subject_type' => 'FAQ',
+            'subject_id' => $faq->id,
+            'description' => 'Pertanyaan: ' . $faq->question,
+        ]);
         $faq->delete();
         return redirect()->route('admin.faqs.index')->with('success', 'FAQ berhasil dihapus.');
     }

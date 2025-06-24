@@ -128,7 +128,7 @@
                         <path d="M9.172 9.172a4 4 0 1 0 5.656 5.656 4 4 0 0 0-5.656-5.656z"></path>
                         <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"></path>
                     </svg>
-                    <h3 class="text-2xl font-bold">500+</h3>
+                    <h3 class="text-2xl font-bold">50+</h3>
                     <p class="text-[#F1F0E9]">Anak Asuh</p>
                 </div>
             </div>

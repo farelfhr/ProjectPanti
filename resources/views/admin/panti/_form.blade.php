@@ -80,6 +80,45 @@
     @endif
 </div>
 
+{{-- Payment Information Section --}}
+<div class="border-t pt-6 mb-6">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Informasi Pembayaran</h3>
+    
+    <div class="mb-4">
+        <label for="qr_code" class="block text-gray-700 text-sm font-bold mb-2">QR Code Pembayaran:</label>
+        <input type="file" name="qr_code" id="qr_code" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('qr_code') border-red-500 @enderror">
+        <p class="text-xs text-gray-500 mt-1">Upload QR code untuk pembayaran (e-wallet, mobile banking, dll)</p>
+        @error('qr_code')
+            <p class="text-red-500 text-xs italic">{{ $message }}</p>
+        @enderror
+
+        {{-- Tampilkan QR code saat ini jika sedang edit --}}
+        @if(isset($panti) && $panti->qr_code)
+            <div class="mt-4">
+                <p class="text-sm text-gray-600">QR Code saat ini:</p>
+                <img src="{{ asset('storage/' . $panti->qr_code) }}" alt="QR Code" class="mt-2 w-32 h-32 rounded">
+            </div>
+        @endif
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div>
+            <label for="bank_name" class="block text-gray-700 text-sm font-bold mb-2">Nama Bank:</label>
+            <input type="text" name="bank_name" id="bank_name" value="{{ old('bank_name', $panti->bank_name ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" placeholder="Contoh: BCA, Mandiri, BNI">
+        </div>
+        <div>
+            <label for="bank_account" class="block text-gray-700 text-sm font-bold mb-2">Nomor Rekening:</label>
+            <input type="text" name="bank_account" id="bank_account" value="{{ old('bank_account', $panti->bank_account ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" placeholder="Contoh: 1234567890">
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label for="whatsapp_number" class="block text-gray-700 text-sm font-bold mb-2">Nomor WhatsApp:</label>
+        <input type="text" name="whatsapp_number" id="whatsapp_number" value="{{ old('whatsapp_number', $panti->whatsapp_number ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" placeholder="Contoh: 081234567890">
+        <p class="text-xs text-gray-500 mt-1">Nomor WhatsApp untuk konfirmasi donasi (format: 08xxxxxxxxxx)</p>
+    </div>
+</div>
+
 <div class="flex justify-end">
     <button type="submit" class="bg-brand-green hover:bg-brand-green-dark text-white bg-lime-500 font-bold py-2 px-4 rounded">
         {{ isset($panti) ? 'Update Data Panti' : 'Simpan Data Panti' }}

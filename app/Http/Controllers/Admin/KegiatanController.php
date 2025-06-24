@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kegiatan;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class KegiatanController extends Controller
 {
@@ -47,7 +49,14 @@ class KegiatanController extends Controller
             $validated['gambar'] = $path;
         }
 
-        Kegiatan::create($validated);
+        $kegiatan = Kegiatan::create($validated);
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Tambah Kegiatan',
+            'subject_type' => 'Kegiatan',
+            'subject_id' => $kegiatan->id_kegiatan,
+            'description' => 'Nama: ' . $kegiatan->judul,
+        ]);
 
         return redirect()->route('admin.kegiatan.index')->with('success', 'Kegiatan berhasil ditambahkan.');
     }
@@ -94,6 +103,13 @@ class KegiatanController extends Controller
         }
 
         $kegiatan->update($validated);
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Edit Kegiatan',
+            'subject_type' => 'Kegiatan',
+            'subject_id' => $kegiatan->id_kegiatan,
+            'description' => 'Nama: ' . $kegiatan->judul,
+        ]);
 
         return redirect()->route('admin.kegiatan.index')->with('success', 'Kegiatan berhasil diperbarui.');
     }
@@ -106,6 +122,13 @@ class KegiatanController extends Controller
         if ($kegiatan->gambar) {
             Storage::disk('public')->delete($kegiatan->gambar);
         }
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Hapus Kegiatan',
+            'subject_type' => 'Kegiatan',
+            'subject_id' => $kegiatan->id_kegiatan,
+            'description' => 'Nama: ' . $kegiatan->judul,
+        ]);
         $kegiatan->delete();
         return redirect()->route('admin.kegiatan.index')->with('success', 'Kegiatan berhasil dihapus.');
     }
