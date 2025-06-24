@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         ]); */
 
         $this->call([KategoriSeeder::class, UserSeeder::class]);
-        Artikel::factory(100)->recycle([
+        Artikel::factory(20)->recycle([
             Kategori::all(),
             User::all()
         ])->create();
