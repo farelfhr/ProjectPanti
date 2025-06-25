@@ -46,6 +46,8 @@ class PantiController extends Controller
             'whatsapp_number' => 'nullable|string|max:20',
             'bank_account' => 'nullable|string|max:50',
             'bank_name' => 'nullable|string|max:100',
+            'jumlah_anak' => 'required|integer|min:0',
+            'kapasitas' => 'required|integer|min:0',
         ]);
 
         if ($request->hasFile('gambar')) {
@@ -59,12 +61,13 @@ class PantiController extends Controller
         }
 
         $panti = Panti::create($validatedData);
+        
         ActivityLog::create([
             'user_name' => auth()->user()->name,
             'action' => 'Tambah Panti',
             'subject_type' => 'Panti',
             'subject_id' => $panti->id_panti,
-            'description' => 'Nama: ' . $panti->nama,
+            'description' => 'Nama: ' . $panti->nama . ' - Kecamatan: ' . $panti->kecamatan,
         ]);
 
         return redirect()->route('admin.panti.index')->with('success', 'Data panti berhasil ditambahkan.');
@@ -106,6 +109,8 @@ class PantiController extends Controller
             'whatsapp_number' => 'nullable|string|max:20',
             'bank_account' => 'nullable|string|max:50',
             'bank_name' => 'nullable|string|max:100',
+            'jumlah_anak' => 'required|integer|min:0',
+            'kapasitas' => 'required|integer|min:0',
         ]);
 
         if ($request->hasFile('gambar')) {

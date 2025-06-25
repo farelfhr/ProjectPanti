@@ -61,7 +61,7 @@
                                 </svg>
         
                                 <div class="flex flex-col gap-2">
-                                    <div class="text-4xl font-bold leading-none" id="totalChildren">1,247</div>
+                                    <div class="text-4xl font-bold leading-none" id="totalChildren">{{ $panti->sum('jumlah_anak') }}</div>
                                     <div class="font-medium uppercase tracking-wider text-xs">Total Anak</div>
                                 </div>
                             </div>
@@ -74,7 +74,7 @@
                                 </svg>
         
                                 <div class="flex flex-col gap-2">
-                                    <div class="text-4xl font-bold leading-none" id="totalLocations">12</div>
+                                    <div class="text-4xl font-bold leading-none" id="totalLocations">{{ $panti->whereNotNull('latitude')->whereNotNull('longitude')->count() }}</div>
                                     <div class="font-medium uppercase tracking-wider text-xs">Lokasi Aktif</div>
                                 </div>
                             </div>
@@ -88,7 +88,7 @@
                                 </svg>
         
                                 <div class="flex flex-col gap-2">
-                                    <div class="text-4xl font-bold leading-none mb-2" id="totalPrograms">28</div>
+                                    <div class="text-4xl font-bold leading-none mb-2" id="totalPrograms">{{ \App\Models\Kegiatan::count() }}</div>
                                     <div class="font-medium uppercase tracking-wider text-xs">Program Berjalan</div>
         </div>
         </div>
@@ -122,7 +122,7 @@
                         <path d="M9.172 9.172a4 4 0 1 0 5.656 5.656 4 4 0 0 0-5.656-5.656z"></path>
                         <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"></path>
                     </svg>
-                    <h3 class="text-2xl font-bold">50+</h3>
+                    <h3 class="text-2xl font-bold">{{ $panti->sum('jumlah_anak') }}</h3>
                     <p class="text-[#F1F0E9]">Anak Asuh</p>
                 </div>
             </div>
@@ -131,8 +131,8 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                     </svg>
-                    <h3 class="text-2xl font-bold">1000+</h3>
-                    <p class="text-[#F1F0E9]">Total Kapasitas</p>
+                    <h3 class="text-2xl font-bold">{{ $panti->whereNotNull('latitude')->whereNotNull('longitude')->count() }}</h3>
+                    <p class="text-[#F1F0E9]">Lokasi Terdaftar</p>
                 </div>
             </div>
         </div>

@@ -86,4 +86,17 @@ class PantiController extends Controller
         });
         return response()->json($formattedPanti);
     }
+
+    public function getStats()
+    {
+        $stats = [
+            'total_panti' => Panti::count(),
+            'total_anak' => Panti::sum('jumlah_anak'),
+            'lokasi_aktif' => Panti::whereNotNull('latitude')->whereNotNull('longitude')->count(),
+            'total_program' => \App\Models\Kegiatan::count(),
+            'kecamatan_count' => Panti::distinct('kecamatan')->count('kecamatan'),
+        ];
+        
+        return response()->json($stats);
+    }
 }

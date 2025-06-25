@@ -87,6 +87,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 });
 
 Route::get('/api/pantiasuhan', [App\Http\Controllers\PantiController::class, 'getPantiData']);
+Route::get('/api/panti-stats', [App\Http\Controllers\PantiController::class, 'getStats']);
 
 // Temporary route to inspect panti data
 Route::get('/debug-panti-data', function() {

@@ -181,46 +181,22 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Fungsi untuk mengambil data dari API
-async function fetchOrphanageData() {
-    try {
-        const response = await fetch('/api/pantiasuhan');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        orphanageData = await response.json();
-        console.log('Fetched RAW data:', orphanageData);
-        // Tidak perlu parsing kecamatan dari alamat/city, gunakan langsung data.kecamatan dari API
-        // orphanageData = orphanageData.map(data => {
-        //     const kecamatanMatch = data.city ? data.city.match(/Kec\. ([^,]+)/) : null;
-        //     const extractedKecamatan = kecamatanMatch && kecamatanMatch[1] ? kecamatanMatch[1].toLowerCase().trim() : '';
-        //     return {
-        //         ...data,
-        //         kecamatan: extractedKecamatan,
-        //         lat: parseFloat(data.lat),
-        //         lng: parseFloat(data.lng)
-        //     };
-        // });
-        // Data sudah benar, pastikan lat/lng tetap float
-        orphanageData = orphanageData.map(data => ({
-            ...data,
-            lat: parseFloat(data.lat),
-            lng: parseFloat(data.lng)
-        }));
-        console.log('Fetched NORMALIZED data:', orphanageData);
-        // Inisialisasi peta dengan semua data
-        updateMarkers(orphanageData);
-        // Update statistik
-        updateStats(orphanageData);
-    } catch (error) {
-        console.error('Error fetching orphanage data:', error);
-    }
-}
-
 // Fungsi untuk memperbarui statistik
 function updateStats(data, selectedKecamatan = null) {
+    // Hitung total anak dari data hasil filter
     const totalChildren = data.reduce((sum, panti) => sum + (parseInt(panti.jumlah_anak) || 0), 0);
-    const totalLocations = new Set(data.map(panti => normalizeKecamatan(panti.kecamatan))).size;
+
+    // Perbaiki lokasi aktif:
+    let totalLocations = 0;
+    if (selectedKecamatan && selectedKecamatan !== 'all' && selectedKecamatan !== 'semua') {
+        // Jika filter kecamatan, lokasi aktif = jumlah panti di kecamatan tsb
+        totalLocations = data.length;
+    } else {
+        // Jika semua, lokasi aktif = jumlah panti yang punya lat/lng
+        totalLocations = data.filter(panti => panti.lat && panti.lng).length;
+    }
+
+    // Update elemen statistik
     const totalChildrenElement = document.getElementById('totalChildren');
     const totalLocationsElement = document.getElementById('totalLocations');
     const totalProgramsElement = document.getElementById('totalPrograms');
@@ -247,8 +223,117 @@ function updateStats(data, selectedKecamatan = null) {
     }
 }
 
+// Fungsi untuk update statistik dari API (untuk data real-time)
+function updateStatsFromAPI() {
+    fetch('/api/panti-stats')
+        .then(res => res.json())
+        .then(stats => {
+            const totalChildrenElement = document.getElementById('totalChildren');
+            const totalLocationsElement = document.getElementById('totalLocations');
+            const totalProgramsElement = document.getElementById('totalPrograms');
+
+            if (totalChildrenElement) totalChildrenElement.textContent = stats.total_anak.toLocaleString();
+            if (totalLocationsElement) totalLocationsElement.textContent = stats.lokasi_aktif;
+            if (totalProgramsElement) totalProgramsElement.textContent = stats.total_program;
+        })
+        .catch(error => {
+            console.error('Error fetching stats:', error);
+        });
+}
+
+// Fungsi untuk refresh data secara otomatis
+function refreshData() {
+    fetchOrphanageData();
+    updateStatsFromAPI(); // Update statistik dari API
+}
+
+// Fungsi untuk mengambil data dari API dengan cache busting
+async function fetchOrphanageData() {
+    try {
+        // Tambahkan timestamp untuk cache busting
+        const timestamp = new Date().getTime();
+        const response = await fetch(`/api/pantiasuhan?t=${timestamp}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        orphanageData = await response.json();
+        console.log('Fetched RAW data:', orphanageData); // Debug log
+        // Data sudah benar, pastikan lat/lng tetap float dan jumlah_anak integer
+        orphanageData = orphanageData.map(data => ({
+            ...data,
+            lat: parseFloat(data.lat),
+            lng: parseFloat(data.lng),
+            jumlah_anak: parseInt(data.jumlah_anak) || 0
+        }));
+        console.log('Fetched NORMALIZED data:', orphanageData); // Debug log
+        // Inisialisasi peta dengan semua data
+        updateMarkers(orphanageData);
+        // Update statistik dari data lokal
+        updateStats(orphanageData);
+        // Update statistik dari API untuk memastikan data real-time
+        updateStatsFromAPI();
+    } catch (error) {
+        console.error('Error fetching orphanage data:', error);
+    }
+}
+
 // Panggil fungsi untuk mengambil data saat halaman dimuat
 fetchOrphanageData();
+updateStatsFromAPI(); // Hanya sekali saat load awal
+
+// Auto-refresh data setiap 30 detik untuk memastikan data selalu up-to-date
+setInterval(() => {
+    // Jika filter kecamatan = semua, update dari API, jika tidak, update dari data lokal
+    const locationFilter = document.getElementById('locationFilter');
+    if (locationFilter && (locationFilter.value === 'all' || locationFilter.value === 'semua')) {
+        updateStatsFromAPI();
+    } else {
+        // updateStats akan dipanggil otomatis oleh updateMarkers saat filter berubah
+    }
+    refreshData();
+}, 30000);
+
+// Event listener untuk refresh data saat halaman menjadi visible
+// (hanya update dari API jika filter = semua)
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+        const locationFilter = document.getElementById('locationFilter');
+        if (locationFilter && (locationFilter.value === 'all' || locationFilter.value === 'semua')) {
+            updateStatsFromAPI();
+        }
+        refreshData();
+    }
+});
+
+// Event listener untuk refresh data saat window focus
+window.addEventListener('focus', function() {
+    const locationFilter = document.getElementById('locationFilter');
+    if (locationFilter && (locationFilter.value === 'all' || locationFilter.value === 'semua')) {
+        updateStatsFromAPI();
+    }
+    refreshData();
+});
+
+// Event listener untuk mendeteksi perubahan URL (jika ada navigasi dari admin)
+let currentUrl = window.location.href;
+setInterval(() => {
+    if (window.location.href !== currentUrl) {
+        currentUrl = window.location.href;
+        refreshData();
+    }
+}, 1000);
+
+// Event listener untuk mendeteksi perubahan data dari localStorage (jika admin update data)
+window.addEventListener('storage', function(e) {
+    if (e.key === 'panti_data_updated') {
+        refreshData();
+    }
+});
+
+// Fungsi untuk menandai bahwa data telah diupdate (bisa dipanggil dari admin panel)
+function markDataAsUpdated() {
+    localStorage.setItem('panti_data_updated', Date.now());
+}
 
 // Tambahkan CSS untuk styling
 const style = document.createElement('style');
