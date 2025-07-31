@@ -28,7 +28,20 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->back()->with('status', 'You have been successfully logged in!');
+        $user = Auth::user();
+
+        // Redirect berdasarkan role
+        if ($user->isAdmin()) {
+            return redirect()->route('admin.dashboard')->with('status', 'Selamat datang, Admin!');
+        } elseif ($user->isPanti()) {
+            if ($user->hasPanti()) {
+                return redirect()->route('panti.dashboard')->with('status', 'Selamat datang kembali!');
+            } else {
+                return redirect()->route('panti.setup')->with('status', 'Silakan lengkapi data panti Anda!');
+            }
+        } else {
+            return redirect()->route('dashboard')->with('status', 'Selamat datang kembali!');
+        }
     }
 
     /**

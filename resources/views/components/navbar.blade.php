@@ -12,17 +12,25 @@
         <a href="/daftar-panti" class="px-4 py-2 rounded-md font-bold text-black hover:bg-[#D0D5CB] transition">Daftar Panti</a>
         <a href="/kerjasama" class="px-4 py-2 rounded-md font-bold text-black hover:bg-[#D0D5CB] transition">Kerjasama Kami</a>
         <a href="/tentang" class="px-4 py-2 rounded-md font-bold text-black hover:bg-[#D0D5CB] transition">Tentang Kami</a>
+        @auth
+            <a href="{{ route('bookmark.index') }}" class="px-4 py-2 rounded-md font-bold text-black hover:bg-[#D0D5CB] transition flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                </svg>
+                Bookmark
+            </a>
+        @endauth
     </div>
     <!-- Sign In Button -->
     <div class="flex items-center gap-2">
         @auth
-            @if(Auth::user()->is_admin == 1)
+            @if(Auth::user()->isAdmin())
                 <a href="{{ route('admin.dashboard') }}" class="hidden xl:inline px-8 py-2 rounded-full font-bold text-black border-2 border-[#0D4715] bg-white hover:bg-[#E9762B] hover:text-white transition shadow">Admin Dashboard</a>
+            @elseif(Auth::user()->isPanti())
+                <a href="{{ route('panti.dashboard') }}" class="hidden xl:inline px-8 py-2 rounded-full font-bold text-black border-2 border-[#0D4715] bg-white hover:bg-[#E9762B] hover:text-white transition shadow">Panti Dashboard</a>
+            @else
+                <a href="{{ route('dashboard') }}" class="hidden xl:inline px-8 py-2 rounded-full font-bold text-black border-2 border-[#0D4715] bg-white hover:bg-[#E9762B] hover:text-white transition shadow">Dashboard</a>
             @endif
-            <form method="POST" action="{{ route('logout') }}" class="hidden xl:inline">
-                @csrf
-                <button type="submit" class="px-8 py-2 rounded-full font-bold text-black border-2 border-[#E9762B] bg-white hover:bg-[#E9762B] hover:text-white transition shadow">Log Out</button>
-            </form>
         @else
             <a href="/login" class="hidden xl:inline px-8 py-2 rounded-full font-bold text-black border-2 border-[#0D4715] bg-white hover:bg-[#E9762B] hover:text-white transition shadow">Sign In</a>
         @endauth
@@ -40,13 +48,21 @@
             <a href="/kerjasama" class="block px-4 py-2 rounded-md font-bold text-black hover:bg-[#D0D5CB] transition">Kerjasama Kami</a>
             <a href="/tentang" class="block px-4 py-2 rounded-md font-bold text-black hover:bg-[#D0D5CB] transition">Tentang Kami</a>
             @auth
-                @if(Auth::user()->is_admin == 1)
+                <a href="{{ route('bookmark.index') }}" class="block px-4 py-2 rounded-md font-bold text-black hover:bg-[#D0D5CB] transition flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                    </svg>
+                    Bookmark
+                </a>
+            @endauth
+            @auth
+                @if(Auth::user()->isAdmin())
                     <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 rounded-full font-bold text-black border-2 border-[#0D4715] bg-white hover:bg-[#E9762B] hover:text-white transition shadow mt-2">Admin Dashboard</a>
+                @elseif(Auth::user()->isPanti())
+                    <a href="{{ route('panti.dashboard') }}" class="block px-4 py-2 rounded-full font-bold text-black border-2 border-[#0D4715] bg-white hover:bg-[#E9762B] hover:text-white transition shadow mt-2">Panti Dashboard</a>
+                @else
+                    <a href="{{ route('dashboard') }}" class="block px-4 py-2 rounded-full font-bold text-black border-2 border-[#0D4715] bg-white hover:bg-[#E9762B] hover:text-white transition shadow mt-2">Dashboard</a>
                 @endif
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="block w-full text-left px-4 py-2 rounded-full font-bold text-black border-2 border-[#E9762B] bg-white hover:bg-[#E9762B] hover:text-white transition shadow mt-2">Log Out</button>
-                </form>
             @else
                 <a href="/login" class="block px-4 py-2 rounded-full font-bold text-black border-2 border-[#0D4715] bg-white hover:bg-[#E9762B] hover:text-white transition shadow mt-2">Sign In</a>
             @endauth

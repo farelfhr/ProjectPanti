@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'is_admin',
+        'role',
     ];
 
     /**
@@ -59,5 +60,69 @@ class User extends Authenticatable
     public function contactMessages(): HasMany
     {
         return $this->hasMany(Kontak::class, 'id_user');
+    }
+
+    /**
+     * Check if user is admin
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Check if user is panti
+     */
+    public function isPanti(): bool
+    {
+        return $this->role === 'panti';
+    }
+
+    /**
+     * Check if user is regular user
+     */
+    public function isUser(): bool
+    {
+        return $this->role === 'user';
+    }
+
+    /**
+     * Get the donations made by the user.
+     */
+    public function donations(): HasMany
+    {
+        return $this->hasMany(Donation::class);
+    }
+
+    /**
+     * Get the bookmarks made by the user.
+     */
+    public function bookmarks(): HasMany
+    {
+        return $this->hasMany(Bookmark::class);
+    }
+
+    /**
+     * Get the panti managed by this user (if user is panti).
+     */
+    public function panti(): HasMany
+    {
+        return $this->hasMany(Panti::class);
+    }
+
+    /**
+     * Check if user has panti data
+     */
+    public function hasPanti(): bool
+    {
+        return $this->panti()->exists();
+    }
+
+    /**
+     * Get the first panti managed by this user
+     */
+    public function getPanti()
+    {
+        return $this->panti()->first();
     }
 }

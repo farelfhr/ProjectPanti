@@ -219,6 +219,107 @@
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script src="/js/swiper.js"></script>
 <script src="/js/orphanage-filter.js"></script>
+
+@auth
+<script>
+// Cek status bookmark untuk semua panti saat halaman dimuat
+document.addEventListener('DOMContentLoaded', function() {
+    // Ambil semua panti dari halaman
+    const pantiCards = document.querySelectorAll('[id^="bookmarkBtn"]');
+    pantiCards.forEach(button => {
+        const pantiId = button.id.replace('bookmarkBtn', '');
+        checkBookmarkStatus(pantiId);
+    });
+});
+
+function checkBookmarkStatus(pantiId) {
+    fetch(`/bookmark/panti/${pantiId}/check`)
+        .then(response => response.json())
+        .then(data => {
+            updateBookmarkButton(pantiId, data.isBookmarked);
+        })
+        .catch(error => {
+            console.error('Error checking bookmark status:', error);
+        });
+}
+
+function toggleBookmark(pantiId) {
+    fetch(`/bookmark/panti/${pantiId}/toggle`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            updateBookmarkButton(pantiId, data.isBookmarked);
+            
+            // Tampilkan notifikasi
+            showNotification(data.message, data.isBookmarked ? 'success' : 'info');
+        }
+    })
+    .catch(error => {
+        console.error('Error toggling bookmark:', error);
+        showNotification('Terjadi kesalahan saat mengubah bookmark', 'error');
+    });
+}
+
+function updateBookmarkButton(pantiId, isBookmarked) {
+    const button = document.getElementById(`bookmarkBtn${pantiId}`);
+    const icon = document.getElementById(`bookmarkIcon${pantiId}`);
+    
+    if (!button || !icon) return;
+    
+    if (isBookmarked) {
+        // Bookmark aktif
+        button.classList.remove('bg-[#E9762B]', 'hover:bg-[#0D4715]');
+        button.classList.add('bg-[#41644A]', 'hover:bg-[#0D4715]');
+        icon.innerHTML = '<path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" fill="currentColor"></path>';
+    } else {
+        // Bookmark tidak aktif
+        button.classList.remove('bg-[#41644A]', 'hover:bg-[#0D4715]');
+        button.classList.add('bg-[#E9762B]', 'hover:bg-[#0D4715]');
+        icon.innerHTML = '<path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>';
+    }
+}
+
+function showNotification(message, type) {
+    // Buat elemen notifikasi
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-all duration-300 transform translate-x-full`;
+    
+    // Set warna berdasarkan tipe
+    if (type === 'success') {
+        notification.classList.add('bg-green-500', 'text-white');
+    } else if (type === 'error') {
+        notification.classList.add('bg-red-500', 'text-white');
+    } else {
+        notification.classList.add('bg-blue-500', 'text-white');
+    }
+    
+    notification.textContent = message;
+    
+    // Tambahkan ke body
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => {
+        notification.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Animate out dan hapus setelah 3 detik
+    setTimeout(() => {
+        notification.classList.add('translate-x-full');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
+</script>
+@endauth
 @endpush
 
 @endsection 

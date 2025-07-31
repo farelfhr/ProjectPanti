@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminMiddleware
+class PantiMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,10 +16,14 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->isAdmin()){
-        return $next($request);
+        if (!Auth::check()) {
+            return redirect()->route('login');
         }
 
-        abort(403, 'UNAUTHORIZED ACTION.');
+        if (!Auth::user()->isPanti()) {
+            abort(403, 'Akses ditolak. Hanya panti asuhan yang dapat mengakses halaman ini.');
+        }
+
+        return $next($request);
     }
 }

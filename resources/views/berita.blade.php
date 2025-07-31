@@ -264,7 +264,7 @@
 
         <div id="artikel-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in-up" style="animation-delay: 0.6s;">
             @foreach ($berita_lain as $index => $beritas)
-                <a href="/berita/{{ $beritas->id_artikel }}" class="block news-card" style="animation-delay: {{ $index * 0.1 }};">
+                <div class="block news-card" style="animation-delay: {{ $index * 0.1 }};">
                     <div class="bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all duration-500 p-6 border border-[#D0D5CB] h-full relative overflow-hidden group">
                         <div class="absolute top-0 right-0 w-24 h-24 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
                             <div class="w-full h-full bg-[#41644A] rounded-full transform translate-x-12 -translate-y-12"></div>
@@ -289,15 +289,25 @@
                             <h3 class="text-xl font-bold mb-4 text-[#0D4715] group-hover:text-[#E9762B] transition-colors duration-300">{{ $beritas->judul }}</h3>
                             <p class="text-[#41644A] mb-6 leading-relaxed">{{ Str::limit($beritas->konten, 100) }}</p>
                             
-                            <div class="flex items-center gap-3 text-[#E9762B] font-bold group-hover:gap-4 transition-all duration-300">
-                                <span>Baca Selengkapnya</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                            <div class="flex items-center justify-between">
+                                <a href="/berita/{{ $beritas->id_artikel }}" class="flex items-center gap-3 text-[#E9762B] font-bold group-hover:gap-4 transition-all duration-300">
+                                    <span>Baca Selengkapnya</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                                </a>
+                                
+                                @auth
+                                <button id="bookmarkBtn{{ $beritas->id }}" onclick="toggleBookmark({{ $beritas->id }})" class="bg-[#E9762B] hover:bg-[#0D4715] text-white font-bold py-2 px-3 rounded-lg text-center flex items-center justify-center transition-colors duration-300">
+                                    <svg id="bookmarkIcon{{ $beritas->id }}" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                                    </svg>
+                                </button>
+                                @endauth
                             </div>
                         </div>
                         
                         <div class="absolute bottom-0 left-0 w-0 h-1 bg-[#E9762B] group-hover:w-full transition-all duration-500"></div>
                     </div>
-                </a>
+                </div>
             @endforeach
         </div>
 
@@ -573,6 +583,106 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+@auth
+<script>
+// Cek status bookmark untuk semua artikel saat halaman dimuat
+document.addEventListener('DOMContentLoaded', function() {
+    // Ambil semua artikel dari halaman
+    const artikelCards = document.querySelectorAll('[id^="bookmarkBtn"]');
+    artikelCards.forEach(button => {
+        const artikelId = button.id.replace('bookmarkBtn', '');
+        checkBookmarkStatus(artikelId);
+    });
+});
+
+function checkBookmarkStatus(artikelId) {
+    fetch(`/bookmark/artikel/${artikelId}/check`)
+        .then(response => response.json())
+        .then(data => {
+            updateBookmarkButton(artikelId, data.isBookmarked);
+        })
+        .catch(error => {
+            console.error('Error checking bookmark status:', error);
+        });
+}
+
+function toggleBookmark(artikelId) {
+    fetch(`/bookmark/artikel/${artikelId}/toggle`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            updateBookmarkButton(artikelId, data.isBookmarked);
+            
+            // Tampilkan notifikasi
+            showNotification(data.message, data.isBookmarked ? 'success' : 'info');
+        }
+    })
+    .catch(error => {
+        console.error('Error toggling bookmark:', error);
+        showNotification('Terjadi kesalahan saat mengubah bookmark', 'error');
+    });
+}
+
+function updateBookmarkButton(artikelId, isBookmarked) {
+    const button = document.getElementById(`bookmarkBtn${artikelId}`);
+    const icon = document.getElementById(`bookmarkIcon${artikelId}`);
+    
+    if (!button || !icon) return;
+    
+    if (isBookmarked) {
+        // Bookmark aktif
+        button.classList.remove('bg-[#E9762B]', 'hover:bg-[#0D4715]');
+        button.classList.add('bg-[#41644A]', 'hover:bg-[#0D4715]');
+        icon.innerHTML = '<path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" fill="currentColor"></path>';
+    } else {
+        // Bookmark tidak aktif
+        button.classList.remove('bg-[#41644A]', 'hover:bg-[#0D4715]');
+        button.classList.add('bg-[#E9762B]', 'hover:bg-[#0D4715]');
+        icon.innerHTML = '<path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>';
+    }
+}
+
+function showNotification(message, type) {
+    // Buat elemen notifikasi
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-all duration-300 transform translate-x-full`;
+    
+    // Set warna berdasarkan tipe
+    if (type === 'success') {
+        notification.classList.add('bg-green-500', 'text-white');
+    } else if (type === 'error') {
+        notification.classList.add('bg-red-500', 'text-white');
+    } else {
+        notification.classList.add('bg-blue-500', 'text-white');
+    }
+    
+    notification.textContent = message;
+    
+    // Tambahkan ke body
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => {
+        notification.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Animate out dan hapus setelah 3 detik
+    setTimeout(() => {
+        notification.classList.add('translate-x-full');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
 </script>
+@endauth
 
 @endsection

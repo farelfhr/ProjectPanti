@@ -79,9 +79,18 @@
                 </svg>
                 Donasi
             </button>
+            
             <a href="{{ route('panti.show', $p->id_panti) }}" class="flex-1 border-2 border-[#41644A] text-[#41644A] font-bold py-2 px-4 rounded-lg text-center hover:bg-[#F1F0E9] transition-colors duration-300">
                 Kunjungi
             </a>
+            
+            @auth
+            <button id="bookmarkBtn{{ $p->id_panti }}" onclick="toggleBookmark({{ $p->id_panti }})" class="bg-[#E9762B] hover:bg-[#0D4715] text-white font-bold py-2 px-3 rounded-lg text-center flex items-center justify-center transition-colors duration-300">
+                <svg id="bookmarkIcon{{ $p->id_panti }}" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                </svg>
+            </button>
+            @endauth
         </div>
     </div>
 </div>

@@ -38,10 +38,30 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Route untuk dashboard panti
+Route::middleware(['auth', 'panti'])->prefix('panti')->name('panti.')->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\PantiDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/setup', [App\Http\Controllers\PantiDashboardController::class, 'setup'])->name('setup');
+    Route::post('/setup', [App\Http\Controllers\PantiDashboardController::class, 'storeSetup'])->name('setup.store');
+    Route::post('/kebutuhan', [App\Http\Controllers\PantiDashboardController::class, 'storeKebutuhan'])->name('kebutuhan.store');
+    Route::put('/kebutuhan/{kebutuhan}', [App\Http\Controllers\PantiDashboardController::class, 'updateKebutuhan'])->name('kebutuhan.update');
+    Route::delete('/kebutuhan/{kebutuhan}', [App\Http\Controllers\PantiDashboardController::class, 'deleteKebutuhan'])->name('kebutuhan.delete');
+});
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    // Bookmark routes
+    Route::prefix('bookmark')->name('bookmark.')->group(function () {
+        Route::post('/panti/{panti}/toggle', [App\Http\Controllers\BookmarkController::class, 'togglePanti'])->name('panti.toggle');
+        Route::post('/artikel/{artikel}/toggle', [App\Http\Controllers\BookmarkController::class, 'toggleArtikel'])->name('artikel.toggle');
+        Route::delete('/{bookmark}', [App\Http\Controllers\BookmarkController::class, 'destroy'])->name('destroy');
+        Route::get('/', [App\Http\Controllers\BookmarkController::class, 'index'])->name('index');
+        Route::get('/panti/{panti}/check', [App\Http\Controllers\BookmarkController::class, 'checkPantiBookmark'])->name('panti.check');
+        Route::get('/artikel/{artikel}/check', [App\Http\Controllers\BookmarkController::class, 'checkArtikelBookmark'])->name('artikel.check');
+    });
 });
 
 Route::get('/berita', [ArtikelController::class, 'index'])->name('berita.index');

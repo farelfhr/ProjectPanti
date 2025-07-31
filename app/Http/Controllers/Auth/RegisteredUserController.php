@@ -33,17 +33,38 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => ['required', 'in:user,panti'],
+            'panti_name' => ['required_if:role,panti', 'string', 'max:255'],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
+            'is_admin' => false, // Pastikan user baru bukan admin
         ]);
+
+        // Jika user mendaftar sebagai panti, buat data panti
+        if ($request->role === 'panti' && $request->panti_name) {
+            \App\Models\Panti::create([
+                'user_id' => $user->id,
+                'nama' => $request->panti_name,
+                'alamat' => 'Alamat akan dilengkapi nanti',
+                'kecamatan' => 'Kecamatan akan dilengkapi nanti',
+                'jumlah_anak' => 0,
+                'kapasitas' => 0,
+            ]);
+        }
 
         event(new Registered($user));
 
         Auth::login($user);
+
+        // Redirect berdasarkan role
+        if ($user->isPanti()) {
+            return redirect(route('panti.setup', absolute: false));
+        }
 
         return redirect(route('dashboard', absolute: false));
     }
