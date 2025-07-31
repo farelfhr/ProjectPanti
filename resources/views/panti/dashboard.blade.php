@@ -81,16 +81,21 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-[#D0D5CB]">
                     <div class="p-6">
-                        <div class="flex items-center">
-                            <div class="p-2 bg-green-100 rounded-lg">
-                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
-                                </svg>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="p-2 bg-green-100 rounded-lg">
+                                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                    </svg>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm text-gray-600">Total Donasi</p>
+                                    <p class="text-2xl font-semibold text-gray-900">{{ $totalDonations }}</p>
+                                </div>
                             </div>
-                            <div class="ml-4">
-                                <p class="text-sm text-gray-600">Total Donasi</p>
-                                <p class="text-2xl font-semibold text-gray-900">{{ $totalDonations }}</p>
-                            </div>
+                            <a href="{{ route('panti.donations.history') }}" class="text-[#E9762B] hover:text-[#0D4715] text-sm font-medium">
+                                Lihat Riwayat →
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -113,16 +118,21 @@
 
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-[#D0D5CB]">
                     <div class="p-6">
-                        <div class="flex items-center">
-                            <div class="p-2 bg-purple-100 rounded-lg">
-                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                </svg>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="p-2 bg-purple-100 rounded-lg">
+                                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm text-gray-600">Kegiatan</p>
+                                    <p class="text-2xl font-semibold text-gray-900">{{ $activities->count() }}</p>
+                                </div>
                             </div>
-                            <div class="ml-4">
-                                <p class="text-sm text-gray-600">Kegiatan</p>
-                                <p class="text-2xl font-semibold text-gray-900">{{ $activities->count() }}</p>
-                            </div>
+                            <a href="{{ route('panti.activities.history') }}" class="text-[#E9762B] hover:text-[#0D4715] text-sm font-medium">
+                                Lihat Riwayat →
+                            </a>
                         </div>
                     </div>
                 </div>

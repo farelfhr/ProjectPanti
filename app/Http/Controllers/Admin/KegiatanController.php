@@ -132,4 +132,40 @@ class KegiatanController extends Controller
         $kegiatan->delete();
         return redirect()->route('admin.kegiatan.index')->with('success', 'Kegiatan berhasil dihapus.');
     }
+
+    /**
+     * Approve a kegiatan
+     */
+    public function approve(Kegiatan $kegiatan)
+    {
+        $kegiatan->update(['status' => 'approved']);
+        
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Approve Kegiatan',
+            'subject_type' => 'Kegiatan',
+            'subject_id' => $kegiatan->id_kegiatan,
+            'description' => 'Nama: ' . $kegiatan->judul . ' - Status: Approved',
+        ]);
+
+        return redirect()->back()->with('success', 'Kegiatan berhasil disetujui.');
+    }
+
+    /**
+     * Reject a kegiatan
+     */
+    public function reject(Kegiatan $kegiatan)
+    {
+        $kegiatan->update(['status' => 'rejected']);
+        
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Reject Kegiatan',
+            'subject_type' => 'Kegiatan',
+            'subject_id' => $kegiatan->id_kegiatan,
+            'description' => 'Nama: ' . $kegiatan->judul . ' - Status: Rejected',
+        ]);
+
+        return redirect()->back()->with('success', 'Kegiatan berhasil ditolak.');
+    }
 }

@@ -15,21 +15,26 @@ class PantiDashboardController extends Controller
     /**
      * Display the panti dashboard.
      */
-    public function index(): View
+    public function index()
     {
         $user = Auth::user();
-        
-        // Cek apakah user memiliki data panti
-        if (!$user->hasPanti()) {
-            // Jika user panti belum memiliki data panti, redirect ke halaman setup
-            return view('panti.setup', compact('user'));
-        }
-        
         $panti = $user->getPanti();
-        
-        // Statistik donasi non-tunai untuk panti ini
+
+        // Jika data panti belum ada, redirect ke setup
+        if (!$panti) {
+            return redirect()->route('panti.setup')->with('warning', 'Silakan lengkapi data panti Anda.');
+        }
+
+        // Jika status pending, tampilkan warning di dashboard
+        if ($panti->isPending()) {
+            session()->flash('warning', 'Data panti Anda sedang menunggu persetujuan admin.');
+        }
+        if ($panti->isRejected()) {
+            session()->flash('error', 'Data panti Anda ditolak. Silakan perbaiki dan kirim ulang.');
+        }
+
+        // Statistik donasi untuk panti ini
         $donations = $panti->donations()
-                          ->where('type', 'non-tunai')
                           ->with('user')
                           ->latest()
                           ->take(10)
@@ -51,13 +56,17 @@ class PantiDashboardController extends Controller
                            ->take(5)
                            ->get();
         
+        // Data untuk chart donasi per bulan
+        $donationChartData = $this->getDonationChartData($panti);
+        
         return view('panti.dashboard', compact(
             'user',
             'panti',
             'donations',
             'totalDonations',
             'urgentNeeds',
-            'activities'
+            'activities',
+            'donationChartData'
         ));
     }
 
@@ -146,7 +155,8 @@ class PantiDashboardController extends Controller
     public function setup(): View
     {
         $user = Auth::user();
-        return view('panti.setup', compact('user'));
+        $panti = $user->getPanti();
+        return view('panti.setup', compact('user', 'panti'));
     }
 
     /**
@@ -189,10 +199,11 @@ class PantiDashboardController extends Controller
                 'email' => $request->email,
                 'deskripsi' => $request->deskripsi,
                 'gambar' => $gambarPath,
+                'status' => 'pending', // Reset status to pending for admin review
             ]);
         } else {
             // Create panti record
-            Panti::create([
+            $pantiData = [
                 'user_id' => $user->id,
                 'nama' => $request->nama,
                 'alamat' => $request->alamat,
@@ -201,12 +212,224 @@ class PantiDashboardController extends Controller
                 'jumlah_anak' => $request->jumlah_anak,
                 'kapasitas' => $request->kapasitas,
                 'tahun_berdiri' => $request->tahun_berdiri,
-                'email' => $request->email,
                 'deskripsi' => $request->deskripsi,
                 'gambar' => $gambarPath,
-            ]);
+                'status' => 'pending',
+            ];
+            
+            // Only add email if it's provided
+            if ($request->filled('email')) {
+                $pantiData['email'] = $request->email;
+            }
+            
+            Panti::create($pantiData);
         }
 
         return redirect()->route('panti.dashboard')->with('success', 'Data panti berhasil disimpan!');
+    }
+
+    /**
+     * Show donation history with filters
+     */
+    public function donationsHistory(Request $request): View
+    {
+        $user = Auth::user();
+        $panti = $user->getPanti();
+        
+        if (!$panti) {
+            return redirect()->route('panti.setup');
+        }
+
+        $query = $panti->donations()->with('user');
+
+        // Filter by type
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        // Filter by date range
+        if ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
+
+        $donations = $query->latest()->paginate(15);
+        
+        // Chart data
+        $donationChartData = $this->getDonationChartData($panti);
+
+        return view('panti.donations-history', compact('donations', 'donationChartData'));
+    }
+
+    /**
+     * Get donation chart data for the last 12 months
+     */
+    private function getDonationChartData(Panti $panti): array
+    {
+        $months = [];
+        $cashData = [];
+        $nonCashData = [];
+
+        for ($i = 11; $i >= 0; $i--) {
+            $date = now()->subMonths($i);
+            $monthName = $date->format('M Y');
+            $months[] = $monthName;
+
+            // Cash donations
+            $cashTotal = $panti->donations()
+                ->where('type', 'tunai')
+                ->where('status', 'completed')
+                ->whereYear('created_at', $date->year)
+                ->whereMonth('created_at', $date->month)
+                ->sum('amount');
+            $cashData[] = $cashTotal;
+
+            // Non-cash donations count
+            $nonCashCount = $panti->donations()
+                ->where('type', 'non-tunai')
+                ->where('status', 'completed')
+                ->whereYear('created_at', $date->year)
+                ->whereMonth('created_at', $date->month)
+                ->count();
+            $nonCashData[] = $nonCashCount;
+        }
+
+        return [
+            'months' => $months,
+            'cash' => $cashData,
+            'nonCash' => $nonCashData
+        ];
+    }
+
+    /**
+     * Show activities history
+     */
+    public function activitiesHistory(): View
+    {
+        $user = Auth::user();
+        $panti = $user->getPanti();
+        
+        if (!$panti) {
+            return redirect()->route('panti.setup');
+        }
+
+        $activities = $panti->activities()
+                           ->latest()
+                           ->paginate(15);
+
+        return view('panti.activities-history', compact('activities'));
+    }
+
+    /**
+     * Confirm a donation
+     */
+    public function confirmDonation(Donation $donation)
+    {
+        $user = Auth::user();
+        $panti = $user->getPanti();
+        
+        // Ensure the donation belongs to this panti
+        if ($donation->panti_id !== $panti->id_panti) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $donation->update(['status' => 'completed']);
+
+        return redirect()->back()->with('success', 'Donasi berhasil dikonfirmasi.');
+    }
+
+    /**
+     * Reject a donation
+     */
+    public function rejectDonation(Donation $donation)
+    {
+        $user = Auth::user();
+        $panti = $user->getPanti();
+        
+        // Ensure the donation belongs to this panti
+        if ($donation->panti_id !== $panti->id_panti) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $donation->update(['status' => 'cancelled']);
+
+        return redirect()->back()->with('success', 'Donasi berhasil ditolak.');
+    }
+
+    /**
+     * Export donations to CSV
+     */
+    public function exportDonations(Request $request)
+    {
+        $user = Auth::user();
+        $panti = $user->getPanti();
+        
+        if (!$panti) {
+            return redirect()->route('panti.setup');
+        }
+
+        $query = $panti->donations()->with('user');
+
+        // Apply filters
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        if ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
+
+        $donations = $query->latest()->get();
+
+        $filename = 'donasi_panti_' . str_replace(' ', '_', $panti->nama) . '_' . date('Y-m-d_H-i-s') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ];
+
+        $callback = function() use ($donations) {
+            $file = fopen('php://output', 'w');
+            
+            // Add BOM for UTF-8
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+            
+            // Headers
+            fputcsv($file, [
+                'Tanggal',
+                'Nama Donatur',
+                'Jenis Donasi',
+                'Jumlah/Item',
+                'Status',
+                'Catatan',
+                'Email Donatur'
+            ]);
+
+            // Data
+            foreach ($donations as $donation) {
+                fputcsv($file, [
+                    $donation->created_at->format('d/m/Y H:i'),
+                    $donation->user->name ?? 'Anonim',
+                    ucfirst($donation->type),
+                    $donation->type == 'tunai' 
+                        ? 'Rp ' . number_format($donation->amount, 0, ',', '.')
+                        : ($donation->donation_items ?? 'Item'),
+                    ucfirst($donation->status),
+                    $donation->notes ?? '-',
+                    $donation->user->email ?? '-'
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 }

@@ -1,175 +1,128 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Setup Data Panti') }}
+        </h2>
+    </x-slot>
 
-@section('header')
-    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-        {{ __('Setup Panti Asuhan') }}
-    </h2>
-@endsection
-
-@section('content')
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Flash Messages -->
-            @if(session('status'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-                    {{ session('status') }}
-                </div>
-            @endif
-
-            @if(session('error'))
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-                    {{ session('error') }}
-                </div>
-            @endif
-
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-[#D0D5CB]">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <div class="text-center mb-8">
-                        <h3 class="text-2xl font-bold mb-4 text-[#41644A]">Selamat Datang, {{ $user->name }}!</h3>
-                        <p class="text-gray-600 mb-6">
-                            Untuk menggunakan dashboard panti asuhan, Anda perlu melengkapi informasi panti asuhan terlebih dahulu.
+                    @if(session('warning'))
+                        <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
+                            {{ session('warning') }}
+                        </div>
+                    @endif
+
+                    @if(session('error'))
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+                    <div class="mb-6">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">
+                            @if($panti)
+                                Perbarui Data Panti
+                            @else
+                                Lengkapi Data Panti Anda
+                            @endif
+                        </h3>
+                        <p class="text-gray-600">
+                            Silakan lengkapi informasi panti asuhan Anda. Data ini akan ditinjau oleh admin sebelum dipublikasikan.
                         </p>
-                        @if($user->getPanti())
-                            <div class="bg-blue-50 rounded-lg border border-blue-200 p-4 mb-6">
-                                <p class="text-blue-800">
-                                    <strong>Panti Asuhan:</strong> {{ $user->getPanti()->nama }}
-                                </p>
-                            </div>
-                        @endif
                     </div>
 
-                    <form method="POST" action="{{ route('panti.setup.store') }}" enctype="multipart/form-data" class="max-w-2xl mx-auto">
+                    <form method="POST" action="{{ route('panti.setup.store') }}" enctype="multipart/form-data" class="space-y-6">
                         @csrf
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Nama Panti -->
+                            <div>
+                                <x-input-label for="nama" :value="__('Nama Panti Asuhan')" />
+                                <x-text-input id="nama" class="block mt-1 w-full" type="text" name="nama" :value="old('nama', $panti->nama ?? '')" required autofocus />
+                                <x-input-error :messages="$errors->get('nama')" class="mt-2" />
+                            </div>
+
+                            <!-- Kecamatan -->
+                            <div>
+                                <x-input-label for="kecamatan" :value="__('Kecamatan')" />
+                                <x-text-input id="kecamatan" class="block mt-1 w-full" type="text" name="kecamatan" :value="old('kecamatan', $panti->kecamatan ?? '')" required />
+                                <x-input-error :messages="$errors->get('kecamatan')" class="mt-2" />
+                            </div>
+
+                            <!-- Alamat -->
                             <div class="md:col-span-2">
-                                <label for="nama" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Nama Panti Asuhan *
-                                </label>
-                                <input type="text" name="nama" id="nama" required 
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E9762B]"
-                                       value="{{ old('nama', $user->getPanti()->nama ?? '') }}">
-                                @error('nama')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
+                                <x-input-label for="alamat" :value="__('Alamat Lengkap')" />
+                                <textarea id="alamat" name="alamat" rows="3" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full" required>{{ old('alamat', $panti->alamat ?? '') }}</textarea>
+                                <x-input-error :messages="$errors->get('alamat')" class="mt-2" />
                             </div>
 
-                            <div class="md:col-span-2">
-                                <label for="alamat" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Alamat Lengkap *
-                                </label>
-                                <textarea name="alamat" id="alamat" required rows="3"
-                                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E9762B]">{{ old('alamat') }}</textarea>
-                                @error('alamat')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
+                            <!-- Telepon -->
                             <div>
-                                <label for="kecamatan" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Kecamatan *
-                                </label>
-                                <input type="text" name="kecamatan" id="kecamatan" required 
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E9762B]"
-                                       value="{{ old('kecamatan') }}">
-                                @error('kecamatan')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
+                                <x-input-label for="phone" :value="__('Nomor Telepon')" />
+                                <x-text-input id="phone" class="block mt-1 w-full" type="text" name="phone" :value="old('phone', $panti->phone ?? '')" />
+                                <x-input-error :messages="$errors->get('phone')" class="mt-2" />
                             </div>
 
+                            <!-- Email -->
                             <div>
-                                <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Nomor Telepon
-                                </label>
-                                <input type="text" name="phone" id="phone" 
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E9762B]"
-                                       value="{{ old('phone') }}">
-                                @error('phone')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
+                                <x-input-label for="email" :value="__('Email')" />
+                                <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $panti->email ?? '')" />
+                                <x-input-error :messages="$errors->get('email')" class="mt-2" />
                             </div>
 
+                            <!-- Jumlah Anak -->
                             <div>
-                                <label for="jumlah_anak" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Jumlah Anak *
-                                </label>
-                                <input type="number" name="jumlah_anak" id="jumlah_anak" required min="1"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E9762B]"
-                                       value="{{ old('jumlah_anak') }}">
-                                @error('jumlah_anak')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
+                                <x-input-label for="jumlah_anak" :value="__('Jumlah Anak Saat Ini')" />
+                                <x-text-input id="jumlah_anak" class="block mt-1 w-full" type="number" name="jumlah_anak" :value="old('jumlah_anak', $panti->jumlah_anak ?? '')" required min="0" />
+                                <x-input-error :messages="$errors->get('jumlah_anak')" class="mt-2" />
                             </div>
 
+                            <!-- Kapasitas -->
                             <div>
-                                <label for="kapasitas" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Kapasitas Maksimal *
-                                </label>
-                                <input type="number" name="kapasitas" id="kapasitas" required min="1"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E9762B]"
-                                       value="{{ old('kapasitas') }}">
-                                @error('kapasitas')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
+                                <x-input-label for="kapasitas" :value="__('Kapasitas Maksimal')" />
+                                <x-text-input id="kapasitas" class="block mt-1 w-full" type="number" name="kapasitas" :value="old('kapasitas', $panti->kapasitas ?? '')" required min="0" />
+                                <x-input-error :messages="$errors->get('kapasitas')" class="mt-2" />
                             </div>
 
+                            <!-- Tahun Berdiri -->
                             <div>
-                                <label for="tahun_berdiri" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Tahun Berdiri
-                                </label>
-                                <input type="number" name="tahun_berdiri" id="tahun_berdiri" min="1900" max="{{ date('Y') }}"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E9762B]"
-                                       value="{{ old('tahun_berdiri') }}">
-                                @error('tahun_berdiri')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
+                                <x-input-label for="tahun_berdiri" :value="__('Tahun Berdiri')" />
+                                <x-text-input id="tahun_berdiri" class="block mt-1 w-full" type="number" name="tahun_berdiri" :value="old('tahun_berdiri', $panti->tahun_berdiri ?? '')" min="1900" max="{{ date('Y') }}" />
+                                <x-input-error :messages="$errors->get('tahun_berdiri')" class="mt-2" />
                             </div>
 
+                            <!-- Gambar -->
                             <div>
-                                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Email Panti
-                                </label>
-                                <input type="email" name="email" id="email" 
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E9762B]"
-                                       value="{{ old('email') }}">
-                                @error('email')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div class="md:col-span-2">
-                                <label for="deskripsi" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Deskripsi Panti
-                                </label>
-                                <textarea name="deskripsi" id="deskripsi" rows="4"
-                                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E9762B]">{{ old('deskripsi') }}</textarea>
-                                @error('deskripsi')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div class="md:col-span-2">
-                                <label for="gambar" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Foto Panti
-                                </label>
-                                <input type="file" name="gambar" id="gambar" accept="image/*"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E9762B]">
+                                <x-input-label for="gambar" :value="__('Foto Panti')" />
+                                <input id="gambar" class="block mt-1 w-full" type="file" name="gambar" accept="image/*" />
                                 <p class="text-sm text-gray-500 mt-1">Format: JPG, PNG, GIF. Maksimal 2MB.</p>
-                                @error('gambar')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
+                                @if($panti && $panti->gambar)
+                                    <div class="mt-2">
+                                        <img src="{{ asset('storage/' . $panti->gambar) }}" alt="Foto Panti" class="w-32 h-32 object-cover rounded">
+                                    </div>
+                                @endif
+                                <x-input-error :messages="$errors->get('gambar')" class="mt-2" />
                             </div>
                         </div>
 
-                        <div class="mt-8 text-center">
-                            <button type="submit" 
-                                    class="bg-[#E9762B] hover:bg-[#0D4715] text-white font-bold py-3 px-6 rounded-lg transition-colors">
-                                Simpan Data Panti
-                            </button>
+                        <!-- Deskripsi -->
+                        <div>
+                            <x-input-label for="deskripsi" :value="__('Deskripsi Panti')" />
+                            <textarea id="deskripsi" name="deskripsi" rows="4" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full">{{ old('deskripsi', $panti->deskripsi ?? '') }}</textarea>
+                            <x-input-error :messages="$errors->get('deskripsi')" class="mt-2" />
+                        </div>
+
+                        <div class="flex items-center justify-end mt-6">
+                            <x-primary-button class="ml-3">
+                                {{ $panti ? 'Perbarui Data' : 'Simpan Data Panti' }}
+                            </x-primary-button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-@endsection 
+</x-app-layout> 

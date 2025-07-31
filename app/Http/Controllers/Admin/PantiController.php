@@ -164,4 +164,40 @@ class PantiController extends Controller
         $panti->delete();
         return redirect()->route('admin.panti.index')->with('success', 'Data panti berhasil dihapus.');
     }
+
+    /**
+     * Approve a panti
+     */
+    public function approve(Panti $panti)
+    {
+        $panti->update(['status' => 'approved']);
+        
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Approve Panti',
+            'subject_type' => 'Panti',
+            'subject_id' => $panti->id_panti,
+            'description' => 'Nama: ' . $panti->nama . ' - Status: Approved',
+        ]);
+
+        return redirect()->back()->with('success', 'Panti berhasil disetujui.');
+    }
+
+    /**
+     * Reject a panti
+     */
+    public function reject(Panti $panti)
+    {
+        $panti->update(['status' => 'rejected']);
+        
+        ActivityLog::create([
+            'user_name' => auth()->user()->name,
+            'action' => 'Reject Panti',
+            'subject_type' => 'Panti',
+            'subject_id' => $panti->id_panti,
+            'description' => 'Nama: ' . $panti->nama . ' - Status: Rejected',
+        ]);
+
+        return redirect()->back()->with('success', 'Panti berhasil ditolak.');
+    }
 }

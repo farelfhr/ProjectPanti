@@ -55,6 +55,85 @@
         </div>
     </div>
 
+    <!-- Pending Approvals Section -->
+    @if($pendingPanti > 0 || $pendingKegiatan > 0)
+        <div class="mt-8">
+            <div class="bg-yellow-50 border border-yellow-200 p-6 rounded-xl shadow-md">
+                <h3 class="text-lg font-semibold text-yellow-800 mb-4">Menunggu Persetujuan</h3>
+                
+                @if($pendingPanti > 0)
+                    <div class="mb-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-md font-medium text-yellow-800">Panti Asuhan ({{ $pendingPanti }})</h4>
+                            <a href="{{ route('admin.panti.index') }}" class="text-yellow-600 hover:text-yellow-800 text-sm">Lihat Semua</a>
+                        </div>
+                        <div class="space-y-3">
+                            @foreach($pantiPendingList as $panti)
+                                <div class="bg-white p-4 rounded-lg border border-yellow-200">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="font-medium text-gray-800">{{ $panti->nama }}</p>
+                                            <p class="text-sm text-gray-600">{{ $panti->kecamatan }} - {{ $panti->user->name ?? 'N/A' }}</p>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <form action="{{ route('admin.panti.approve', $panti) }}" method="POST" class="inline">
+                                                @csrf
+                                                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                                                    Approve
+                                                </button>
+                                            </form>
+                                            <form action="{{ route('admin.panti.reject', $panti) }}" method="POST" class="inline">
+                                                @csrf
+                                                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
+                                                    Reject
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
+                @if($pendingKegiatan > 0)
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-md font-medium text-yellow-800">Kegiatan ({{ $pendingKegiatan }})</h4>
+                            <a href="{{ route('admin.kegiatan.index') }}" class="text-yellow-600 hover:text-yellow-800 text-sm">Lihat Semua</a>
+                        </div>
+                        <div class="space-y-3">
+                            @foreach($kegiatanPendingList as $kegiatan)
+                                <div class="bg-white p-4 rounded-lg border border-yellow-200">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="font-medium text-gray-800">{{ $kegiatan->judul }}</p>
+                                            <p class="text-sm text-gray-600">{{ $kegiatan->tanggal->format('d/m/Y') }} - {{ $kegiatan->panti->nama ?? 'N/A' }}</p>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <form action="{{ route('admin.kegiatan.approve', $kegiatan) }}" method="POST" class="inline">
+                                                @csrf
+                                                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                                                    Approve
+                                                </button>
+                                            </form>
+                                            <form action="{{ route('admin.kegiatan.reject', $kegiatan) }}" method="POST" class="inline">
+                                                @csrf
+                                                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
+                                                    Reject
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
+    @endif
+
     <div class="mt-8">
         <div class="bg-white p-6 rounded-xl shadow-md">
             <h3 class="text-lg font-semibold text-gray-700 mb-4">Aktivitas Terbaru</h3>

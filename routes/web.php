@@ -46,6 +46,11 @@ Route::middleware(['auth', 'panti'])->prefix('panti')->name('panti.')->group(fun
     Route::post('/kebutuhan', [App\Http\Controllers\PantiDashboardController::class, 'storeKebutuhan'])->name('kebutuhan.store');
     Route::put('/kebutuhan/{kebutuhan}', [App\Http\Controllers\PantiDashboardController::class, 'updateKebutuhan'])->name('kebutuhan.update');
     Route::delete('/kebutuhan/{kebutuhan}', [App\Http\Controllers\PantiDashboardController::class, 'deleteKebutuhan'])->name('kebutuhan.delete');
+    Route::get('/donations', [App\Http\Controllers\PantiDashboardController::class, 'donationsHistory'])->name('donations.history');
+    Route::get('/activities', [App\Http\Controllers\PantiDashboardController::class, 'activitiesHistory'])->name('activities.history');
+    Route::post('/donations/{donation}/confirm', [App\Http\Controllers\PantiDashboardController::class, 'confirmDonation'])->name('donations.confirm');
+    Route::post('/donations/{donation}/reject', [App\Http\Controllers\PantiDashboardController::class, 'rejectDonation'])->name('donations.reject');
+    Route::get('/donations/export', [App\Http\Controllers\PantiDashboardController::class, 'exportDonations'])->name('donations.export');
 });
 
 Route::middleware('auth')->group(function () {
@@ -86,6 +91,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     //Panti
     Route::resource('panti', AdminPantiController::class);
+    Route::post('/panti/{panti}/approve', [AdminPantiController::class, 'approve'])->name('panti.approve');
+    Route::post('/panti/{panti}/reject', [AdminPantiController::class, 'reject'])->name('panti.reject');
 
     //Kategori
     Route::resource('kategori', AdminKategoriController::class);
@@ -101,6 +108,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     //Kegiatan
     Route::resource('kegiatan', AdminKegiatanController::class);
+    Route::post('/kegiatan/{kegiatan}/approve', [AdminKegiatanController::class, 'approve'])->name('kegiatan.approve');
+    Route::post('/kegiatan/{kegiatan}/reject', [AdminKegiatanController::class, 'reject'])->name('kegiatan.reject');
 
     //Faq
     Route::resource('faqs', AdminFaqController::class);

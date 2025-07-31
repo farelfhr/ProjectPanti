@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id('id_panti');
             $table->string('nama');
             $table->string('alamat');
-            $table->string('phone');
-            $table->string('email')->unique();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable()->unique();
             $table->string('social_media_url')->nullable();
             $table->string('gambar')->nullable();
             $table->string('kecamatan');
@@ -24,6 +24,8 @@ return new class extends Migration
             $table->integer('kapasitas')->default(0);
             $table->year('tahun_berdiri')->nullable();
             $table->text('deskripsi')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

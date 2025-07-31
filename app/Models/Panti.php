@@ -34,7 +34,8 @@ class Panti extends Model
         'whatsapp_number',
         'bank_account',
         'bank_name',
-        'user_id' // Tambahkan user_id untuk relasi dengan User
+        'user_id',
+        'status'
     ];
 
     /**
@@ -71,5 +72,42 @@ class Panti extends Model
     public function activities(): HasMany
     {
         return $this->hasMany(Kegiatan::class, 'id_panti', 'id_panti');
+    }
+
+    /**
+     * Check if panti is approved
+     */
+    public function isApproved(): bool
+    {
+        return $this->status === 'approved';
+    }
+
+    /**
+     * Check if panti is pending
+     */
+    public function isPending(): bool
+    {
+        return $this->status === 'pending';
+    }
+
+    /**
+     * Check if panti is rejected
+     */
+    public function isRejected(): bool
+    {
+        return $this->status === 'rejected';
+    }
+
+    /**
+     * Get status badge class
+     */
+    public function getStatusBadgeClassAttribute(): string
+    {
+        return match($this->status) {
+            'approved' => 'bg-green-100 text-green-800',
+            'pending' => 'bg-yellow-100 text-yellow-800',
+            'rejected' => 'bg-red-100 text-red-800',
+            default => 'bg-gray-100 text-gray-800'
+        };
     }
 }
