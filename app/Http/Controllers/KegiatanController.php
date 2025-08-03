@@ -15,8 +15,16 @@ class KegiatanController extends Controller
      * @param  \App\Models\Kegiatan  $kegiatan
      * @return \Illuminate\Http\JsonResponse
      */
-    public function follow(Kegiatan $kegiatan) // <-- PERBAIKAN: Ganti nama method dan tambahkan parameter
+    public function follow(Kegiatan $kegiatan)
     {
+        // Pastikan user sudah login
+        if (!Auth::check()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Anda harus login terlebih dahulu.'
+            ], 401);
+        }
+
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
@@ -30,16 +38,23 @@ class KegiatanController extends Controller
             ], 409);
         }
 
-        // Tambahkan relasi di tabel pivot
-        $user->kegiatans()->attach($kegiatan->id_kegiatan);
+        try {
+            // Tambahkan relasi di tabel pivot
+            $user->kegiatans()->attach($kegiatan->id_kegiatan);
 
-        // Muat relasi panti agar bisa dikirim kembali ke frontend
-        $kegiatan->load('panti');
+            // Muat relasi panti agar bisa dikirim kembali ke frontend
+            $kegiatan->load('panti');
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Berhasil mengikuti acara! Acara telah ditambahkan ke dashboard Anda.',
-            'kegiatan' => $kegiatan
-        ]);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Berhasil mengikuti acara! Acara telah ditambahkan ke dashboard Anda.',
+                'kegiatan' => $kegiatan
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan saat mengikuti acara. Silakan coba lagi.'
+            ], 500);
+        }
     }
 }

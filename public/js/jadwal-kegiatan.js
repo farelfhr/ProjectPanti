@@ -1,4 +1,31 @@
-import { showNotification } from "./notifications.js";
+// Hapus import statement karena tidak dibutuhkan jika diload langsung
+// import { showNotification } from "./notifications.js";
+
+// Fungsi showNotification (copy dari notification.js untuk standalone use)
+function showNotification(message, type = "success") {
+    const popup = document.getElementById("notification-popup");
+    const messageElement = document.getElementById("notification-message");
+
+    if (!popup || !messageElement) return;
+
+    let notificationTimeout;
+    clearTimeout(notificationTimeout);
+
+    messageElement.textContent = message;
+    if (type === "success") {
+        popup.classList.remove("bg-red-500");
+        popup.classList.add("bg-green-500");
+    } else {
+        popup.classList.remove("bg-green-500");
+        popup.classList.add("bg-red-500");
+    }
+
+    popup.classList.remove("translate-x-full");
+
+    notificationTimeout = setTimeout(() => {
+        popup.classList.add("translate-x-full");
+    }, 3000);
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     const eventCards = document.querySelectorAll(".event-card");
@@ -7,6 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!modal || eventCards.length === 0) {
         return;
     }
+
+    // Ambil CSRF token dari meta tag
+    const csrfToken = document
+        .querySelector('meta[name="csrf-token"]')
+        ?.getAttribute("content");
 
     function openModal(modalId) {
         const modalToOpen = document.getElementById(modalId);
@@ -30,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
         card.addEventListener("click", () => {
             const data = card.dataset;
 
+            // Update modal content
             modal.querySelector("#modal-judul").textContent = data.judul;
             modal.querySelector("#modal-gambar").src = data.gambar;
             modal.querySelector(
@@ -43,6 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
             modal.querySelector("#modal-deskripsi-panjang").textContent =
                 data.deskripsiPanjang;
 
+            // Set event ID untuk tombol follow
             const followButton = modal.querySelector("#followEventButton");
             if (followButton) {
                 followButton.dataset.eventId = data.id;
@@ -52,12 +86,15 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // Event listener untuk klik di luar modal
     modal.addEventListener("click", (e) => {
         if (e.target === modal) {
             closeModal("eventDetailModal");
         }
     });
 
+    // Event listener untuk tombol follow
+    const followEventButton = document.getElementById("followEventButton");
     if (followEventButton) {
         followEventButton.addEventListener("click", function () {
             const eventId = this.dataset.eventId;
@@ -69,6 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
+            // Disable button
             this.disabled = true;
             this.textContent = "Memproses...";
 
@@ -81,12 +119,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
             })
                 .then((response) =>
-                    response
-                        .json()
-                        .then((data) => ({
-                            status: response.status,
-                            body: data,
-                        }))
+                    response.json().then((data) => ({
+                        status: response.status,
+                        body: data,
+                    }))
                 )
                 .then(({ status, body }) => {
                     if (status === 200) {
@@ -95,7 +131,8 @@ document.addEventListener("DOMContentLoaded", () => {
                             "bg-green-500 text-white font-bold py-2 px-4 rounded transition duration-300 cursor-not-allowed";
                         this.textContent = "Berhasil Diikuti";
                         showNotification(body.message, "success");
-                        // Panggil fungsi untuk update dashboard jika kita berada di halaman dashboard
+
+                        // Update dashboard jika ada
                         if (document.querySelector("#acara-diikuti-section")) {
                             addEventToDashboard(body.kegiatan);
                         }
@@ -149,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const card = document.createElement("div");
         card.className =
             "flex items-center p-4 border rounded-lg hover:bg-gray-50 transition";
-        card.setAttribute("data-event-id", kegiatan.id_kegiatan); // Tambahkan ID untuk pengecekan duplikat
+        card.setAttribute("data-event-id", kegiatan.id_kegiatan);
         card.innerHTML = `
             <img src="${
                 kegiatan.gambar

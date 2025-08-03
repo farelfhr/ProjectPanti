@@ -138,11 +138,11 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(
             Kegiatan::class,
-            'kegiatan_user',
-            'id_user',
-            'id_kegiatan',
-            'id',
-            'id_kegiatan'
+            'kegiatan_user',        // pivot table name
+            'id_user',              // foreign key untuk User di pivot table
+            'id_kegiatan',          // foreign key untuk Kegiatan di pivot table  
+            'id',                   // local key dari User table
+            'id_kegiatan'           // local key dari Kegiatan table
         );
     }
 }
