@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
+use App\Models\User;
 
 class Kegiatan extends Model
 {
@@ -92,7 +95,7 @@ class Kegiatan extends Model
      */
     public function getStatusBadgeClassAttribute(): string
     {
-        return match($this->status) {
+        return match ($this->status) {
             'approved' => 'bg-green-100 text-green-800',
             'pending' => 'bg-yellow-100 text-yellow-800',
             'rejected' => 'bg-red-100 text-red-800',
@@ -114,5 +117,17 @@ class Kegiatan extends Model
     public function isPast(): bool
     {
         return $this->tanggal < now();
+    }
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'kegiatan_user',
+            'id_user',
+            'id_kegiatan',
+            'id',
+            'id_kegiatan'
+        );
     }
 }

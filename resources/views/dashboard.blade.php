@@ -32,6 +32,41 @@
                 </div>
             </div>
 
+            <div class="mt-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6">
+                    <h3 class="text-2xl font-semibold text-gray-800 border-b pb-4 mb-4">
+                        Acara yang Saya Ikuti
+                    </h3>
+                    
+                    @if($kegiatan_diikuti && $kegiatan_diikuti->count() > 0)
+                        <div id="acara-diikuti-section"  class="space-y-4">
+                            @foreach($kegiatan_diikuti as $kegiatan)
+                                <div class="flex items-center p-4 border rounded-lg hover:bg-gray-50 transition">
+                                    <img src="{{ $kegiatan->gambar ? asset($kegiatan->gambar) : asset('images/PantiStock/panti-asuhan.jpg') }}" 
+                                         alt="{{ $kegiatan->judul }}" 
+                                         class="w-20 h-20 object-cover rounded-md mr-4">
+                                    <div class="flex-grow">
+                                        <h4 class="text-lg font-bold text-gray-900">{{ $kegiatan->judul }}</h4>
+                                        <p class="text-sm text-gray-600">
+                                            Diselenggarakan oleh: {{ $kegiatan->panti->nama_panti ?? 'Informasi tidak tersedia' }}
+                                        </p>
+                                        <p class="text-sm text-gray-500 mt-1">
+                                            <span class="font-medium">Tanggal:</span> 
+                                            {{ \Carbon\Carbon::parse($kegiatan->tanggal)->translatedFormat('l, d F Y') }}
+                                        </p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        {{-- Pesan jika user belum mengikuti acara apapun --}}
+                        <p class="text-gray-600">
+                            Anda belum mengikuti acara apapun. Jelajahi halaman <a href="{{ route('kerjasama') }}" class="text-blue-500 hover:underline">Kerjasama</a> untuk menemukan acara menarik!
+                        </p>
+                    @endif
+                </div>
+            </div>
+
             <!-- Statistics Cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-[#D0D5CB]">

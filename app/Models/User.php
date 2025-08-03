@@ -4,9 +4,17 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use illuminate\Database\Eloquent\Relations\HasMany;
+
+use App\Models\Kegiatan;
+use App\Models\Artikel;
+use App\Models\Kontak;
+use App\Models\Donation;
+use App\Models\Bookmark;
+use App\Models\Panti;
 
 class User extends Authenticatable
 {
@@ -124,5 +132,17 @@ class User extends Authenticatable
     public function getPanti()
     {
         return $this->panti()->first();
+    }
+
+    public function kegiatans(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Kegiatan::class,
+            'kegiatan_user',
+            'id_user',
+            'id_kegiatan',
+            'id',
+            'id_kegiatan'
+        );
     }
 }

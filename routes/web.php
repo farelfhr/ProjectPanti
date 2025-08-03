@@ -1,29 +1,31 @@
 <?php
 
-use App\Http\Controllers\ArtikelController;
-use App\Http\Controllers\KontakController;
-use App\Http\Controllers\PantiController;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\DaftarPantiController;
-use App\Http\Controllers\KerjasamaController;
-
-use App\Http\Controllers\Admin\ArtikelController as AdminArtikelController;
-use App\Http\Controllers\Admin\PantiController as AdminPantiController;
-use App\Http\Controllers\Admin\KategoriController as AdminKategoriController;
-use App\Http\Controllers\Admin\KebutuhanController as AdminKebutuhanController;
-use App\Http\Controllers\Admin\KontakController as AdminKontakController;
-use App\Http\Controllers\Admin\UserController as AdminUserController;
-use App\Http\Controllers\Admin\KegiatanController as AdminKegiatanController;
-use App\Http\Controllers\Admin\FaqController as AdminFaqController; // Tambahkan ini
-
 use App\Models\Panti;
 use App\Models\Artikel;
 use App\Models\Kegiatan;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PantiController;
+use App\Http\Controllers\KontakController;
+use App\Http\Controllers\ArtikelController;
 
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\KegiatanController;
+use App\Http\Controllers\KerjasamaController;
+use App\Http\Controllers\DaftarPantiController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\PantiController as AdminPantiController;
 use App\Http\Controllers\KegiatanController as PublicKegiatanController;
+
+use App\Http\Controllers\Admin\KontakController as AdminKontakController;
+use App\Http\Controllers\Admin\ArtikelController as AdminArtikelController;
+use App\Http\Controllers\Admin\KategoriController as AdminKategoriController;
+
+use App\Http\Controllers\Admin\KegiatanController as AdminKegiatanController;
+use App\Http\Controllers\Admin\KebutuhanController as AdminKebutuhanController;
+use App\Http\Controllers\Admin\FaqController as AdminFaqController; // Tambahkan ini
 
 Route::get('/', function () {
     $orphanages = Panti::latest()->take(3)->get();
@@ -34,9 +36,11 @@ Route::get('/', function () {
     return view('beranda', compact('orphanages', 'news', 'jumlahPanti', 'jumlahAnak', 'jumlahProgram'));
 })->name('home');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [HomeController::class, 'index'])
+    ->middleware(['auth', 'verified'])->name('dashboard');
+
+
+Route::get('/kerjasama', [KerjasamaController::class, 'index'])->name('kerjasama');
 
 // Route untuk dashboard panti
 Route::middleware(['auth', 'panti'])->prefix('panti')->name('panti.')->group(function () {
@@ -57,7 +61,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+
+    // Attend event routes
+    Route::post('/kegiatan/{kegiatan}/follow', [KegiatanController::class, 'follow'])->name('kegiatan.follow');
+
     // Bookmark routes
     Route::prefix('bookmark')->name('bookmark.')->group(function () {
         Route::post('/panti/{panti}/toggle', [App\Http\Controllers\BookmarkController::class, 'togglePanti'])->name('panti.toggle');
@@ -119,7 +126,7 @@ Route::get('/api/pantiasuhan', [App\Http\Controllers\PantiController::class, 'ge
 Route::get('/api/panti-stats', [App\Http\Controllers\PantiController::class, 'getStats']);
 
 // Temporary route to inspect panti data
-Route::get('/debug-panti-data', function() {
+Route::get('/debug-panti-data', function () {
     return response()->json(App\Models\Panti::select('id_panti', 'nama', 'latitude', 'longitude')->get());
 });
 

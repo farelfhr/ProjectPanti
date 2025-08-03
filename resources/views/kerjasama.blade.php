@@ -178,181 +178,133 @@
 
     <!-- Jadwal Kegiatan Section -->
     <section class="py-20 tk-gradient-warm relative">
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="text-center mb-16 animate-fade-in-up">
-                <h2 class="text-4xl md:text-5xl font-bold text-[#0D4715] mb-6 tracking-tight">
-                    Jadwal <span class="text-[#E9762B]">Kegiatan</span>
-                </h2>
-                <p class="text-xl text-[#41644A] max-w-4xl mx-auto leading-relaxed font-medium">
-                    Ikuti acara kami untuk mendukung dan berpartisipasi dalam kegiatan amal.
-                </p>
-            </div>
+    <div class="container mx-auto px-6 relative z-10">
+        <div class="text-center mb-16 animate-fade-in-up">
+            <h2 class="text-4xl md:text-5xl font-bold text-[#0D4715] mb-6 tracking-tight">
+                Jadwal <span class="text-[#E9762B]">Kegiatan</span>
+            </h2>
+            <p class="text-xl text-[#41644A] max-w-4xl mx-auto leading-relaxed font-medium">
+                Ikuti acara kami untuk mendukung dan berpartisipasi dalam kegiatan amal.
+            </p>
+        </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @forelse($kegiatan as $event)
-                    <div class="event-card bg-white rounded-xl shadow-lg card-hover animate-fade-in-up p-6"
-                        style="animation-delay: {{ $loop->index * 200 }}ms;" data-modal="{{ $event['id'] }}">
-                        <div class="flex flex-col gap-4">
-                            <p class="text-xl font-bold text-[#E9762B]">{{ $event['tanggal']->format('l, j F Y') }}</p>
-                            <h2 class="text-xl font-semibold text-[#0D4715]">{{ $event['judul'] }}</h2>
-                            <div class="flex items-center gap-4 text-[#41644A]">
-                                <span>Pembicara: <span class="text-[#E9762B]">{{ $event['pembicara'] }}</span></span>
-                                <span class="text-[#41644A]">•</span>
-                                <span class="flex items-center gap-1">
-                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                                    </svg>
-                                    {{ $event['lokasi'] }}
-                                </span>
-                            </div>
-                            <div
-                                class="flex gap-2 items-center text-sm text-[#41644A] py-1 px-2 bg-[#D0D5CB] rounded-full w-fit">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="size-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {{-- PERULANGAN UNTUK KARTU KEGIATAN --}}
+            @forelse($kegiatan as $event)
+                {{-- Beri class 'event-card' agar bisa dipilih oleh JS --}}
+                <div class="bg-white rounded-xl shadow-lg card-hover animate-fade-in-up p-6 cursor-pointer event-card"
+                    style="animation-delay: {{ $loop->index * 200 }}ms;"
+                    {{-- Atribut data untuk diakses oleh JavaScript --}}
+                    data-id="{{ $event->id }}"
+                    data-judul="{{ $event->judul }}"
+                    data-pembicara="{{ $event->pembicara }}"
+                    data-lokasi="{{ $event->lokasi }}"
+                    data-tanggal="{{ \Carbon\Carbon::parse($event->tanggal)->translatedFormat('l, j F Y') }}"
+                    data-waktu="{{ $event->waktu }}"
+                    data-deskripsi-singkat="{{ $event->deskripsi_singkat }}"
+                    data-deskripsi-panjang="{{ $event->deskripsi_panjang }}"
+                    data-gambar="{{ $event->gambar ? asset($event->gambar) : asset('images/PantiStock/panti-asuhan.jpg') }}">
+                    
+                    {{-- Konten kartu tetap sama --}}
+                    <div class="flex flex-col gap-4">
+                        <p class="text-xl font-bold text-[#E9762B]">{{ \Carbon\Carbon::parse($event->tanggal)->translatedFormat('l, j F Y') }}</p>
+                        <h2 class="text-xl font-semibold text-[#0D4715]">{{ $event->judul }}</h2>
+                        <div class="flex items-center gap-4 text-[#41644A]">
+                            <span>Pembicara: <span class="text-[#E9762B]">{{ $event->pembicara }}</span></span>
+                            <span class="text-[#41644A]">•</span>
+                            <span class="flex items-center gap-1">
+                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                 </svg>
-                                <span>{{ $event['waktu'] }}</span>
-                            </div>
-                            <p class="text-[#41644A] leading-relaxed">{{ $event['deskripsi_singkat'] }}</p>
+                                {{ $event->lokasi }}
+                            </span>
+                        </div>
+                        <div class="flex gap-2 items-center text-sm text-[#41644A] py-1 px-2 bg-[#D0D5CB] rounded-full w-fit">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                            <span>{{ $event->waktu }}</span>
+                        </div>
+                        <p class="text-[#41644A] leading-relaxed">{{ $event->deskripsi_singkat }}</p>
+                    </div>
+                </div>
+            @empty
+                <div class="col-span-full text-center py-12">
+                    <p class="text-lg text-gray-500">Belum ada jadwal kegiatan yang tersedia saat ini.</p>
+                </div>
+            @endforelse
+        </div>
+
+        <div id="eventDetailModal" class="modal fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm animate-fade-in">
+            <div class="bg-white rounded-2xl max-w-2xl w-full mx-4 max-h-[calc(95vh-8rem)] overflow-y-auto shadow-2xl animate-scale-in mt-24 scrollbar-hide">
+                <div class="relative">
+                    <button class="absolute top-4 right-4 z-10 p-2 bg-white bg-opacity-90 rounded-full hover:bg-opacity-100 transition-all duration-200 hover:scale-110" onclick="closeModal('eventDetailModal')">
+                        <svg class="w-5 h-5 text-[#41644A]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                    <div class="h-64 bg-gradient-to-br from-[#41644A] to-[#0D4715] relative overflow-hidden">
+                        {{-- Beri ID agar mudah diubah via JS --}}
+                        <img id="modal-gambar" src="" alt="Gambar Kegiatan" class="w-full h-full object-cover opacity-80" loading="lazy">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 right-16">
+                            {{-- Beri ID agar mudah diubah via JS --}}
+                            <h2 id="modal-judul" class="text-2xl font-bold text-white mb-2"></h2>
                         </div>
                     </div>
-
-                    <!-- Modal -->
-                    <div id="{{ $event['id'] }}"
-                        class="modal fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm animate-fade-in">
-                        <div
-                            class="bg-white rounded-2xl max-w-2xl w-full mx-4 max-h-[calc(95vh-8rem)] overflow-y-auto shadow-2xl animate-scale-in mt-24 scrollbar-hide">
-                            <div class="relative">
-                                <button
-                                    class="absolute top-4 right-4 z-10 p-2 bg-white bg-opacity-90 rounded-full hover:bg-opacity-100 transition-all duration-200 hover:scale-110"
-                                    onclick="closeModal('{{ $event['id'] }}')">
-                                    <svg class="w-5 h-5 text-[#41644A]" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12"></path>
-                                    </svg>
-                                </button>
-                                <div class="h-64 bg-gradient-to-br from-[#41644A] to-[#0D4715] relative overflow-hidden">
-                                    <img src="{{ $event['gambar'] }}" alt="{{ $event['judul'] }}"
-                                        class="w-full h-full object-cover opacity-80" loading="lazy" width="800"
-                                        height="600">
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                                    <div class="absolute bottom-6 left-6 right-16">
-                                        <h2 class="text-2xl font-bold text-white mb-2">{{ $event['judul_modal'] }}</h2>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="p-6 overflow-y-auto scrollbar-hide">
-                                <div class="mb-6">
-                                    <div class="flex items-start gap-4 text-[#41644A]">
-                                        <span>Pembicara: <span
-                                                class="text-[#E9762B]">{{ $event['pembicara'] }}</span></span>
-                                        <span class="text-[#41644A]">•</span>
-                                        <span class="flex items-center gap-1">
-                                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                                            </svg>
-                                            {{ $event['lokasi'] }}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col gap-2 mb-6">
-                                    <div class="flex gap-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="size-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                        </svg>
-                                        <span class="font-bold">Kapan</span>
-                                    </div>
-
-                                    <div class="flex gap-4 items-center">
-                                        <span class="text-[#41644A]">{{ $event['tanggal']->format('l, j F Y') }}</span>
-                                        <span class="text-[#41644A] font-bold">{{ $event['waktu'] }}</span>
-                                    </div>
-
-                                </div>
-                                <div class="mb-6">
-                                    <h3 class="text-lg font-semibold text-[#0D4715] mb-3">Detail Agenda</h3>
-                                    <p class="text-[#41644A] leading-relaxed">{{ $event['deskripsi_panjang'] }}</p>
-                                </div>
-                                <div class="border-t pt-6">
-
-                                    @php
-                                        $eventDate = \Carbon\Carbon::parse($event->tanggal)->format('Y-m-d');
-                                        
-                                        $timeParts = explode(' - ', $event->waktu);
-                                        $startTimeString = trim($timeParts[0]);
-                                        $endTimeString = isset($timeParts[1]) ? trim($timeParts[1]) : null;
-                                        
-                                        $startDateTime = \Carbon\Carbon::parse($eventDate . ' ' . $startTimeString, 'Asia/Jakarta');
-                                        
-                                        if ($endTimeString) {
-                                            $endDateTime = \Carbon\Carbon::parse($eventDate . ' ' . $endTimeString, 'Asia/Jakarta');
-                                        } else {
-                                            $endDateTime = $startDateTime->copy()->addHour();
-                                        }
-
-                                        $gcal_start = $startDateTime->utc()->format('Ymd\THis\Z');
-                                        $gcal_end = $endDateTime->utc()->format('Ymd\THis\Z');
-
-                                        $gcal_link = "https://www.google.com/calendar/render?action=TEMPLATE";
-                                        $gcal_link .= "&text=" . rawurlencode($event->nama_kegiatan);
-                                        $gcal_link .= "&dates=" . $gcal_start . "/" . $gcal_end;
-                                        $gcal_link .= "&details=" . rawurlencode("Untuk detail lebih lanjut, hubungi penyelenggara.\n\n" . strip_tags($event->deskripsi));
-                                        $gcal_link .= "&location=" . rawurlencode($event->panti ? $event->panti->nama_panti : 'Lokasi belum ditentukan');
-                                    @endphp
-
-                                    <h3 class="font-semibold text-[#0D4715] mb-4 flex items-center gap-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="size-4">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
-                                        </svg>
-                                        Bagikan
-                                    </h3>
-                                    <div>
-                                        <button
-                                            data-action="copy-link" class="w-full flex items-center justify-center gap-2 px-4 py-3 border border-[#D0D5CB] rounded-lg hover:bg-[#F1F0E9] transition-colors duration-200"
-                                            data-url="{{ url('/kerjasama#' . $event['id']) }}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="1.5" stroke="currentColor" class="size-4">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
-                                            </svg>
-                                            <span class="font-medium">Salin Tautan</span>
-                                        </button>
-                                    </div>
-                                    <a href="{{ $gcal_link }}"
-                                        class="w-full mt-3 flex items-center justify-center gap-2 px-4 py-3 bg-[#41644A] text-white rounded-lg hover:bg-[#0D4715] transition-colors duration-200 font-bold">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="size-4">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
-                                        </svg>
-                                        Tambahkan Ke Kalender
-                                    </a>
-                                </div>
-                            </div>
+                </div>
+                <div class="p-6 overflow-y-auto scrollbar-hide">
+                    <div class="mb-6">
+                        <div class="flex items-start gap-4 text-[#41644A]">
+                            {{-- Beri ID agar mudah diubah via JS --}}
+                            <span>Pembicara: <span id="modal-pembicara" class="text-[#E9762B]"></span></span>
+                            <span class="text-[#41644A]">•</span>
+                            <span class="flex items-center gap-1">
+                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                </svg>
+                                {{-- Beri ID agar mudah diubah via JS --}}
+                                <span id="modal-lokasi"></span>
+                            </span>
                         </div>
                     </div>
-                @empty
-                    <div class="col-span-full text-center py-12">
-                        <p class="text-lg text-gray-500">Belum ada jadwal kegiatan yang tersedia saat ini.</p>
+                    <div class="flex flex-col gap-2 mb-6">
+                        <div class="flex gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                            <span class="font-bold">Kapan</span>
+                        </div>
+                        <div class="flex gap-4 items-center">
+                            {{-- Beri ID agar mudah diubah via JS --}}
+                            <span id="modal-tanggal" class="text-[#41644A]"></span>
+                            <span id="modal-waktu" class="text-[#41644A] font-bold"></span>
+                        </div>
                     </div>
-                @endforelse
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-[#0D4715] mb-3">Detail Agenda</h3>
+                        {{-- Beri ID agar mudah diubah via JS --}}
+                        <p id="modal-deskripsi-panjang" class="text-[#41644A] leading-relaxed"></p>
+                    </div>
+                    <div class="bg-gray-100 px-6 py-4 rounded-b-lg flex justify-end">
+                        @auth
+                            <button id="followEventButton" data-event-id="" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300">
+                                Ikuti Acara
+                            </button>
+                        @endauth
+                        @guest
+                            <a href="{{ route('login') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300">
+                                Login untuk Mengikuti Acara
+                            </a>
+                        @endguest
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Hubungi Kami Section -->
     <section class="py-20 bg-white relative">
