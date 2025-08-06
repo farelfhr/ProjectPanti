@@ -62,8 +62,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Attend event routes
     Route::post('/kegiatan/{kegiatan}/follow', [KegiatanController::class, 'follow'])->name('kegiatan.follow');
+    Route::delete('/kegiatan/{kegiatan}/unfollow', [KegiatanController::class, 'unfollow'])->name('kegiatan.unfollow');
+    Route::get('/kegiatan/{kegiatan}/follow-status', [KegiatanController::class, 'checkFollowStatus'])->name('kegiatan.follow-status');
 
     // Bookmark routes
     Route::prefix('bookmark')->name('bookmark.')->group(function () {

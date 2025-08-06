@@ -32,28 +32,49 @@
                 </div>
             </div>
 
-            <div class="mt-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-6 border border-[#D0D5CB]">
                 <div class="p-6">
                     <h3 class="text-2xl font-semibold text-gray-800 border-b pb-4 mb-4">
-                        Acara yang Saya Ikuti
+                        Acara yang Anda Ikuti
                     </h3>
                     
                     @if($kegiatan_diikuti && $kegiatan_diikuti->count() > 0)
                         <div id="acara-diikuti-section"  class="space-y-4">
                             @foreach($kegiatan_diikuti as $kegiatan)
-                                <div class="flex items-center p-4 border rounded-lg hover:bg-gray-50 transition">
-                                    <img src="{{ $kegiatan->gambar ? asset($kegiatan->gambar) : asset('images/PantiStock/panti-asuhan.jpg') }}" 
-                                         alt="{{ $kegiatan->judul }}" 
-                                         class="w-20 h-20 object-cover rounded-md mr-4">
-                                    <div class="flex-grow">
-                                        <h4 class="text-lg font-bold text-gray-900">{{ $kegiatan->judul }}</h4>
-                                        <p class="text-sm text-gray-600">
-                                            Diselenggarakan oleh: {{ $kegiatan->panti->nama_panti ?? 'Informasi tidak tersedia' }}
-                                        </p>
-                                        <p class="text-sm text-gray-500 mt-1">
-                                            <span class="font-medium">Tanggal:</span> 
-                                            {{ \Carbon\Carbon::parse($kegiatan->tanggal)->translatedFormat('l, d F Y') }}
-                                        </p>
+                                <div class="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition">
+                                    <div class="flex">
+                                        <img src="{{ $kegiatan->gambar ? asset($kegiatan->gambar) : asset('images/PantiStock/panti-asuhan.jpg') }}" 
+                                            alt="{{ $kegiatan->judul }}" 
+                                            class="w-24 h-24 object-cover rounded-md mr-4">
+                                        <div class="flex-grow">
+                                            <h4 class="text-lg font-bold text-gray-900">{{ $kegiatan->judul }}</h4>
+                                            <p class="text-sm text-gray-600">
+                                                {{ $kegiatan->deskripsi_panjang }}
+                                            </p>
+
+                                            <div class="flex items-center gap-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-3">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                </svg>
+                                                <p class="text-sm text-gray-500 mt-1">
+                                                    {{ \Carbon\Carbon::parse($kegiatan->tanggal)->translatedFormat('l, d F Y') }}
+                                                </p>
+                                            </div>
+
+                                            <div class="flex items-center gap-1">
+                                                <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                                </svg>
+                                                <p class="text-sm text-gray-500 mt-1">
+                                                    {{ $kegiatan->lokasi }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div type="submit" class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors">
+                                        <button>Batal Ikuti</button>
                                     </div>
                                 </div>
                             @endforeach
@@ -68,7 +89,7 @@
             </div>
 
             <!-- Statistics Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-6">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-[#D0D5CB]">
                     <div class="p-6">
                         <div class="flex items-center">
@@ -248,9 +269,9 @@
                                     <p>📍 {{ $event->lokasi }}</p>
                                 </div>
                                 <div class="mt-3">
-                                    <button class="text-[#E9762B] hover:text-[#0D4715] text-sm font-medium">
+                                    <a href="{{ $event->id_kegiatan  }}" class="text-[#E9762B] hover:text-[#0D4715] text-sm font-medium">
                                         Ikuti Kegiatan
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                             @endforeach
