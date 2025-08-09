@@ -41,7 +41,7 @@
                     @if($kegiatan_diikuti && $kegiatan_diikuti->count() > 0)
                         <div id="acara-diikuti-section"  class="space-y-4">
                             @foreach($kegiatan_diikuti as $kegiatan)
-                                <div class="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition">
+                                <div class="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition group" data-event-id="{{ $kegiatan->id_kegiatan }}">
                                     <div class="flex">
                                         <img src="{{ $kegiatan->gambar ? asset($kegiatan->gambar) : asset('images/PantiStock/panti-asuhan.jpg') }}" 
                                             alt="{{ $kegiatan->judul }}" 
@@ -49,33 +49,36 @@
                                         <div class="flex-grow">
                                             <h4 class="text-lg font-bold text-gray-900">{{ $kegiatan->judul }}</h4>
                                             <p class="text-sm text-gray-600">
-                                                {{ $kegiatan->deskripsi_panjang }}
+                                                {{ Str::limit($kegiatan->deskripsi_singkat, 100) }}
                                             </p>
 
-                                            <div class="flex items-center gap-1">
+                                            <div class="flex items-center gap-1 mt-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-3">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                                 </svg>
-                                                <p class="text-sm text-gray-500 mt-1">
+                                                <p class="text-sm text-gray-500">
                                                     {{ \Carbon\Carbon::parse($kegiatan->tanggal)->translatedFormat('l, d F Y') }}
                                                 </p>
                                             </div>
 
-                                            <div class="flex items-center gap-1">
+                                            <div class="flex items-center gap-1 mt-1">
                                                 <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                                 </svg>
-                                                <p class="text-sm text-gray-500 mt-1">
+                                                <p class="text-sm text-gray-500">
                                                     {{ $kegiatan->lokasi }}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div type="submit" class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors">
-                                        <button>Batal Ikuti</button>
-                                    </div>
+                                    <button type="button" 
+                                        class="unfollow-event-btn px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-all hidden group-hover:block"
+                                        data-event-id="{{ $kegiatan->id_kegiatan }}"
+                                        data-event-title="{{ $kegiatan->judul }}">
+                                        Batal Ikuti
+                                    </button>
                                 </div>
                             @endforeach
                         </div>

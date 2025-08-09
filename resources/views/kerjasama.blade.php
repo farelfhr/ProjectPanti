@@ -298,13 +298,13 @@
                     </div>
                     <div class="bg-gray-100 px-6 py-4 rounded-b-lg flex justify-center w-full">
                         @auth
-                            <button id="followEventButton" data-event-id="" class="bg-[#E9762B] hover:bg-[#D0661A] text-white w-full flex-1 flex-grow text-center font-bold py-2 px-4 rounded transition duration-300">
-                                Ikuti Acara
+                            <button id="followEventButton" data-event-id="" class="bg-gradient-to-r from-[#E9762B] to-[#D0661A] hover:from-[#D0661A] hover:to-[#B85515] text-white w-full flex-1 flex-grow text-center font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]">
+                                🎯 Ikuti Acara
                             </button>   
                         @endauth
                         @guest
-                            <a href="{{ route('login') }}" class="bg-[#41644A] hover:bg-[#38543f] text-white w-full text-center font-bold py-2 px-4 rounded transition duration-300">
-                                Login untuk Mengikuti Acara
+                            <a href="{{ route('login') }}" class="bg-gradient-to-r from-[#41644A] to-[#0D4715] hover:from-[#38543f] hover:to-[#0B3A12] text-white w-full text-center font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]">
+                                🔐 Login untuk Mengikuti Acara
                             </a>
                         @endguest
                     </div>
