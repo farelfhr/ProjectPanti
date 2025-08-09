@@ -130,8 +130,8 @@
         <script src="{{ asset('js/notification.js') }}"></script>
         <script src="{{ asset('js/donation-modal.js') }}"></script>
 
-        @if(request()->routeIs('dashboard'))
-            <script src="{{ asset('js/dashboard-events.js') }}"></script>
+        @if(request()->is('dashboard') || request()->routeIs('dashboard*'))
+            <script src="{{ asset('js/dashboard-event.js') }}"></script>
         @endif
         
         @stack('scripts')

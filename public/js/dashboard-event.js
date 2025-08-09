@@ -35,15 +35,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
             })
                 .then((response) =>
-                    response
-                        .json()
-                        .then((data) => ({
-                            status: response.status,
-                            body: data,
-                        }))
+                    response.json().then((data) => ({
+                        status: response.status,
+                        body: data,
+                    }))
                 )
                 .then(({ status, body }) => {
-                    if (status === 200) {
+                    // Response Anda menggunakan format: { status: 'success', message: '...' }
+                    if (status === 200 && body.status === "success") {
                         // Sukses - hapus card dari dashboard
                         const eventCard = this.closest("[data-event-id]");
                         if (eventCard) {
@@ -76,6 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         showNotification(body.message, "success");
                     } else {
+                        // Error dari server
                         throw new Error(
                             body.message ||
                                 "Gagal membatalkan partisipasi acara."
@@ -165,55 +165,46 @@ document.addEventListener("DOMContentLoaded", function () {
                     }))
                 )
                 .then(({ status, body }) => {
-                    if (status === 200) {
-                        // Sukses - tambahkan ke set acara yang diikuti
-                        followedEvents.add(eventId);
+                    if (status === 200 && body.status === "success") {
+                        const eventCard = this.closest("[data-event-id]");
+                        if (eventCard) {
+                            eventCard.style.opacity = "0";
+                            eventCard.style.transform = "translateY(-10px)";
+                            eventCard.style.transition = "all 0.3s ease";
 
-                        // Update tombol ke status sukses
-                        this.className =
-                            "bg-green-500 text-white font-bold py-2 px-4 rounded transition duration-300 cursor-not-allowed";
-                        this.textContent = "Berhasil Diikuti";
+                            setTimeout(() => {
+                                eventCard.remove();
 
-                        showNotification(body.message, "success");
-
-                        // Update dashboard jika ada
-                        if (document.querySelector("#acara-diikuti-section")) {
-                            addEventToDashboard(body.kegiatan);
+                                const remainingCards =
+                                    document.querySelectorAll(
+                                        "#acara-diikuti-section [data-event-id]"
+                                    );
+                                if (remainingCards.length === 0) {
+                                    const emptyMessage =
+                                        document.createElement("p");
+                                    emptyMessage.className =
+                                        "text-gray-600 pesan-kosong";
+                                    emptyMessage.innerHTML =
+                                        'Anda belum mengikuti acara apapun. Jelajahi halaman <a href="/kerjasama" class="text-blue-500 hover:underline">Kerjasama</a> untuk menemukan acara menarik!';
+                                    document
+                                        .querySelector("#acara-diikuti-section")
+                                        .appendChild(emptyMessage);
+                                }
+                            }, 300);
                         }
 
-                        // Setelah 2 detik, ubah ke status "Sudah Diikuti"
-                        setTimeout(() => {
-                            this.className =
-                                "bg-gray-400 text-white font-bold py-2 px-4 rounded transition duration-300 cursor-not-allowed";
-                            this.textContent = "Sudah Diikuti";
-                        }, 2000);
-
-                        // Tutup modal setelah berhasil
-                        setTimeout(() => {
-                            closeModal("eventDetailModal");
-                        }, 2500);
-                    } else if (status === 409) {
-                        // Sudah mengikuti - tambahkan ke set dan update tombol
-                        followedEvents.add(eventId);
-                        this.className =
-                            "bg-gray-400 text-white font-bold py-2 px-4 rounded transition duration-300 cursor-not-allowed";
-                        this.textContent = "Sudah Diikuti";
-                        showNotification(body.message, "error");
+                        showNotification(body.message, "success");
                     } else {
                         throw new Error(
-                            body.message || "Gagal mengikuti acara."
+                            body.message ||
+                                "Gagal membatalkan partisipasi acara."
                         );
                     }
                 })
                 .catch((error) => {
-                    console.error("Fetch Error:", error);
-                    // Reset tombol ke keadaan semula hanya jika belum mengikuti
-                    if (!followedEvents.has(eventId)) {
-                        this.disabled = false;
-                        this.textContent = "Ikuti Acara";
-                        this.className =
-                            "bg-[#E9762B] hover:bg-[#D0661A] text-white font-bold py-2 px-4 rounded transition duration-300";
-                    }
+                    console.error("Unfollow Error:", error);
+                    this.disabled = false;
+                    this.textContent = "Batal Ikuti";
                     showNotification(error.message, "error");
                 });
         });
@@ -424,12 +415,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     },
                 })
                     .then((response) =>
-                        response
-                            .json()
-                            .then((data) => ({
-                                status: response.status,
-                                body: data,
-                            }))
+                        response.json().then((data) => ({
+                            status: response.status,
+                            body: data,
+                        }))
                     )
                     .then(({ status, body }) => {
                         if (status === 200) {
