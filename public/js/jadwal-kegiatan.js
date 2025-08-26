@@ -52,13 +52,13 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateFollowButtonStatus(eventId, followButton) {
         if (followedEvents.has(eventId)) {
             followButton.className =
-                "bg-gray-400 text-white font-bold py-2 px-4 rounded transition duration-300 cursor-not-allowed";
-            followButton.textContent = "Sudah Diikuti";
+                "bg-gradient-to-r from-[#41644A] to-[#0D4715] hover:from-[#38543f] hover:to-[#0B3A12] text-white w-full flex-1 flex-grow text-center font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] cursor-not-allowed";
+            followButton.textContent = "🚫 Sudah Diikuti";
             followButton.disabled = true;
         } else {
             followButton.className =
-                "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300";
-            followButton.textContent = "Ikuti Acara";
+                "bg-gradient-to-r from-[#E9762B] to-[#D0661A] hover:from-[#D0661A] hover:to-[#B85515] text-white w-full flex-1 flex-grow text-center font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]";
+            followButton.textContent = "🎯Ikuti Acara";
             followButton.disabled = false;
         }
     }
@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         // Update tombol ke status sukses
                         this.className =
-                            "bg-green-500 text-white font-bold py-2 px-4 rounded transition duration-300 cursor-not-allowed";
+                            "bg-green-500 text-white w-full flex-1 flex-grow text-center font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] cursor-not-allowed";
                         this.textContent = "Berhasil Diikuti";
 
                         showNotification(body.message, "success");
@@ -206,15 +206,15 @@ document.addEventListener("DOMContentLoaded", () => {
                         // Setelah 2 detik, ubah ke status "Sudah Diikuti"
                         setTimeout(() => {
                             this.className =
-                                "bg-gray-400 text-white font-bold py-2 px-4 rounded transition duration-300 cursor-not-allowed";
-                            this.textContent = "Sudah Diikuti";
+                                "bg-gradient-to-r from-[#41644A] to-[#0D4715] hover:from-[#38543f] hover:to-[#0B3A12] text-white w-full flex-1 flex-grow text-center font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] cursor-not-allowed";
+                            this.textContent = "🚫 Sudah Diikuti";
                         }, 2000);
                     } else if (status === 409) {
                         // Sudah mengikuti - tambahkan ke set dan update tombol
                         followedEvents.add(eventId);
                         this.className =
-                            "bg-gray-400 text-white font-bold py-2 px-4 rounded transition duration-300 cursor-not-allowed";
-                        this.textContent = "Sudah Diikuti";
+                            "bg-gradient-to-r from-[#41644A] to-[#0D4715] hover:from-[#38543f] hover:to-[#0B3A12] text-white w-full flex-1 flex-grow text-center font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] cursor-not-allowed";
+                        this.textContent = "🚫 Sudah Diikuti";
                         showNotification(body.message, "error");
                     } else {
                         throw new Error(
