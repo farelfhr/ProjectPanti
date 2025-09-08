@@ -1,0 +1,32 @@
+# Dependencies and build outputs
+node_modules/
+vendor/
+public/build/
+
+# Environment and Vercel local state
+.env
+.env.*
+.vercel/
+
+# Laravel runtime files (recreated at runtime)
+storage/*.log
+storage/logs/
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+
+# VCS/IDE and OS junk
+.git/
+.github/
+.idea/
+.vscode/
+.DS_Store
+
+# Tests and coverage
+tests/
+coverage/
+
+# Containers and misc
+Dockerfile
+docker-compose*
+*.local.*
