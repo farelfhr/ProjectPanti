@@ -50,10 +50,11 @@ class RegisteredUserController extends Controller
             \App\Models\Panti::create([
                 'user_id' => $user->id,
                 'nama' => $request->panti_name,
-                'alamat' => 'Alamat akan dilengkapi nanti',
-                'kecamatan' => 'Kecamatan akan dilengkapi nanti',
+                'alamat' => 'Alamat belum diisi',
+                'kecamatan' => 'Belum diisi',
                 'jumlah_anak' => 0,
                 'kapasitas' => 0,
+                'status' => 'pending',
             ]);
         }
 
@@ -63,9 +64,11 @@ class RegisteredUserController extends Controller
 
         // Redirect berdasarkan role
         if ($user->isPanti()) {
-            return redirect(route('panti.setup', absolute: false));
+            return redirect(route('panti.setup', absolute: false))
+                ->with('success', 'Registrasi berhasil! Silakan lengkapi data panti.');
         }
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('dashboard', absolute: false))
+            ->with('success', 'Registrasi berhasil! Selamat datang di aplikasi.');
     }
 }
