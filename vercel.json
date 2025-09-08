@@ -35,7 +35,12 @@
       "DB_DATABASE": "...",
       "DB_USERNAME": "...",
       "DB_PASSWORD": "...",
-      "SESSION_DRIVER": "cookie"
+      "SESSION_DRIVER": "cookie",
+      "LOG_CHANNEL": "stderr",
+      "CACHE_DRIVER": "array",
+      "QUEUE_CONNECTION": "sync",
+      "VIEW_COMPILED_PATH": "/tmp",
+      "APP_CONFIG_CACHE": "/tmp/config.php"
     }
   }
 }
