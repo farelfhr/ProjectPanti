@@ -1,32 +1,3 @@
-// Hapus import statement karena tidak dibutuhkan jika diload langsung
-// import { showNotification } from "./notifications.js";
-
-// Fungsi showNotification (copy dari notification.js untuk standalone use)
-function showNotification(message, type = "success") {
-    const popup = document.getElementById("notification-popup");
-    const messageElement = document.getElementById("notification-message");
-
-    if (!popup || !messageElement) return;
-
-    let notificationTimeout;
-    clearTimeout(notificationTimeout);
-
-    messageElement.textContent = message;
-    if (type === "success") {
-        popup.classList.remove("bg-red-500");
-        popup.classList.add("bg-green-500");
-    } else {
-        popup.classList.remove("bg-green-500");
-        popup.classList.add("bg-red-500");
-    }
-
-    popup.classList.remove("translate-x-full");
-
-    notificationTimeout = setTimeout(() => {
-        popup.classList.add("translate-x-full");
-    }, 3000);
-}
-
 document.addEventListener("DOMContentLoaded", () => {
     const eventCards = document.querySelectorAll(".event-card");
     const modal = document.getElementById("eventDetailModal");
@@ -39,6 +10,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const csrfToken = document
         .querySelector('meta[name="csrf-token"]')
         ?.getAttribute("content");
+
+    // Set untuk melacak acara yang sudah diikuti
+    let followedEvents = new Set();
+
+    // Inisialisasi daftar acara yang sudah diikuti dari dashboard
+    function initializeFollowedEvents() {
+        const dashboardEvents = document.querySelectorAll(
+            "#acara-diikuti-section [data-event-id]"
+        );
+        dashboardEvents.forEach((event) => {
+            const eventId = event.getAttribute("data-event-id");
+            if (eventId) {
+                followedEvents.add(eventId);
+            }
+        });
+    }
+
+    // Panggil inisialisasi
+    initializeFollowedEvents();
 
     function openModal(modalId) {
         const modalToOpen = document.getElementById(modalId);
@@ -58,28 +48,93 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
+    // Fungsi untuk update status tombol
+    function updateFollowButtonStatus(eventId, followButton) {
+        if (followedEvents.has(eventId)) {
+            followButton.className =
+                "bg-gradient-to-r from-[#41644A] to-[#0D4715] hover:from-[#38543f] hover:to-[#0B3A12] text-white w-full flex-1 flex-grow text-center font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] cursor-not-allowed";
+            followButton.textContent = "🚫 Sudah Diikuti";
+            followButton.disabled = true;
+        } else {
+            followButton.className =
+                "bg-gradient-to-r from-[#E9762B] to-[#D0661A] hover:from-[#D0661A] hover:to-[#B85515] text-white w-full flex-1 flex-grow text-center font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]";
+            followButton.textContent = "🎯Ikuti Acara";
+            followButton.disabled = false;
+        }
+    }
+
     eventCards.forEach((card) => {
         card.addEventListener("click", () => {
             const data = card.dataset;
 
-            // Update modal content
-            modal.querySelector("#modal-judul").textContent = data.judul;
-            modal.querySelector("#modal-gambar").src = data.gambar;
-            modal.querySelector(
-                "#modal-gambar"
-            ).alt = `Gambar untuk ${data.judul}`;
-            modal.querySelector("#modal-pembicara").textContent =
-                data.pembicara;
-            modal.querySelector("#modal-lokasi").textContent = data.lokasi;
-            modal.querySelector("#modal-tanggal").textContent = data.tanggal;
-            modal.querySelector("#modal-waktu").textContent = data.waktu;
-            modal.querySelector("#modal-deskripsi-panjang").textContent =
-                data.deskripsiPanjang;
+            console.log("Card data:", data); // Debug: lihat semua data
 
-            // Set event ID untuk tombol follow
+            // Update modal content dengan error handling
+            const modalJudul = modal.querySelector("#modal-judul");
+            const modalGambar = modal.querySelector("#modal-gambar");
+            const modalPembicara = modal.querySelector("#modal-pembicara");
+            const modalLokasi = modal.querySelector("#modal-lokasi");
+            const modalTanggal = modal.querySelector("#modal-tanggal");
+            const modalWaktu = modal.querySelector("#modal-waktu");
+            const modalDeskripsi = modal.querySelector(
+                "#modal-deskripsi-panjang"
+            );
+
+            // Update text content
+            if (modalJudul) modalJudul.textContent = data.judul || "";
+            if (modalPembicara)
+                modalPembicara.textContent = data.pembicara || "";
+            if (modalLokasi) modalLokasi.textContent = data.lokasi || "";
+            if (modalTanggal) modalTanggal.textContent = data.tanggal || "";
+            if (modalWaktu) modalWaktu.textContent = data.waktu || "";
+            if (modalDeskripsi)
+                modalDeskripsi.textContent = data.deskripsiPanjang || "";
+
+            // Handle gambar dengan debug
+            if (modalGambar) {
+                const gambarUrl = data.gambar;
+                console.log("Original gambar URL:", gambarUrl); // Debug
+
+                // Bersihkan src sebelumnya
+                modalGambar.src = "";
+
+                if (
+                    gambarUrl &&
+                    gambarUrl !== "undefined" &&
+                    gambarUrl !== "null"
+                ) {
+                    // Set src dan alt
+                    modalGambar.src = gambarUrl;
+                    modalGambar.alt = `Gambar untuk ${
+                        data.judul || "kegiatan"
+                    }`;
+
+                    console.log("Setting image src to:", gambarUrl); // Debug
+
+                    // Event listener untuk debugging loading gambar
+                    modalGambar.onload = function () {
+                        console.log("Image loaded successfully:", this.src);
+                    };
+
+                    modalGambar.onerror = function () {
+                        console.error("Failed to load image:", this.src);
+                        // Fallback ke gambar default
+                        this.src = "/images/PantiStock/panti-asuhan.jpg";
+                        this.alt = "Gambar default kegiatan";
+                    };
+                } else {
+                    // Gunakan gambar default jika tidak ada gambar
+                    modalGambar.src = "/images/PantiStock/panti-asuhan.jpg";
+                    modalGambar.alt = "Gambar default kegiatan";
+                    console.log("Using default image"); // Debug
+                }
+            }
+
+            // Set event ID dan update status tombol follow
             const followButton = modal.querySelector("#followEventButton");
             if (followButton) {
                 followButton.dataset.eventId = data.id;
+                updateFollowButtonStatus(data.id, followButton);
             }
 
             openModal("eventDetailModal");
@@ -98,11 +153,18 @@ document.addEventListener("DOMContentLoaded", () => {
     if (followEventButton) {
         followEventButton.addEventListener("click", function () {
             const eventId = this.dataset.eventId;
+
             if (!eventId || !csrfToken) {
                 showNotification(
                     "Terjadi kesalahan. Silakan muat ulang halaman.",
                     "error"
                 );
+                return;
+            }
+
+            // Cek apakah sudah mengikuti acara ini
+            if (followedEvents.has(eventId)) {
+                showNotification("Anda sudah mengikuti acara ini.", "error");
                 return;
             }
 
@@ -126,21 +188,33 @@ document.addEventListener("DOMContentLoaded", () => {
                 )
                 .then(({ status, body }) => {
                     if (status === 200) {
-                        // Sukses
+                        // Sukses - tambahkan ke set acara yang diikuti
+                        followedEvents.add(eventId);
+
+                        // Update tombol ke status sukses
                         this.className =
-                            "bg-green-500 text-white font-bold py-2 px-4 rounded transition duration-300 cursor-not-allowed";
+                            "bg-green-500 text-white w-full flex-1 flex-grow text-center font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] cursor-not-allowed";
                         this.textContent = "Berhasil Diikuti";
+
                         showNotification(body.message, "success");
 
                         // Update dashboard jika ada
                         if (document.querySelector("#acara-diikuti-section")) {
                             addEventToDashboard(body.kegiatan);
                         }
+
+                        // Setelah 2 detik, ubah ke status "Sudah Diikuti"
+                        setTimeout(() => {
+                            this.className =
+                                "bg-gradient-to-r from-[#41644A] to-[#0D4715] hover:from-[#38543f] hover:to-[#0B3A12] text-white w-full flex-1 flex-grow text-center font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] cursor-not-allowed";
+                            this.textContent = "🚫 Sudah Diikuti";
+                        }, 2000);
                     } else if (status === 409) {
-                        // Sudah mengikuti
+                        // Sudah mengikuti - tambahkan ke set dan update tombol
+                        followedEvents.add(eventId);
                         this.className =
-                            "bg-gray-400 text-white font-bold py-2 px-4 rounded transition duration-300 cursor-not-allowed";
-                        this.textContent = "Sudah Diikuti";
+                            "bg-gradient-to-r from-[#41644A] to-[#0D4715] hover:from-[#38543f] hover:to-[#0B3A12] text-white w-full flex-1 flex-grow text-center font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] cursor-not-allowed";
+                        this.textContent = "🚫 Sudah Diikuti";
                         showNotification(body.message, "error");
                     } else {
                         throw new Error(
@@ -150,10 +224,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 })
                 .catch((error) => {
                     console.error("Fetch Error:", error);
-                    this.disabled = false;
-                    this.textContent = "Ikuti Acara";
-                    this.className =
-                        "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300";
+                    // Reset tombol ke keadaan semula hanya jika belum mengikuti
+                    if (!followedEvents.has(eventId)) {
+                        this.disabled = false;
+                        this.textContent = "Ikuti Acara";
+                        this.className =
+                            "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300";
+                    }
                     showNotification(error.message, "error");
                 });
         });
@@ -219,5 +296,38 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
 
         dashboardSection.appendChild(card);
+    }
+
+    // Fungsi showNotification yang konsisten
+    function showNotification(message, type = "success") {
+        const popup = document.getElementById("notification-popup");
+        const messageElement = document.getElementById("notification-message");
+
+        if (!popup || !messageElement) return;
+
+        // Clear any existing timeout
+        if (window.notificationTimeout) {
+            clearTimeout(window.notificationTimeout);
+        }
+
+        messageElement.textContent = message;
+
+        // Remove all color classes first
+        popup.classList.remove("bg-red-500", "bg-green-500");
+
+        // Add appropriate color class
+        if (type === "success") {
+            popup.classList.add("bg-green-500");
+        } else {
+            popup.classList.add("bg-red-500");
+        }
+
+        // Show notification
+        popup.classList.remove("translate-x-full");
+
+        // Hide notification after 3 seconds
+        window.notificationTimeout = setTimeout(() => {
+            popup.classList.add("translate-x-full");
+        }, 3000);
     }
 });

@@ -12,11 +12,11 @@ class KegiatanSeeder extends Seeder
      * Run the database seeds.
      */
     public function run(): void
-    { 
+    {
         Kegiatan::create([
             'judul' => 'Pengabdian Masyarakat',
             'pembicara' => 'Ferdi Dwana',
-            'tanggal' => now(),
+            'tanggal' => now()->addDay(),
             'waktu' => '09:00 - 10:30',
             'lokasi' => 'Gedung B11',
             'deskripsi_singkat' => 'Penyelenggaraan Bantuan Sembako oleh Pihak Universitas Negeri Malang.',
@@ -28,7 +28,7 @@ class KegiatanSeeder extends Seeder
         Kegiatan::create([
             'judul' => 'Pengadaan Bantuan Sosial',
             'pembicara' => 'Reyhan Akbar',
-            'tanggal' => now(),
+            'tanggal' => now()->addDay(),
             'waktu' => '09:00 - 10:30',
             'lokasi' => 'Gedung B11',
             'deskripsi_singkat' => 'Kolaborasi untuk memberikan bantuan sosial kepada anak-anak panti asuhan.',
@@ -40,7 +40,7 @@ class KegiatanSeeder extends Seeder
         Kegiatan::create([
             'judul' => 'Pemeriksaan Kesehatan Gratis',
             'pembicara' => 'Farel Fathir',
-            'tanggal' => now(),
+            'tanggal' => now()->addDay(),
             'waktu' => '09:00 - 10:30',
             'lokasi' => 'Gedung B11',
             'deskripsi_singkat' => 'Pemeriksaan kesehatan gratis untuk anak-anak panti asuhan.',

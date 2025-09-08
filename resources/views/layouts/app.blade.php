@@ -123,12 +123,17 @@
             </footer>
         </div>
 
-        <div id="notification-popup" class="fixed top-5 right-5 bg-green-500 text-white py-3 px-6 rounded-lg shadow-lg transform translate-x-full transition-transform duration-500 ease-in-out z-50">
+        <div id="notification-popup" class="fixed top-5 right-0 bg-green-500 text-white py-3 px-6 rounded-lg shadow-lg transform translate-x-full transition-transform duration-500 ease-in-out z-50">
             <p id="notification-message"></p>
         </div>
 
         <script src="{{ asset('js/notification.js') }}"></script>
         <script src="{{ asset('js/donation-modal.js') }}"></script>
+
+        @if(request()->is('dashboard') || request()->routeIs('dashboard*'))
+            <script src="{{ asset('js/dashboard-event.js') }}"></script>
+        @endif
+        
         @stack('scripts')
     </body>
 </html>
