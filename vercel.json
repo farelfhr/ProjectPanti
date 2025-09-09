@@ -3,7 +3,7 @@
   "builds": [
     {
       "src": "public/index.php",
-      "use": "vercel-php@0.7.2",
+      "use": "vercel-php@0.6.0",
       "config": {
         "phpVersion": "8.2"
       }
@@ -15,12 +15,12 @@
   ],
   "routes": [
     {
-      "src": "/(css|js|images|storage)/(.*)",
-      "dest": "/public/$1/$2"
+      "src": "\/(css|js|images|storage)\/(.*)",
+      "dest": "\/public\/$1\/$2"
     },
     {
-      "src": "/(.*)",
-      "dest": "/public/index.php"
+      "src": "\/(.*)",
+      "dest": "\/public\/index.php"
     }
   ],
   "outputDirectory": "public",
@@ -28,21 +28,14 @@
     "env": {
       "APP_ENV": "production",
       "APP_DEBUG": "false",
-      "APP_URL": "https://nama-domain-anda.vercel.app",
-      "DB_CONNECTION": "pgsql",
-      "DB_HOST": "...",
-      "DB_PORT": "5432",
-      "DB_DATABASE": "...",
-      "DB_USERNAME": "...",
-      "DB_PASSWORD": "...",
+      "APP_URL": "https:\/\/nama-domain-anda.vercel.app",
       "SESSION_DRIVER": "cookie",
       "LOG_CHANNEL": "stderr",
       "CACHE_DRIVER": "array",
-      "CACHE_STORE": "array",
       "QUEUE_CONNECTION": "sync",
-      "VIEW_COMPILED_PATH": "/tmp",
-      "APP_CONFIG_CACHE": "/tmp/config.php",
-      "APP_STORAGE": "/tmp",
+      "VIEW_COMPILED_PATH": "\/tmp\/views",
+      "APP_CONFIG_CACHE": "\/tmp\/config.php",
+      "APP_STORAGE": "\/tmp",
       "LOG_LEVEL": "warning",
       "SESSION_LIFETIME": "120"
     }
