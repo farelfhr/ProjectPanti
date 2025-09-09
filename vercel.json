@@ -3,7 +3,17 @@
   "functions": {
     "api/**": {
       "runtime": "vercel-php@0.7.4",
-      "maxDuration": 10
+      "maxDuration": 10,
+      "includeFiles": [
+        "vendor/**",
+        "bootstrap/**",
+        "app/**",
+        "config/**",
+        "resources/**",
+        "routes/**",
+        "storage/**",
+        "public/**"
+      ]
     }
   },
   "routes": [
