@@ -18,7 +18,6 @@
   ],
   "outputDirectory": "public",
   "build": {
-    "command": "curl -sS https://getcomposer.org/installer | php && php composer.phar build-vercel",
     "env": {
       "APP_ENV": "production",
       "APP_DEBUG": "false",
