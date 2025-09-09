@@ -2,7 +2,7 @@
   "version": 2,
   "functions": {
     "api/**": {
-      "runtime": "vercel-php@0.8.2",
+      "runtime": "vercel-php@latest",
       "maxDuration": 10
     }
   },
