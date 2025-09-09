@@ -1,6 +1,5 @@
 # Dependencies and build outputs
 node_modules/
-vendor/
 public/build/
 
 # Environment and Vercel local state
